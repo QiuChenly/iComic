@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                           xmlns:app="http://schemas.android.com/apk/res-auto"
+                                           android:id="@+id/dl_navigation_main"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="match_parent">
+
+    <FrameLayout
+            android:id="@+id/fl_main_root_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/mDefaultDarkThemeColor">
+
+        <ImageView
+                android:id="@+id/main_src"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <!--android:background="#00000000"-->
+            <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/ab_main_navigation_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    app:elevation="0dp">
+
+                <com.yalantis.jellytoolbar.widget.JellyToolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cancelIcon="@drawable/ic_arrow_back"
+                        app:endColor="#794242"
+                        app:icon="@drawable/ic_search_black_24dp"
+                        app:startColor="#1D51B1">
+
+                    <FrameLayout
+                            android:id="@+id/control_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="26dp">
+
+                        <FrameLayout
+                                android:id="@+id/btn_menu_main"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="match_parent"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="auto">
+
+                            <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/ic_menu_black_24dp"/>
+                        </FrameLayout>
+
+                        <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center">
+
+                            <FrameLayout
+                                    android:id="@+id/switch_my_list"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:clickable="true"
+                                    android:focusable="auto">
+
+                                <ImageView
+                                        android:id="@+id/switch_my_list_img"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:scaleType="centerCrop"
+                                        android:src="@mipmap/my"/>
+                            </FrameLayout>
+
+                            <FrameLayout
+                                    android:id="@+id/switch_my_website_more"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="17dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:clickable="true"
+                                    android:focusable="auto">
+
+                                <ImageView
+                                        android:id="@+id/switch_my_website_more_img"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/online"/>
+                            </FrameLayout>
+
+                            <FrameLayout
+                                    android:id="@+id/switch_my_website_addition"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="17dp"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:clickable="true"
+                                    android:focusable="auto">
+
+                                <ImageView
+                                        android:id="@+id/switch_my_website_addition_img"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:scaleType="centerCrop"
+                                        android:src="@mipmap/more"/>
+                            </FrameLayout>
+                        </LinearLayout>
+
+                        <FrameLayout
+                                android:id="@+id/btn_menu_search"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="0dp"
+                                android:layout_gravity="end"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="auto">
+
+                            <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/ic_search_black_24dp"/>
+                        </FrameLayout>
+
+                    </FrameLayout>
+                </com.yalantis.jellytoolbar.widget.JellyToolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vp_main_pages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.material.navigation.NavigationView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:insetForeground="@android:color/transparent">
+
+        <include layout="@layout/navigation_main"/>
+    </com.google.android.material.navigation.NavigationView>
+</androidx.drawerlayout.widget.DrawerLayout>
+

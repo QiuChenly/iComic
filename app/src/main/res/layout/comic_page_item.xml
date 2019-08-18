@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+
+    <TextView
+            android:id="@+id/tv_comicPageName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="15dp"
+            android:text="第一话"
+            android:textColor="@color/mDefaultListTextColor"
+            android:textSize="16sp"/>
+
+    <TextView
+            android:id="@+id/last_read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@id/tv_comicPageName"
+            android:background="@drawable/limit_benefit_black"
+            android:gravity="center"
+            android:text="@string/lasted_position"
+            android:textColor="#C24242"
+            android:textSize="12sp"
+            tools:ignore="SmallSp"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/mDefaultDarkThemeColor">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/al_recently_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginTop="26dp"
+                    app:contentInsetStart="0dp">
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                        <FrameLayout
+                                android:id="@+id/back_up"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="match_parent"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                            <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_arrow_back"/>
+                        </FrameLayout>
+
+                        <TextView
+                                android:id="@+id/activityName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="哔咔授权登录"
+                                android:textColor="#ffffff"
+                                android:textSize="16sp"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </FrameLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/al_recently_bar"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+        <EditText
+                android:id="@+id/mBikaUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_simple1"
+                android:hint="输入哔咔账号:你的邮箱."
+                android:imeOptions="actionNext"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textColorHint="@color/mDefaultListTextColor"/>
+
+
+        <EditText
+                android:id="@+id/mBikaPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mBikaUser"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_simple1"
+                android:hint="输入哔咔密码:你的密码."
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textColorHint="@color/mDefaultListTextColor"/>
+
+        <Button
+                android:id="@+id/mLoginBika"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mBikaPass"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_simple"
+                android:text="登  录"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+    <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+</RelativeLayout>

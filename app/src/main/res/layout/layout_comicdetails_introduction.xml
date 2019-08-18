@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/tv_bookUpdateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bookName"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:text="更新时间：2016-07-23"
+            android:textColor="#e7e7e7"
+            android:textSize="11sp"/>
+
+    <TextView
+            android:id="@+id/tv_bookScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bookName"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:text="网友评分：9.2"
+            android:textColor="#e7e7e7"
+            android:textSize="11sp"/>
+
+    <TextView
+            android:id="@+id/tv_bookIntroduction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bookName"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:scrollbars="vertical"
+            android:text="简介：漫画《指染成婚》改编自炎水淋同名都市言情小说《指染成婚》，一言不合就抽人家皮带？！这个腹黑女，果然引起了男人的注意！只是这套路玩得深，会不会有翻车的危险啊？“我看上的女人，就只能是我的女人。”
+
+“我看上的女人，就只能是我的女人。”"
+            android:textColor="#e7e7e7"
+            android:textSize="10sp"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

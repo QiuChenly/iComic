@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">iComic</string>
+    <string name="limit_benifit">NMSL</string>
+    <string name="ad_openVIP">你开通你🐎呢？</string>
+    <string name="openVIP">See</string>
+    <string name="lasted_position">Old Position</string>
+</resources>

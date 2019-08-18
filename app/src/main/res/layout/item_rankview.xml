@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+            <FrameLayout
+                    android:id="@+id/_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:id="@+id/iv_privatefm_img_back"
+                        android:src="#000000"/>
+
+                <ImageView
+                        android:id="@+id/iv_privatefm_img"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_wanjie"/>
+            </FrameLayout>
+
+            <TextView
+                    android:id="@+id/iv_privatefm_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:text="完结漫画"
+                    android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/iv_day_img_click"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+            <FrameLayout
+                    android:id="@+id/_img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                <ImageView
+                        android:layout_width="45dp"
+                        android:id="@+id/iv_day_img_back"
+                        android:layout_height="45dp"
+                        android:src="#000000"/>
+
+                <ImageView
+                        android:id="@+id/iv_day_img"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_day_1"/>
+
+                <TextView
+                        android:id="@+id/tv_times"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="2dp"
+                        android:text="31"
+                        android:textColor="#ffffff"
+                        android:textSize="10sp"/>
+            </FrameLayout>
+
+            <TextView
+                    android:id="@+id/iv_day_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="每日推荐"
+                    android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+            <FrameLayout
+                    android:id="@+id/_img2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center">
+
+                <ImageView
+                        android:id="@+id/iv_mix_img_back"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="#000000"/>
+
+                <ImageView
+                        android:id="@+id/iv_mix_img"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_lianzai"/>
+            </FrameLayout>
+
+            <TextView
+                    android:id="@+id/iv_mix_title"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="连载漫画"
+                    android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+            <FrameLayout
+                    android:id="@+id/_img3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:id="@+id/iv_charts_img_back"
+                        android:src="#000000"/>
+
+                <ImageView
+                        android:id="@+id/iv_charts_img"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_quanbu"/>
+            </FrameLayout>
+
+            <TextView
+                    android:id="@+id/iv_charts_title"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content"
+                    android:text="全部漫画"
+                    android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#72979797"/>
+</LinearLayout>

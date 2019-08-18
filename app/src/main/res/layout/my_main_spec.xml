@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:background="#28ffffff">
+
+        <FrameLayout
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="8dp">
+
+            <ImageView
+                    android:id="@+id/rotateViews"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_chevron_right_black_24dp"/>
+        </FrameLayout>
+
+        <TextView
+                android:id="@+id/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="33dp"
+                android:gravity="center"
+                android:text="创建的歌单(7)"
+                android:textColor="#dfffffff"/>
+
+        <FrameLayout
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginRight="8dp"
+                android:clickable="true"
+                android:focusable="true">
+
+            <!--<ImageView-->
+            <!--android:layout_width="15dp"-->
+            <!--android:layout_height="15dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@mipmap/sets" />-->
+        </FrameLayout>
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_main_spec_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+</LinearLayout>

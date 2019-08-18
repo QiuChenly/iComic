@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/mDefaultDarkThemeColor">
+
+    <TextView
+            android:id="@+id/mTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="i 漫"
+            android:textColor="@color/mDefaultListTextColor"
+            android:textSize="28sp"/>
+
+    <TextView
+            android:id="@+id/mLang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/mLangAuthor"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="25dp"
+            android:text="WSM NMD"
+            android:textColor="@color/mDefaultListTextColor"/>
+
+    <TextView
+            android:id="@+id/mLangAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/mAuthorName"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="55dp"
+            android:text="--- WSM NMD"
+            android:textColor="@color/mDefaultListTextColor"
+            android:textSize="11sp"/>
+
+    <TextView
+            android:id="@+id/mAuthorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/mCopyRight"
+            android:layout_centerHorizontal="true"
+            android:text="QiuChenly Design"
+            android:textColor="@color/mDefaultListTextColor"
+            android:textSize="13sp"/>
+
+    <TextView
+            android:id="@+id/mCopyRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Copyright©2019"
+            android:textColor="@color/mDefaultListTextColor"
+            android:textSize="10sp"/>
+
+</RelativeLayout>

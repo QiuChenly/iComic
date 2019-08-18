@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/mDefaultDarkThemeColor">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/al_recently_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginTop="26dp"
+                    app:contentInsetStart="0dp">
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+
+                        <FrameLayout
+                                android:id="@+id/back_up"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="match_parent"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                            <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_arrow_back"/>
+                        </FrameLayout>
+
+                        <TextView
+                                android:id="@+id/activityName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="关于App的一些设定"
+                                android:textColor="#ffffff"
+                                android:textSize="16sp"/>
+                    </LinearLayout>
+                </FrameLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </FrameLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/al_recently_bar"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <CheckBox
+                    android:id="@+id/useBikaSource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/mDefaultListTextColor"
+                    android:checked="true"
+                    android:text="使用Bika数据源"
+                    android:textColor="@color/mDefaultListTextColor"/>
+
+            <CheckBox
+                    android:id="@+id/useDMZJSource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/mDefaultListTextColor"
+                    android:checked="true"
+                    android:text="使用动漫之家数据源"
+                    android:textColor="@color/mDefaultListTextColor"/>
+
+            <CheckBox
+                    android:id="@+id/useDMZJNovel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/mDefaultListTextColor"
+                    android:checked="false"
+                    android:enabled="false"
+                    android:text="使用动漫之家小说数据源"
+                    android:textColor="@color/mDefaultListTextColor"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

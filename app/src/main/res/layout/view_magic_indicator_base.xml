@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.lucode.hackware.magicindicator.MagicIndicator xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   android:id="@+id/magic_indicator"
+                                                   android:background="@color/mDefaultDarkThemeColor"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="35dp"/>

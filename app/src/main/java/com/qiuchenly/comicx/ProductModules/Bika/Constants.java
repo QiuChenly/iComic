@@ -1,0 +1,46 @@
+package com.qiuchenly.comicx.ProductModules.Bika;
+
+public class Constants {
+    public static final int ADS_LIST_INTERVAL = 20;
+    public static final long ADS_POPUP_TIME_INTERVAL = 7200000;
+    public static final String AD_LINK_1_BIG = "http://picaman.picacomic.com/api/explore/1big";
+    public static final String AD_LINK_2_BIG = "http://picaman.picacomic.com/api/explore/2big";
+    public static final String AD_LINK_2_FRONT = "http://picaman.picacomic.com/api/explore/2front";
+    public static final String AD_LINK_3_COL = "http://picaman.picacomic.com/api/explore/3col";
+    public static final String AD_LINK_BANNER = "http://pica-juicy.picacomic.com/android/home_banner";
+    public static final String AD_LINK_BANNER_SUFFIX = "/android/home_banner";
+    public static final String AD_LINK_BASE = "http://pica-juicy.picacomic.com";
+    public static final String AD_LINK_CAT = "http://pica-juicy.picacomic.com/android/cat";
+    public static final String AD_LINK_CAT_SUFFIX = "/android/cat";
+    public static final String AD_LINK_CHAT = "http://pica-juicy.picacomic.com/android/chat";
+    public static final String AD_LINK_CHAT_SUFFIX = "/android/chat";
+    public static final String AD_LINK_DETAIL = "http://pica-juicy.picacomic.com/android/comic_detail";
+    public static final String AD_LINK_DETAIL_SUFFIX = "/android/comic_detail";
+    public static final String AD_LINK_FRONT = "http://pica-juicy.picacomic.com/android/font";
+    public static final String AD_LINK_FRONT_SUFFIX = "/android/font";
+    public static final String AD_LINK_SMALL = "http://picaman.picacomic.com/api/explore/small";
+    public static final int ALERT_IMAGE_ANIMATION_DURATION = 300;
+    public static final int AUTO_PAGING_MINIMUM_INTERVAL = 1000;
+    public static final String CACHE = "fp12xjaw65Cfjszob74G31Hdm8S=\n";
+    public static final int COLLECTION_VIEW_MAX_DISPLAY_CELL = 4;
+    public static final int EMAIL_MAX_LENGTH = 100;
+    public static final String FAQ_LINK = "https://www.picacomic.com/faq";
+    public static final int FAST_BLUR_RADIUS = 5;
+    public static final float FAST_BLUR_SCALE = 0.5f;
+    public static final int GENDER_INDEX_FEMALE = 1;
+    public static final int GENDER_INDEX_MALE = 0;
+    public static final int GENDER_INDEX_ROBOT = 2;
+    public static final String GENDER_KEY_FEMALE = "f";
+    public static final String GENDER_KEY_MALE = "m";
+    public static final String GENDER_KEY_ROBOT = "bot";
+    public static final String[] GENDERS = new String[]{Constants.GENDER_KEY_MALE, Constants.GENDER_KEY_FEMALE, Constants.GENDER_KEY_ROBOT};
+    public static final int[] IMAGE_QUALITIES = new int[]{0, 1024, 2048, 4096};
+    public static final int PASSWORD_MAX_LENGTH = 100;
+    public static final int PASSWORD_MIN_LENGTH = 8;
+    public static final int PIN_LENGTH = 4;
+    public static final int USERNAME_MAX_LENGTH = 50;
+    public static final int USERNAME_MIN_LENGTH = 2;
+    public static final int USER_TYPE_ADMIN = 2;
+    public static final int USER_TYPE_KNIGHT = 1;
+    public static final int USER_TYPE_USER = 0;
+}

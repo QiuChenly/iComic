@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/mDefaultDarkThemeColor">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/mUpdateInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ImageView
+                    android:id="@+id/iv_backimg_nv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <ImageView
+                        android:id="@+id/mWeatherImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/mInfoBar"
+                        android:layout_alignBottom="@id/mInfoBar"
+                        android:scaleType="centerCrop"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/mInfoBar"
+                        android:layout_alignBottom="@id/mInfoBar"
+                        android:background="#6F000000"
+                        android:scaleType="centerCrop"/>
+
+                <RelativeLayout
+                        android:id="@+id/mInfoBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="25dp"
+                        android:paddingTop="45dp"
+                        android:paddingRight="25dp"
+                        android:paddingBottom="45dp">
+
+
+                    <TextView
+                            android:id="@+id/mDateTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/mDateInfo"
+                            android:layout_alignEnd="@id/mDateInfo"
+                            android:gravity="center"
+                            android:text="8°C"
+                            android:textColor="@color/mDefaultListTextColor"
+                            android:textSize="45sp"/>
+
+                    <TextView
+                            android:id="@+id/mDateInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/mDateTemp"
+                            android:gravity="center"
+                            android:text="周六/02月23日"
+                            android:textColor="@color/mDefaultListTextColor"
+                            android:textSize="14sp"/>
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_above="@id/mDateInfo"
+                            android:layout_alignTop="@+id/mDateTemp"
+                            android:layout_toEndOf="@id/mDateInfo"
+                            android:gravity="center|left"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:id="@+id/mDatePM"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="PM 2.5值: 138 轻度"
+                                android:textColor="@color/mDefaultListTextColor"
+                                android:textSize="13sp"/>
+
+                        <TextView
+                                android:id="@+id/mDateStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="多云 东北风微风 -3~10°C"
+                                android:textColor="@color/mDefaultListTextColor"
+                                android:textSize="13sp"/>
+                    </LinearLayout>
+
+                    <ImageView
+                            android:id="@+id/mWeather_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_above="@id/mDateInfo"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginBottom="25dp"
+                            android:scaleType="centerInside"/>
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mFunMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@id/mAppMenu"
+                        android:layout_below="@id/mInfoBar">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <LinearLayout
+                        android:id="@+id/mAppMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal">
+
+                    <Button
+                            android:layout_width="match_parent"
+                            android:id="@+id/closedApp"
+                            android:layout_height="match_parent"
+                            android:background="?attr/selectableItemBackground"
+                            android:text="关闭App"
+                            android:textColor="@color/mDefaultListTextColor"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</RelativeLayout>

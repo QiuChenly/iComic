@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <RelativeLayout
+            android:id="@+id/baseInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+        <TextView
+                android:id="@+id/tv_comicName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="Loading..."
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="30sp"/>
+
+        <TextView
+                android:id="@+id/updateTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/updateTime"
+                android:layout_below="@id/tv_comicName"
+                android:gravity="center"
+                android:text="更新至:"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="12sp"/>
+
+        <Button
+                android:id="@+id/lastUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/tv_comicName"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@+id/updateTo"
+                android:background="@drawable/background_simple"
+                android:text="无法挽回了⑧?"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="13sp"/>
+
+        <TextView
+                android:id="@+id/updateTime_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lastUpdate"
+                android:layout_marginBottom="5dp"
+                android:text="更新时间："
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="12sp"/>
+
+        <TextView
+                android:id="@+id/updateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lastUpdate"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/updateTime_label"
+                android:text="2019-02-28"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="12sp"/>
+
+        <TextView
+                android:id="@+id/author_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/updateTime"
+                android:layout_marginBottom="5dp"
+                android:text="原著作者："
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="12sp"/>
+
+        <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/updateTime"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@+id/author_label"
+                android:text="有鹿文化"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="12sp"/>
+
+        <TextView
+                android:id="@+id/comicType_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/author"
+                android:layout_alignBottom="@id/comicType"
+                android:gravity="center"
+                android:text="类别："
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="12sp"/>
+
+        <Button
+                android:id="@+id/comicType"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/author"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/comicType_label"
+                android:background="@drawable/background_simple"
+                android:text="少女爱情"
+                android:textColor="@color/mDefaultListTextColor"
+                android:textSize="13sp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/baseInfo"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/addFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="加入收藏"/>
+
+        <Button
+                android:id="@+id/startRead"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="开始阅读"/>
+    </LinearLayout>
+</RelativeLayout>

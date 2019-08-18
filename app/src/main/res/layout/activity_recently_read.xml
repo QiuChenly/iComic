@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/mDefaultDarkThemeColor"
+              android:orientation="vertical"
+              tools:context=".UI.activity.RecentlyRead">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/al_recently_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginTop="26dp"
+                    app:contentInsetStart="0dp">
+
+                <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+
+                        <FrameLayout
+                                android:id="@+id/back_up"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="match_parent"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                            <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_arrow_back"/>
+                        </FrameLayout>
+
+                        <TextView
+                                android:id="@+id/activityName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="最近阅读"
+                                android:textColor="#ffffff"
+                                android:textSize="16sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                            android:id="@+id/clear_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginRight="8dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="清空"
+                            android:textColor="#ffffff"
+                            android:textSize="14sp"/>
+                </FrameLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </FrameLayout>
+
+        <include layout="@layout/view_magic_indicator_base"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/tl_recently_tab_setup_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+</LinearLayout>

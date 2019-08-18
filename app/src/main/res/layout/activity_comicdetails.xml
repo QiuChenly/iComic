@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                     xmlns:tools="http://schemas.android.com/tools"
+                                                     android:id="@+id/mCoordinatorLayout"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="match_parent"
+                                                     android:background="@color/mDefaultDarkThemeColor">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="295dp"
+            app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:expandedTitleMarginEnd="10dp"
+                app:expandedTitleMarginStart="10dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:toolbarId="@+id/toolbar">
+
+            <ImageView
+                    android:id="@+id/mRealImageNoBlur"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.5"/>
+
+            <ImageView
+                    android:id="@+id/comicDetails_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.5"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#5b000000"/>
+
+            <RelativeLayout
+                    android:id="@+id/rl_comic_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="82dp">
+
+                <ImageView
+                        android:id="@+id/iv_comic_image"
+                        android:layout_width="110dp"
+                        android:layout_height="150dp"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10dp"/>
+
+                <LinearLayout
+                        android:id="@+id/details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/iv_comic_image"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@id/iv_comic_image"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:id="@+id/tv_bookname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="指染成婚"
+                            android:textColor="#ffffff"
+                            android:textSize="17sp"/>
+
+                    <TextView
+                            android:id="@+id/mBookAuthor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_bookName"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="5dp"
+                            android:text="原著作者：涂山君"
+                            android:textColor="#ffffff"
+                            android:textSize="11sp"/>
+
+                    <TextView
+                            android:id="@+id/mBookCategoryView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_bookName"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="5dp"
+                            android:text="剧情类别：少女爱情"
+                            android:textColor="#ffffff"
+                            android:textSize="11sp"/>
+
+                    <TextView
+                            android:id="@+id/tv_book_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_bookName"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="5dp"
+                            android:text="介绍...."
+                            android:textColor="#ffffff"
+                            android:textSize="11sp"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginTop="26dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <FrameLayout
+                            android:id="@+id/back_up"
+                            android:layout_width="?attr/actionBarSize"
+                            android:layout_height="?attr/actionBarSize"
+                            android:layout_alignParentStart="true"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                        <ImageView
+                                android:id="@+id/backImage"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/ic_arrow_back"
+                                android:scaleType="centerInside"/>
+                    </FrameLayout>
+
+                    <LinearLayout
+                            android:id="@+id/mTitleLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                        <TextView
+                                android:id="@+id/tv_bookname_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:maxEms="8"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="指染成婚"
+                                android:textColor="#ffffff"
+                                android:textSize="17sp"/>
+
+                        <TextView
+                                android:id="@+id/tv_bookname_title_small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="作者:NMSL"
+                                android:textColor="#ffffff"
+                                android:textSize="10sp"
+                                tools:ignore="SmallSp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_gravity="end">
+
+                        <FrameLayout
+                                android:id="@+id/mBookDownload"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="?attr/actionBarSize"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                            <ImageView
+                                    android:id="@+id/mBookDownload_IV"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/ic_down"
+                                    android:contentDescription="download it!"
+                                    android:scaleType="centerInside"/>
+                        </FrameLayout>
+
+                        <FrameLayout
+                                android:id="@+id/mShareButton"
+                                android:layout_width="?attr/actionBarSize"
+                                android:layout_height="?attr/actionBarSize"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                            <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/ic_share"
+                                    android:contentDescription="share more!"
+                                    android:scaleType="centerInside"/>
+                        </FrameLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <include layout="@layout/view_magic_indicator_base"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/mComicInfoViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/mDefaultDarkThemeColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <include layout="@layout/layout_loading"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
