@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/mDefaultDarkThemeColor"
+                android:background="@color/defaultDarkThemeColor"
                 android:orientation="vertical">
 
     <TextView
@@ -11,14 +11,14 @@
             android:layout_height="50dp"
             android:gravity="center"
             android:text="操作确认"
-            android:textColor="@color/mDefaultListTextColor"
+            android:textColor="@color/defaultListTextColor"
             android:textSize="16sp"/>
 
     <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/tv_dialog_title"
-            android:background="@color/mDefaultListTextColor"/>
+            android:background="@color/defaultListTextColor"/>
 
     <TextView
             android:id="@+id/tv_dialog_content"
@@ -29,14 +29,14 @@
             android:layout_marginRight="15dp"
             android:gravity="center"
             android:text="操作确认操作确认操作确认操作确认操作确认操作确认操作确认操作确认操作确认操作确认操作确认操作确认"
-            android:textColor="@color/mDefaultListTextColor"
+            android:textColor="@color/defaultListTextColor"
             android:textSize="16sp"/>
 
     <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_below="@id/tv_dialog_content"
-            android:background="@color/mDefaultListTextColor"/>
+            android:background="@color/defaultListTextColor"/>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -52,12 +52,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/ripper_dialog_button"
                 android:text="确认"
-                android:textColor="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"/>
 
         <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
-                android:background="@color/mDefaultListTextColor"/>
+                android:background="@color/defaultListTextColor"/>
 
         <Button
                 android:id="@+id/btn_dialog_cancel"
@@ -66,7 +66,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/ripper_dialog_button"
                 android:text="没错"
-                android:textColor="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"/>
 
     </LinearLayout>
 

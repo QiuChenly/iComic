@@ -4,7 +4,7 @@ import android.content.Intent
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.qiuchenly.comicx.Bean.ComicComm
-import com.qiuchenly.comicx.Bean.ComicHome_Category
+import com.qiuchenly.comicx.Bean.ComicHomeCategory
 import com.qiuchenly.comicx.Bean.HotComic
 import com.qiuchenly.comicx.Bean.RecommendItemType
 import com.qiuchenly.comicx.R
@@ -25,7 +25,9 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     }
 
     override fun onLoadMore(isRetry: Boolean) {
-        mViewModel?.getDMZJHot()
+        mViewModel?.getDMZJHot(54)
+        mViewModel?.getDMZJHot(52)
+        mViewModel?.getDMZJHot(50)
     }
 
     override fun onGetDMZRecommendSuch(mComicList: ArrayList<ComicComm>) {
@@ -33,7 +35,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
         mRecommendAdapter?.addDMZJData(mComicList)
     }
 
-    override fun onGetDMZJCategory(mComicCategory: ArrayList<ComicHome_Category>) {
+    override fun onGetDMZJCategory(mComicCategory: ArrayList<ComicHomeCategory>) {
         mRecommendAdapter?.addDMZJCategory(mComicCategory)
         final()
     }

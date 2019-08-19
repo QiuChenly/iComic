@@ -5,7 +5,7 @@
                                                      android:id="@+id/mCoordinatorLayout"
                                                      android:layout_width="match_parent"
                                                      android:layout_height="match_parent"
-                                                     android:background="@color/mDefaultDarkThemeColor">
+                                                     android:background="@color/defaultDarkThemeColor">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -222,7 +222,7 @@
             android:id="@+id/mComicInfoViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/mDefaultDarkThemeColor"
+            android:background="@color/defaultDarkThemeColor"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <include layout="@layout/layout_loading"/>

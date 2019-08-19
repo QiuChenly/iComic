@@ -4,10 +4,13 @@ class DataItem {
     var cover: String = ""
     var sub_title: String = ""
     var obj_id: String = ""
+    var id: String = "" //猜你喜欢这里是返回的ID,不是obj_id
     var title: String = ""
     var type: String = ""
     var url: String = ""
     var status: String = ""
+    var authors: String = ""//猜你喜欢特有参数
+    var num = 0//猜你喜欢特有参数
 }
 
 class HotComic {
@@ -30,7 +33,13 @@ class ComicComm {
     var title: String = ""
 }
 
-class ComicHome_Category {
+class ComicHomeCategory {
+    var tag_id = ""
+    var title = ""
+    var cover = ""
+}
+
+class ComicHomeCategoryArray {
     var tag_id = ""
     var title = ""
     var cover = ""

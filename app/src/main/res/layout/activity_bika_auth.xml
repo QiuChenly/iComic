@@ -3,7 +3,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/mDefaultDarkThemeColor">
+                android:background="@color/defaultDarkThemeColor">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/al_recently_bar"
@@ -78,8 +78,8 @@
                 android:imeOptions="actionNext"
                 android:padding="5dp"
                 android:singleLine="true"
-                android:textColor="@color/mDefaultListTextColor"
-                android:textColorHint="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"
+                android:textColorHint="@color/defaultListTextColor"/>
 
 
         <EditText
@@ -94,8 +94,8 @@
                 android:inputType="textPassword"
                 android:padding="5dp"
                 android:singleLine="true"
-                android:textColor="@color/mDefaultListTextColor"
-                android:textColorHint="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"
+                android:textColorHint="@color/defaultListTextColor"/>
 
         <Button
                 android:id="@+id/mLoginBika"
@@ -105,7 +105,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_simple"
                 android:text="登  录"
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="16sp"/>
 
     </RelativeLayout>

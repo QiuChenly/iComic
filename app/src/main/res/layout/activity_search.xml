@@ -4,7 +4,7 @@
                 xmlns:zhy="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/mDefaultDarkThemeColor"
+                android:background="@color/defaultDarkThemeColor"
                 android:fitsSystemWindows="true"
                 tools:context=".UI.activity.SearchActivity">
 
@@ -33,8 +33,8 @@
                 android:inputType="text"
                 android:maxLength="100"
                 android:maxLines="1"
-                android:textColor="@color/mDefaultListTextColor"
-                android:textColorHint="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"
+                android:textColorHint="@color/defaultListTextColor"/>
     </LinearLayout>
 
 
@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="搜索历史"
-                        android:textColor="@color/mDefaultListTextColor"/>
+                        android:textColor="@color/defaultListTextColor"/>
 
             </LinearLayout>
 
@@ -72,7 +72,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="大家都在搜..."
-                        android:textColor="@color/mDefaultListTextColor"/>
+                        android:textColor="@color/defaultListTextColor"/>
 
                 <com.zhy.view.flowlayout.TagFlowLayout
                         android:id="@+id/mFlowLayout"

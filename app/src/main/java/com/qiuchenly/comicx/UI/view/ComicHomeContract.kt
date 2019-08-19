@@ -1,7 +1,7 @@
 package com.qiuchenly.comicx.UI.view
 
 import com.qiuchenly.comicx.Bean.ComicComm
-import com.qiuchenly.comicx.Bean.ComicHome_Category
+import com.qiuchenly.comicx.Bean.ComicHomeCategory
 import com.qiuchenly.comicx.Bean.HotComic
 import com.qiuchenly.comicx.UI.BaseImp.BaseView
 
@@ -18,12 +18,12 @@ interface ComicHomeContract {
          */
         fun onGetDMZRecommendSuch(mComicList: ArrayList<ComicComm>)
 
-        fun onGetDMZJCategory(mComicCategory: ArrayList<ComicHome_Category>)
+        fun onGetDMZJCategory(mComicCategory: ArrayList<ComicHomeCategory>)
         fun onGetDMZJHOT(mComicCategory: HotComic?)
     }
 
     interface DMZJ_Adapter {
-        fun addDMZJCategory(mComicCategory: ArrayList<ComicHome_Category>)
+        fun addDMZJCategory(mComicCategory: ArrayList<ComicHomeCategory>)
         fun addDMZJData(mComicList: ArrayList<ComicComm>)
     }
 }

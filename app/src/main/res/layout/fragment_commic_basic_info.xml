@@ -15,7 +15,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="Loading..."
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="30sp"/>
 
         <TextView
@@ -26,7 +26,7 @@
                 android:layout_below="@id/tv_comicName"
                 android:gravity="center"
                 android:text="更新至:"
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="12sp"/>
 
         <Button
@@ -39,7 +39,7 @@
                 android:layout_toEndOf="@+id/updateTo"
                 android:background="@drawable/background_simple"
                 android:text="无法挽回了⑧?"
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="13sp"/>
 
         <TextView
@@ -49,7 +49,7 @@
                 android:layout_below="@id/lastUpdate"
                 android:layout_marginBottom="5dp"
                 android:text="更新时间："
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="12sp"/>
 
         <TextView
@@ -60,7 +60,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_toEndOf="@id/updateTime_label"
                 android:text="2019-02-28"
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="12sp"/>
 
         <TextView
@@ -70,7 +70,7 @@
                 android:layout_below="@id/updateTime"
                 android:layout_marginBottom="5dp"
                 android:text="原著作者："
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="12sp"/>
 
         <TextView
@@ -81,7 +81,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_toEndOf="@+id/author_label"
                 android:text="有鹿文化"
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="12sp"/>
 
         <TextView
@@ -92,7 +92,7 @@
                 android:layout_alignBottom="@id/comicType"
                 android:gravity="center"
                 android:text="类别："
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="12sp"/>
 
         <Button
@@ -104,7 +104,7 @@
                 android:layout_toEndOf="@id/comicType_label"
                 android:background="@drawable/background_simple"
                 android:text="少女爱情"
-                android:textColor="@color/mDefaultListTextColor"
+                android:textColor="@color/defaultListTextColor"
                 android:textSize="13sp"/>
     </RelativeLayout>
 

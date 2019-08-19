@@ -31,7 +31,7 @@ import java.lang.ref.WeakReference
 
 class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mContext: WeakReference<Context?>) :
     BaseRecyclerAdapter<RecommendItemType>(), ComicHomeContract.DMZJ_Adapter {
-    override fun addDMZJCategory(mComicCategory: ArrayList<ComicHome_Category>) {
+    override fun addDMZJCategory(mComicCategory: ArrayList<ComicHomeCategory>) {
         addData(RecommendItemType().apply {
             this.title = "动漫之家全部分类"
             type = TYPE_TITLE
@@ -56,6 +56,11 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
             isInitForLoadMore = true
         }
         mComicCategory.forEach {
+            if (it.type == "") {
+                it.type = "1"
+                it.obj_id = it.id
+            } //"猜你喜欢"这里会有一个bug,返回的数据type为空
+
             addData(RecommendItemType().apply {
                 type = TYPE_DMZJ_HOT
                 this.mItemData = Gson().toJson(it)
@@ -162,6 +167,7 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
         }
     }
 
+    private var sIsSetData = false
     @SuppressLint("SetTextI18n")
     private fun mInitUI(view: View, data: RecommendItemType?, position: Int) {
         when (data?.type) {
@@ -169,10 +175,13 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
              * Banner栏数据
              */
             TYPE_TOP -> {
-                mCarouselAdapter.setData(mTopTitles)
-                val mViewPager = view.findViewById<ViewPager>(R.id.vp_banner)
-                mViewPager.adapter = mCarouselAdapter
-                mCarouselAdapter.setVP(mViewPager)
+                if (!sIsSetData) {
+                    mCarouselAdapter.setData(mTopTitles)
+                    val mViewPager = view.findViewById<ViewPager>(R.id.vp_banner)
+                    mViewPager.adapter = mCarouselAdapter
+                    mCarouselAdapter.setVP(mViewPager)
+                    sIsSetData = true
+                }
             }
             /**
              * 暂时没用到
@@ -288,7 +297,7 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
             }
             TYPE_DONGMANZHIJIA_CATEGORY -> {
                 with(view) {
-                    val mCate = Gson().fromJson(data.mItemData, ComicHome_Category::class.java)
+                    val mCate = Gson().fromJson(data.mItemData, ComicHomeCategory::class.java)
                     var mImageSrc = ""
                     var mCategoryName = ""
                     val mType = ComicSource.DongManZhiJia
@@ -323,6 +332,7 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
 
     override fun addDMZJData(mComicList: ArrayList<ComicComm>) {
         setData(ArrayList())
+        sIsSetData = false
         isInitForLoadMore = false
         mTopImages = arrayListOf()
         mTopTitles = arrayListOf()

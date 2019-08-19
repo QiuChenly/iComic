@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/mDefaultDarkThemeColor">
+                android:background="@color/defaultDarkThemeColor">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/mUpdateInfo"
@@ -58,7 +58,7 @@
                             android:layout_alignEnd="@id/mDateInfo"
                             android:gravity="center"
                             android:text="8°C"
-                            android:textColor="@color/mDefaultListTextColor"
+                            android:textColor="@color/defaultListTextColor"
                             android:textSize="45sp"/>
 
                     <TextView
@@ -68,7 +68,7 @@
                             android:layout_below="@id/mDateTemp"
                             android:gravity="center"
                             android:text="周六/02月23日"
-                            android:textColor="@color/mDefaultListTextColor"
+                            android:textColor="@color/defaultListTextColor"
                             android:textSize="14sp"/>
 
                     <LinearLayout
@@ -86,7 +86,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="PM 2.5值: 138 轻度"
-                                android:textColor="@color/mDefaultListTextColor"
+                                android:textColor="@color/defaultListTextColor"
                                 android:textSize="13sp"/>
 
                         <TextView
@@ -97,7 +97,7 @@
                                 android:layout_marginTop="5dp"
                                 android:gravity="center"
                                 android:text="多云 东北风微风 -3~10°C"
-                                android:textColor="@color/mDefaultListTextColor"
+                                android:textColor="@color/defaultListTextColor"
                                 android:textSize="13sp"/>
                     </LinearLayout>
 
@@ -133,7 +133,7 @@
                             android:layout_height="match_parent"
                             android:background="?attr/selectableItemBackground"
                             android:text="关闭App"
-                            android:textColor="@color/mDefaultListTextColor"/>
+                            android:textColor="@color/defaultListTextColor"/>
 
                 </LinearLayout>
             </RelativeLayout>

@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
@@ -58,7 +57,7 @@ class ComicReadingAdapter(loadListener: LoaderListener, private val mContext: We
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .override(1080, Int.MAX_VALUE)
                 .transition(BitmapTransitionOptions.withCrossFade(200))
-                .format(DecodeFormat.PREFER_ARGB_8888)
+                //.format(DecodeFormat.PREFER_ARGB_8888)
                 .addListener(object : RequestListener<Bitmap> {
                     override fun onLoadFailed(
                         e: GlideException?,
@@ -97,13 +96,14 @@ class ComicReadingAdapter(loadListener: LoaderListener, private val mContext: We
                 })
                 .into(iv_img_page)
             if (position + 1 < getRealSize()) {
-                return@with//这里preload有闪退问题,先屏蔽了再说
+                //return@with//这里preload有闪退问题,先屏蔽了再说
                 Log.d(TAG, "onViewShow: Size = " + getRealSize() + ", position = " + (position + 1))
                 Glide.with(mContext.get()!!)
                     .asBitmap()
                     .load(data)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .format(DecodeFormat.PREFER_ARGB_8888)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .override(1080, Int.MAX_VALUE)
+                    //.format(DecodeFormat.PREFER_ARGB_8888)
                     .preload()
             }
         }

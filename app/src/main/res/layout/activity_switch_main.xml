@@ -9,7 +9,7 @@
             android:id="@+id/fl_main_root_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/mDefaultDarkThemeColor">
+            android:background="@color/defaultDarkThemeColor">
 
         <ImageView
                 android:id="@+id/main_src"

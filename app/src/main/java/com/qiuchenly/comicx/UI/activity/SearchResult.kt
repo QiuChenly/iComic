@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.qiuchenly.comicx.Bean.ComicCategoryBean
-import com.qiuchenly.comicx.Bean.ComicHome_Category
+import com.qiuchenly.comicx.Bean.ComicHomeCategory
 import com.qiuchenly.comicx.Bean.ComicHome_CategoryComic
 import com.qiuchenly.comicx.Bean.ComicSource
 import com.qiuchenly.comicx.Core.ActivityKey
@@ -162,7 +162,7 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
     }
 
     private fun handle_ComicHome(mComicCategoryBean: ComicCategoryBean) {
-        val id = Gson().fromJson(mComicCategoryBean.mData, ComicHome_Category::class.java)
+        val id = Gson().fromJson(mComicCategoryBean.mData, ComicHomeCategory::class.java)
         mCategoryID = id.tag_id
         nextPage = 0
         selectLoad()

@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="15dp"
             android:text="第一话"
-            android:textColor="@color/mDefaultListTextColor"
+            android:textColor="@color/defaultListTextColor"
             android:textSize="16sp"/>
 
     <TextView

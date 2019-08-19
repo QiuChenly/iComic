@@ -303,9 +303,9 @@ public interface ComicApi {
     Call<ArrayList<ComicComm>> getRecommend();
 
     @GET("/0/category.json" + BaseLine)
-    Call<ResponseBody> getCategory();
+    Call<ArrayList<ComicHomeCategory>> getCategory();
 
-    @GET("/comic/{comicID}.json" + BaseLine)
+    @GET("/comic/comic_{comicID}.json" + BaseLine)
     Call<ComicHomeComicChapterList> getComic(@Path("comicID") String mComicID);
 
     @GET("/chapter/{bookId}/{chapterId}.json" + BaseLine)
@@ -314,13 +314,16 @@ public interface ComicApi {
     //https://images.dmzj.com/img/webpic/19/1003821191536309628.jpg
 
     /**
-     * 热门连载刷新获取
-     *
+     * 漫画刷新获取
+     * 关于category_id:
+     * 热门连载:54
+     * 猜你喜欢:50
+     * 国漫也精彩:52
      * @param time 时间戳
-     * @return
+     * @return 返回漫画数据
      */
-    @GET("/recommend/batchUpdate" + BaseLine + "&category_id=54")
-    Call<HotComic> getComicByHot(@Query("timestamp") int time);
+    @GET("/recommend/batchUpdate" + BaseLine)
+    Call<HotComic> getComicByType(@Query("timestamp") int time, @Query("category_id") int category_id);
 
     /**
      * 获取类别漫画点进去后的详细分类

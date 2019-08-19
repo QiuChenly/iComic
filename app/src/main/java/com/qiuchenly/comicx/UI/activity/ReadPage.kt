@@ -3,20 +3,23 @@ package com.qiuchenly.comicx.UI.activity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum
+import com.nightonke.boommenu.ButtonEnum
+import com.nightonke.boommenu.Piece.PiecePlaceEnum
 import com.qiuchenly.comicx.Bean.ComicChapterData
 import com.qiuchenly.comicx.Bean.ComicInfoBean
 import com.qiuchenly.comicx.Bean.ComicSource
 import com.qiuchenly.comicx.Core.ActivityKey
 import com.qiuchenly.comicx.Core.Comic
 import com.qiuchenly.comicx.ProductModules.Bika.ComicEpisodeObject
-import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.adapter.ComicReadingAdapter
 import com.qiuchenly.comicx.UI.view.ReaderContract
 import com.qiuchenly.comicx.UI.viewModel.ReadViewModel
+import com.qiuchenly.comicx.Utils.BuilderManager
 import kotlinx.android.synthetic.main.activity_reader_page.*
 import java.lang.ref.WeakReference
 
@@ -61,14 +64,14 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
             return
         }
         mPoint++
-        when (mTempComicInfo!!.mComicType) {
+        val chapter = when (mTempComicInfo!!.mComicType) {
             ComicSource.DongManZhiJia -> {
                 nextUrl = if (mPoint < mDMZJChapter!!.size) {
                     mDMZJChapter!![mPoint].chapter_id
                 } else {
                     ""
                 }
-                currInfos.text = mDMZJChapter!![mPoint - 1].chapter_title
+                mDMZJChapter!![mPoint - 1].chapter_title
             }
             ComicSource.BikaComic -> {
                 if (mPoint - 1 <= mBikaChapter!!.size)
@@ -77,25 +80,29 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
                     } else {
                         ""
                     }
-                currInfos.text = mBikaChapter!![mPoint - 1].title
+                mBikaChapter!![mPoint - 1].title
             }
             else -> {
+                "数据源加载错误!"
             }
         }
+        currInfos.text = chapter
 
         lastPoint = mComicImagePageAda?.itemCount!!
         mComicImagePageAda?.addData(lst)
+        mAppBarComicReader.setExpanded(true, true)
+        Snackbar.make(read_page_coordinator_layout, "注意:当前已阅读到 $chapter .", Snackbar.LENGTH_SHORT)
+            .show()
         //currInfos.text = currInfo
         if (lastPoint < 0) {
-            mAppBarComicReader.setExpanded(true, true)
-            rv_comicRead_list.scrollToPosition(lastPoint)
+            rv_comicRead_list.smoothScrollToPosition(lastPoint)
         }
     }
 
     private var nextUrl = ""
 
     override fun getLayoutID(): Int {
-        return R.layout.activity_reader_page
+        return com.qiuchenly.comicx.R.layout.activity_reader_page
     }
 
     private var currUrl = ""
@@ -157,12 +164,19 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
                 super.onScrollStateChanged(recyclerView, newState)
                 //优化RV滑动时加载图片导致的卡顿
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    Glide.with(this@ReadPage).resumeRequests()
+                    //Glide.with(this@ReadPage).resumeRequests()
+
                 } else {
-                    Glide.with(this@ReadPage).pauseRequests()
+                    //Glide.with(this@ReadPage).pauseRequests()
                 }
             }
         })
+
+        assert(bmb != null)
+        bmb.buttonEnum = ButtonEnum.Ham
+        bmb.piecePlaceEnum = PiecePlaceEnum.HAM_5
+        bmb.buttonPlaceEnum = ButtonPlaceEnum.HAM_5
+        BuilderManager.getHamButtonBuilder(bmb)
 
         //=============  初始化界面数据  ===============
         when (mTempComicInfo!!.mComicType) {

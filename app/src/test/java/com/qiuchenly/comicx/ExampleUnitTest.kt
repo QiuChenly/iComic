@@ -12,5 +12,17 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+        val mIntA = Integer(10)
+        val mIntB = Integer(10)
+        println(mIntA == mIntB)
+        println(mIntA === mIntB)
+        var a = "123"
+        var b: Int = 1
+
+        println(-b)
+    }
+
+    operator fun String.unaryPlus(): String {
+        return this + this
     }
 }

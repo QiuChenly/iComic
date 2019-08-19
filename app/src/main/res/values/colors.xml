@@ -7,6 +7,6 @@
 
     <!-- user custom design-->
 
-    <color name="mDefaultDarkThemeColor">#464040</color>
-    <color name="mDefaultListTextColor">#CCCCCC</color>
+    <color name="defaultDarkThemeColor">#464040</color>
+    <color name="defaultListTextColor">#CCCCCC</color>
 </resources>

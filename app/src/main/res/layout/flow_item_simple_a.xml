@@ -10,4 +10,4 @@
           android:gravity="center"
           android:padding="6dp"
           android:text="123123"
-          android:textColor="@color/mDefaultListTextColor"/>
+          android:textColor="@color/defaultListTextColor"/>

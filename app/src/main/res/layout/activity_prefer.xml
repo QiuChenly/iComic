@@ -3,7 +3,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/mDefaultDarkThemeColor">
+                android:background="@color/defaultDarkThemeColor">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/al_recently_bar"
@@ -60,7 +60,7 @@
         </FrameLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
             android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -77,30 +77,30 @@
                     android:id="@+id/useBikaSource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/mDefaultListTextColor"
+                    android:buttonTint="@color/defaultListTextColor"
                     android:checked="true"
                     android:text="使用Bika数据源"
-                    android:textColor="@color/mDefaultListTextColor"/>
+                    android:textColor="@color/defaultListTextColor"/>
 
             <CheckBox
                     android:id="@+id/useDMZJSource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/mDefaultListTextColor"
+                    android:buttonTint="@color/defaultListTextColor"
                     android:checked="true"
                     android:text="使用动漫之家数据源"
-                    android:textColor="@color/mDefaultListTextColor"/>
+                    android:textColor="@color/defaultListTextColor"/>
 
             <CheckBox
                     android:id="@+id/useDMZJNovel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/mDefaultListTextColor"
+                    android:buttonTint="@color/defaultListTextColor"
                     android:checked="false"
                     android:enabled="false"
                     android:text="使用动漫之家小说数据源"
-                    android:textColor="@color/mDefaultListTextColor"/>
+                    android:textColor="@color/defaultListTextColor"/>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

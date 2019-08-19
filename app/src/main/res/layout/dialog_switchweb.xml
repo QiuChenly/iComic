@@ -17,7 +17,7 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:text="分流服务器1"
-                android:textColor="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"/>
 
         <RadioButton
                 android:id="@+id/rd_web2"
@@ -25,7 +25,7 @@
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:text="分流服务器2"
-                android:textColor="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"/>
 
         <RadioButton
                 android:id="@+id/rd_web3"
@@ -33,6 +33,6 @@
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:text="分流服务器3"
-                android:textColor="@color/mDefaultListTextColor"/>
+                android:textColor="@color/defaultListTextColor"/>
     </RadioGroup>
 </LinearLayout>

@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="已经看完最新的章节了哦！"
-            android:textColor="@color/mDefaultListTextColor"
+            android:textColor="@color/defaultListTextColor"
             android:textSize="20sp"/>
 
     <TextView
@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="加载下一话失败!请点击重试!"
-            android:textColor="@color/mDefaultListTextColor"
+            android:textColor="@color/defaultListTextColor"
             android:textSize="20sp"/>
 
 </RelativeLayout>
