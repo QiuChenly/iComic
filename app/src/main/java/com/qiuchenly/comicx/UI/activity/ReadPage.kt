@@ -14,6 +14,7 @@ import com.qiuchenly.comicx.Bean.ComicSource
 import com.qiuchenly.comicx.Core.ActivityKey
 import com.qiuchenly.comicx.Core.Comic
 import com.qiuchenly.comicx.ProductModules.Bika.ComicEpisodeObject
+import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.adapter.ComicReadingAdapter
@@ -89,20 +90,29 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         currInfos.text = chapter
 
         lastPoint = mComicImagePageAda?.itemCount!!
+        mComicImagePageAda?.addData("{'nextPages':[$chapter]}")
         mComicImagePageAda?.addData(lst)
         mAppBarComicReader.setExpanded(true, true)
-        Snackbar.make(read_page_coordinator_layout, "注意:当前已阅读到 $chapter .", Snackbar.LENGTH_SHORT)
-            .show()
+        val disable = true
+        if (!disable) {
+            if (mTempSnackBar == null) {
+                mTempSnackBar = Snackbar.make(read_page_coordinator_layout, "", Snackbar.LENGTH_SHORT)
+            }
+            mTempSnackBar?.setText("注意:当前已阅读到 $chapter .")
+            mTempSnackBar?.show()
+        }
         //currInfos.text = currInfo
         if (lastPoint < 0) {
             rv_comicRead_list.smoothScrollToPosition(lastPoint)
         }
     }
 
+    private var mTempSnackBar: Snackbar? = null
+
     private var nextUrl = ""
 
     override fun getLayoutID(): Int {
-        return com.qiuchenly.comicx.R.layout.activity_reader_page
+        return R.layout.activity_reader_page
     }
 
     private var currUrl = ""
@@ -197,8 +207,8 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
                 mBikaChapter = getArr2StrA(
                     Gson().fromJson(
                         mTempComicInfo!!.mComicTAG,
-                        ArrayList<ComicEpisodeObject>()::class.java
-                    ) as ArrayList<String>
+                        ArrayList<String>()::class.java
+                    )
                 )
                 mBikaChapter?.reverse()
                 mPoint = (mBikaChapter?.size ?: 0) - mPoint - 1
@@ -213,6 +223,7 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         super.onDestroy()
         mViewModel?.cancel()
         mViewModel = null
+        mTempSnackBar = null
         mComicImagePageAda = null
         finish()
     }

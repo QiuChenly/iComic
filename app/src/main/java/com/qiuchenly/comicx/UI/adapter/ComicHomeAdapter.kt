@@ -87,14 +87,14 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
     }
 
     override fun getViewType(position: Int): Int {
-        return if (position < getRealSize()) position
+        return if (position < getRealSize()) getItemData(position).type
         else super.getViewType(position)
     }
 
     override fun getItemLayout(viewType: Int): Int {
         return when (viewType) {
             TYPE_TOP -> R.layout.item_recommend_topview
-            RecommendItemType.TYPE.TYPE_RANK -> R.layout.item_rankview
+            TYPE_RANK -> R.layout.item_rankview
             TYPE_DMZJ_NORMAL,
             TYPE_DMZJ_LASTUPDATE,
             TYPE_DONGMANZHIJIA_CATEGORY,
@@ -104,13 +104,6 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
             TYPE_TITLE -> R.layout.item_recommend_normal
             else -> R.layout.item_recommend_normal
         }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position < getRealSize())
-            getItemData(position).type
-        else
-            super.getItemViewType(position)
     }
 
     override fun onViewShow(item: View, data: RecommendItemType, position: Int, ViewType: Int) {
@@ -187,7 +180,7 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
             /**
              * 暂时没用到
              */
-            RecommendItemType.TYPE.TYPE_RANK -> {
+            TYPE_RANK -> {
                 //RANK 点击
                 with(view) {
                     tv_times.text = (java.util.Calendar.getInstance()

@@ -125,9 +125,15 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
 
     fun getState() = mState
 
-    override fun getItemViewType(position: Int): Int {
-        return getViewType(position)
+    final override fun getItemViewType(position: Int): Int {
+        return this.getViewType(position)//被子类覆写了那就是子类方法了
     }
+
+    /**
+     * 检查是否为内部类型
+     */
+    fun isInternalType(position: Int) = getRealSize() == position
+
 
     /**
      * 获取设置的所有数据
@@ -183,7 +189,6 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
     }
 
     fun getRealSize(): Int {
-        if (map!!.size == 0) return 0
         return map!!.size
     }
 
@@ -211,7 +216,15 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
     }
 
     /**
-     * 可以覆写以修改更多的类型
+     * 可以覆写以修改更多的类型,但请添加一个分支用于处理默认的布局
+     *  override fun getViewType(position: Int): Int {
+     *      return when {//woc 还能这么用???
+     *              isInternalType(position) -> super.getViewType(position) //先判断优先处理内置布局
+     *              ifCustomer -> MY_CUSTOMER_TYPE //在这些分支写自己的函数,否则会因为数组越界报错
+     *              else -> 0 //必须写个返回值,其实永远不会执行这里
+     *          }
+     *      } //返回默认类型
+     *  }
      */
     open fun getViewType(position: Int): Int {
         return when (position) {
