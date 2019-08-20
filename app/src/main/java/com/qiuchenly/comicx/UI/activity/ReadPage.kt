@@ -184,8 +184,8 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
                 mDMZJChapter = getArr2Str(
                     Gson().fromJson(
                         mTempComicInfo!!.mComicTAG,
-                        ArrayList<ComicChapterData>()::class.java
-                    ) as ArrayList<String>
+                        ArrayList<String>()::class.java
+                    )
                 )
                 mDMZJChapter?.reverse()
                 mPoint = (mDMZJChapter?.size ?: 0) - mPoint - 1

@@ -55,6 +55,7 @@
             android:layout_gravity="bottom|end"
             app:layout_behavior=".Utils.FabScrollBehavior"
             android:layout_alignParentBottom="true"
+            app:bmb_normalColor="@android:color/black"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:layout_alignParentEnd="true"
     />

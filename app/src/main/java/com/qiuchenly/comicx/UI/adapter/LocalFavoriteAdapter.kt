@@ -64,7 +64,7 @@ class LocalFavoriteAdapter
             curr_read.text = ComicSource.getTypeName(data.mComicType)
             CustomUtils.loadImageCircle(item.context, mBookImage, item.bookNameImg, 8)
             setOnClickListener {
-                if (BikaApi.getAPI() == null) {
+                if (BikaApi.getAPI() == null && data.mComicType == ComicSource.BikaComic) {
                     Toast.makeText(Comic.getContext(), "请先打开哔咔页面以初始化哔咔服务器!", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }

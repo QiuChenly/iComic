@@ -1,5 +1,6 @@
 package com.qiuchenly.comicx.Utils;
 
+import android.graphics.Color;
 import android.util.Pair;
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -22,9 +23,11 @@ public class BuilderManager {
     public static void getHamButtonBuilder(BoomMenuButton mBoomMenuButton) {
         for (int i = 0; i < mBoomMenuButton.getPiecePlaceEnum().pieceNumber(); i++) {
             HamButton.Builder builder = new HamButton.Builder()
-                    .normalImageRes(R.drawable.btn_openvip)
-                    .normalText("Butter Doesn't fly!")
-                    .subNormalText("Little butter Doesn't fly, either!");
+                    .normalImageRes(R.drawable.ic_chevron_right_black_24dp)
+                    .normalColor(Color.BLACK)//点开后显示的背景颜色
+                    .pieceColor(Color.WHITE)//默认视图显示的预览菜单颜色
+                    .normalText("测试按钮" + i + ",暂不可用!")
+                    .subNormalText("这是一个测试按钮,你点击是无效果的.");
             mBoomMenuButton.addBuilder(builder);
         }
     }

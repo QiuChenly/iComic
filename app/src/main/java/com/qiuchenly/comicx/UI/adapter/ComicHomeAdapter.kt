@@ -14,6 +14,7 @@ import com.qiuchenly.comicx.Bean.RecommendItemType.TYPE.Companion.TYPE_DMZJ_LAST
 import com.qiuchenly.comicx.Bean.RecommendItemType.TYPE.Companion.TYPE_DMZJ_NORMAL
 import com.qiuchenly.comicx.Bean.RecommendItemType.TYPE.Companion.TYPE_DMZJ_SPEC_2
 import com.qiuchenly.comicx.Bean.RecommendItemType.TYPE.Companion.TYPE_DONGMANZHIJIA_CATEGORY
+import com.qiuchenly.comicx.Bean.RecommendItemType.TYPE.Companion.TYPE_RANK
 import com.qiuchenly.comicx.Bean.RecommendItemType.TYPE.Companion.TYPE_TITLE
 import com.qiuchenly.comicx.Bean.RecommendItemType.TYPE.Companion.TYPE_TOP
 import com.qiuchenly.comicx.Core.ActivityKey.KEY_CATEGORY_JUMP
@@ -357,6 +358,9 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
                             mTopTitles.add(item2["title"] ?: "")
                         }
                     }
+                    addData(RecommendItemType().apply {
+                        type = TYPE_RANK
+                    })
                 }
                 // 56 最新上架也包含在内
                 else -> {
