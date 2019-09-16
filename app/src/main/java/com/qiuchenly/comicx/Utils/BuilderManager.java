@@ -2,8 +2,10 @@ package com.qiuchenly.comicx.Utils;
 
 import android.graphics.Color;
 import android.util.Pair;
+
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum;
 import com.nightonke.boommenu.BoomButtons.HamButton;
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener;
 import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.qiuchenly.comicx.R;
@@ -20,13 +22,14 @@ import java.util.List;
  */
 public class BuilderManager {
 
-    public static void getHamButtonBuilder(BoomMenuButton mBoomMenuButton) {
+    public static void getHamButtonBuilder(BoomMenuButton mBoomMenuButton, OnBMClickListener click) {
         for (int i = 0; i < mBoomMenuButton.getPiecePlaceEnum().pieceNumber(); i++) {
             HamButton.Builder builder = new HamButton.Builder()
                     .normalImageRes(R.drawable.ic_chevron_right_black_24dp)
                     .normalColor(Color.BLACK)//点开后显示的背景颜色
                     .pieceColor(Color.WHITE)//默认视图显示的预览菜单颜色
                     .normalText("测试按钮" + i + ",暂不可用!")
+                    .listener(click)
                     .subNormalText("这是一个测试按钮,你点击是无效果的.");
             mBoomMenuButton.addBuilder(builder);
         }

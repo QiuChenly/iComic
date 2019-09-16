@@ -2,10 +2,10 @@ package com.qiuchenly.comicx.UI.activity
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.nightonke.boommenu.BoomButtons.ButtonPlaceEnum
+import com.nightonke.boommenu.BoomButtons.OnBMClickListener
 import com.nightonke.boommenu.ButtonEnum
 import com.nightonke.boommenu.Piece.PiecePlaceEnum
 import com.qiuchenly.comicx.Bean.ComicChapterData
@@ -25,7 +25,9 @@ import kotlinx.android.synthetic.main.activity_reader_page.*
 import java.lang.ref.WeakReference
 
 
-class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListener {
+class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListener,
+    OnBMClickListener {
+
     private var lastPoint = 0
 
     override fun showMsg(str: String) = ShowErrorMsg(str)
@@ -57,7 +59,12 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         mComicImagePageAda?.setLoadFailed()
     }
 
-    override fun onLoadSucc(lst: ArrayList<String>, next: String, currInfo: String, isOver: Boolean) {
+    override fun onLoadSucc(
+        lst: ArrayList<String>,
+        next: String,
+        currInfo: String,
+        isOver: Boolean
+    ) {
         mComicImagePageAda?.setLoadSuccess()
         nextUrl = next
         if (isOver) {
@@ -96,7 +103,8 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         val disable = true
         if (!disable) {
             if (mTempSnackBar == null) {
-                mTempSnackBar = Snackbar.make(read_page_coordinator_layout, "", Snackbar.LENGTH_SHORT)
+                mTempSnackBar =
+                    Snackbar.make(read_page_coordinator_layout, "", Snackbar.LENGTH_SHORT)
             }
             mTempSnackBar?.setText("注意:当前已阅读到 $chapter .")
             mTempSnackBar?.show()
@@ -138,6 +146,11 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         return mArr
     }
 
+    override fun onBoomButtonClick(index: Int) {
+        Snackbar.make(read_page_coordinator_layout, "你点你吗呢？", Snackbar.LENGTH_SHORT)
+            .show()
+    }
+
     private var mViewModel: ReadViewModel? = null
     private var mDMZJChapter: ArrayList<ComicChapterData>? = null
     private var mBikaChapter: ArrayList<ComicEpisodeObject>? = null
@@ -169,24 +182,26 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         //rv_comicRead_list.screenWidth = DisplayUtil.getScreenWidth(Comic.getContext())
         rv_comicRead_list.isEnableScale =
             true //感谢这个作者的开源项目。https://github.com/PortgasAce/ZoomRecyclerView/blob/master/demo/src/main/java/com/portgas/view/demo/MainActivity.java
-        rv_comicRead_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        /*rv_comicRead_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 //优化RV滑动时加载图片导致的卡顿
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                //2019.09.03  我优化nmlgb 老子写的代码一定没问题
+                return
+                *//*if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     //Glide.with(this@ReadPage).resumeRequests()
 
                 } else {
                     //Glide.with(this@ReadPage).pauseRequests()
-                }
+                }*//*
             }
-        })
+        })*/
 
         assert(bmb != null)
         bmb.buttonEnum = ButtonEnum.Ham
         bmb.piecePlaceEnum = PiecePlaceEnum.HAM_5
         bmb.buttonPlaceEnum = ButtonPlaceEnum.HAM_5
-        BuilderManager.getHamButtonBuilder(bmb)
+        BuilderManager.getHamButtonBuilder(bmb, this)
 
         //=============  初始化界面数据  ===============
         when (mTempComicInfo!!.mComicType) {

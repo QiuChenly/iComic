@@ -2,11 +2,13 @@ package com.qiuchenly.comicx.UI.activity
 
 import android.annotation.SuppressLint
 import android.app.Service
-import android.content.ClipboardManager
+import android.content.*
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
@@ -78,7 +80,10 @@ class ComicDetails :
     }
 
     //==============================   变量声明   ===================================================
-    var mBinder: DownloadService.DownloadBinder? = null
+    private var mBinder: DownloadService.DownloadBinder? = null
+
+    private var mConn: ServiceConnection? = null
+
     private var mViewModel: ComicDetailsViewModel? = null
 
     private var onSuccess: CoordinatorLayout? = null
@@ -109,24 +114,47 @@ class ComicDetails :
     }
 
     private var mComicTag = "SimpleName|SimpleCode"
-    private var mPageChange: ViewPager.OnPageChangeListener? = object : ViewPager.OnPageChangeListener {
-        override fun onPageScrollStateChanged(state: Int) {
+    private var mPageChange: ViewPager.OnPageChangeListener? =
+        object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
 
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                onAppBarChange(position)
+            }
         }
-
-        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-        }
-
-        override fun onPageSelected(position: Int) {
-            onAppBarChange(position)
-        }
-    }
 
     //==============================   常规系统初始化方法  ============================================
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mConn = object : ServiceConnection {
+            override fun onServiceDisconnected(name: ComponentName?) {
+                mBinder = null
+            }
+
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                mBinder = service as DownloadService.DownloadBinder
+                if (mBinder == null)
+                    Toast.makeText(this@ComicDetails, "后台下载服务因为发生错误不可用!", Toast.LENGTH_SHORT)
+                        .show()
+                else {
+                    mBinder?.checkThisBookIsDownloadingOrDownload()
+                }
+            }
+        }
+        bindService(Intent(this, DownloadService::class.java), mConn!!, Context.BIND_AUTO_CREATE)
+
         mViewModel = ComicDetailsViewModel(this)
 
         onLoading = load_ing
@@ -241,7 +269,10 @@ class ComicDetails :
 
     override fun onDestroy() {
         super.onDestroy()
-//        unbindService(mServerConnect)
+        if (mConn != null) {
+            unbindService(mConn!!)
+            mConn = null
+        }
         mComicInfoViewPager.removeOnPageChangeListener(mPageChange!!)
         mPageChange = null
         mViewModel?.cancel()

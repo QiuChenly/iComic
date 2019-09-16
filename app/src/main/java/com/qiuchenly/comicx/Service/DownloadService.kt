@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.Environment
+import android.util.Log
 import com.qiuchenly.comicx.Bean.ComicInfoBean
 import com.qiuchenly.comicx.Bean.DownloadBookInfo
 import com.qiuchenly.comicx.Bean.PageInfo
@@ -22,6 +23,12 @@ import java.util.concurrent.Executors
  * @sample \NM$L
  */
 class DownloadService : Service(), ServiceNotification {
+
+    private var TAG = "DownloadService"
+
+    fun log(str: String) {
+        Log.d(TAG, str)
+    }
 
     override fun onBookPageWasDown(bookName: String, title: String): Boolean {
         val book = mRealm?.where(DownloadBookInfo::class.java)
@@ -98,18 +105,19 @@ class DownloadService : Service(), ServiceNotification {
     }
 
     private val mRealm = Comic.getRealm()
-    private var mBinder = DownloadBinder(this)
+    private var mBinder: DownloadBinder? = null
     override fun onBind(intent: Intent) = mBinder
 
     override fun onCreate() {
         super.onCreate()
-        mBinder.getDataBaseBook()
-        mBinder.startResumeDownThread()
+        mBinder = DownloadBinder(this)
+        mBinder?.getDataBaseBook()
+        mBinder?.startResumeDownThread()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mBinder.mThreadPool.shutdownNow()
+        mBinder?.mThreadPool?.shutdownNow()
     }
 
     class DownloadBinder(private val mServiceNotification: ServiceNotification) : Binder() {
@@ -134,7 +142,8 @@ class DownloadService : Service(), ServiceNotification {
          * @param comicInfo 漫画书籍信息
          * @return 逻辑值，成功返回真
          */
-        fun hasBookInList(comicInfo: ComicInfoBean) = mList.any { it.BookName == comicInfo.mComicName }
+        fun hasBookInList(comicInfo: ComicInfoBean) =
+            mList.any { it.BookName == comicInfo.mComicName }
 
         /**
          * 新建一个下载任务
@@ -211,6 +220,14 @@ class DownloadService : Service(), ServiceNotification {
             })
             */
         }
+
+        fun getDownloadComicSize() {
+
+        }
+
+        fun checkThisBookIsDownloadingOrDownload() {
+
+        }
     }
 
     /**
@@ -234,7 +251,8 @@ class DownloadService : Service(), ServiceNotification {
 
         private var mBookID = System.currentTimeMillis().toString().substring(7, 13).toInt()
         private var mIsDown = false
-        private val mFileName = Environment.getExternalStorageDirectory().path + "/ComicParseReader/"
+        private val mFileName =
+            Environment.getExternalStorageDirectory().path + "/ComicParseReader/"
 
         private val TAG = "QiuChen"
         override fun run() {
@@ -253,14 +271,4 @@ class DownloadService : Service(), ServiceNotification {
             onThreadOver()
         }
     }
-}
-
-interface ServiceNotification {
-    fun onMessage(title: String, content: String, NoticeID: Int)
-    fun onSaveBookPage(mBookName: String, mPageInfo: PageInfo)
-    fun onBookHasInDataBase(mBookName: String): Boolean
-    fun onBookAdded(mDownloadBookInfo: DownloadBookInfo)
-    fun onGetAllDownBook(): RealmResults<DownloadBookInfo>?
-    fun onDownBookOver(bookName: String)
-    fun onBookPageWasDown(bookName: String, title: String): Boolean
 }
