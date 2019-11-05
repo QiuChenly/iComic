@@ -119,7 +119,7 @@ class ComicReadingAdapter(loadListener: LoaderListener, private val mContext: We
                 })
                 .into(iv_img_page)
             if (position + 1 < getRealSize()) {
-                //return@with//这里preload有闪退问题,先屏蔽了再说
+                return@with//这里preload有闪退问题,先屏蔽了再说
                 Log.d(TAG, "onViewShow: Size = " + getRealSize() + ", position = " + (position + 1))
                 Glide.with(mContext.get()!!)
                     //.asBitmap()

@@ -19,14 +19,11 @@ import java.util.*
 class SplashActivity : BaseApp() {
 
     private var TAG = "SplashActivity"
-    override fun getLayoutID() =
-        com.qiuchenly.comicx.R.layout.splash_view
+    override fun getLayoutID() = com.qiuchenly.comicx.R.layout.splash_view
 
-    override fun getUISet(mSet: UISet): UISet {
-        return mSet.apply {
-            this.isFullScreen = true
-            this.isSlidr = false
-        }
+    override fun getUISet(mSet: UISet) = mSet.apply {
+        this.isFullScreen = true
+        this.isSlidr = false
     }
 
     @SuppressLint("SetTextI18n")
@@ -76,12 +73,12 @@ class SplashActivity : BaseApp() {
         //bugly 崩溃测试
         //CrashReport.testJavaCrash()
         val mVersionName: String
-        val vars = Comic.getContext()?.packageManager?.getPackageInfo(Comic.getContext()?.packageName, 0)
+        val vars =
+            Comic.getContext()?.packageManager?.getPackageInfo(Comic.getContext()?.packageName, 0)
         mVersionName = vars?.versionName ?: "获取App版本失败"
 
         mAuthorName.text = "QiuChenly Design $mVersionName"
     }
-
 
     fun final() {
         Handler().postDelayed({
