@@ -14,6 +14,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class SearchResultViewModel(view: SearchResultView) : BaseViewModel<ResponseBody>() {
     override fun loadFailure(t: Throwable) {
@@ -76,9 +77,13 @@ class SearchResultViewModel(view: SearchResultView) : BaseViewModel<ResponseBody
     }
 
     fun searchComic(key: String?, page: Int) {
-        BikaApi.getAPI()?.getComicListWithSearchKey(PreferenceHelper.getToken(Comic.getContext()), page, key)
+        BikaApi.getAPI()
+            ?.getComicListWithSearchKey(PreferenceHelper.getToken(Comic.getContext()), page, key)
             ?.enqueue(object : Callback<GeneralResponse<ComicListResponse>> {
-                override fun onFailure(call: Call<GeneralResponse<ComicListResponse>>, t: Throwable) {
+                override fun onFailure(
+                    call: Call<GeneralResponse<ComicListResponse>>,
+                    t: Throwable
+                ) {
                     mView?.ShowErrorMsg("搜索漫画信息时出错!")
                     mView?.getComicList_Bika(null)
                 }
@@ -95,7 +100,10 @@ class SearchResultViewModel(view: SearchResultView) : BaseViewModel<ResponseBody
     fun getRandomComic() {
         BikaApi.getAPI()?.getRandomComicList(PreferenceHelper.getToken(Comic.getContext()))
             ?.enqueue(object : Callback<GeneralResponse<ComicRandomListResponse>> {
-                override fun onFailure(call: Call<GeneralResponse<ComicRandomListResponse>>, t: Throwable) {
+                override fun onFailure(
+                    call: Call<GeneralResponse<ComicRandomListResponse>>,
+                    t: Throwable
+                ) {
                     mView?.ShowErrorMsg("加载漫画信息时出错!")
                     mView?.getRandomComicList_Bika(null)
                 }
@@ -105,6 +113,30 @@ class SearchResultViewModel(view: SearchResultView) : BaseViewModel<ResponseBody
                     response: Response<GeneralResponse<ComicRandomListResponse>>
                 ) {
                     mView?.getRandomComicList_Bika(response.body()?.data?.comics)
+                }
+            })
+    }
+
+    fun searchComic_DongManZhiJia(searchKey: String, page: Int) {
+        DongManZhiJia.getV3API().getSearchResult(searchKey, page, System.currentTimeMillis())
+            .enqueue(object : Callback<ArrayList<ComicHome_CategoryComic>> {
+                override fun onFailure(
+                    call: Call<ArrayList<ComicHome_CategoryComic>>,
+                    t: Throwable
+                ) {
+                    mView?.ShowErrorMsg("搜索动漫之家漫画时出错!")
+                    mView?.getComicList_DMZJ(null)
+                }
+
+                override fun onResponse(
+                    call: Call<ArrayList<ComicHome_CategoryComic>>,
+                    response: Response<ArrayList<ComicHome_CategoryComic>>
+                ) {
+                    //当数据返回数组为空的时候表示无数据
+                    mView?.getComicList_DMZJ(
+                        response.body()?.toList() ?: ArrayList<ComicHome_CategoryComic>().toList()
+                    )
+//                    mView?.getComicList_DMZJ(response.body())
                 }
             })
     }

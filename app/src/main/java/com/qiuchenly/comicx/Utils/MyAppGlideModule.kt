@@ -51,6 +51,7 @@ class MyAppGlideModule : AppGlideModule() {
             //val tlsSocketFactory = TLSSocketFactory()
             //mTemp.sslSocketFactory(tlsSocketFactory, tlsSocketFactory.systemDefaultTrustManager())
             //mTemp.hostnameVerifier(getHostnameVerifier())
+            bikaUtils.handleSSLHandshake(mTemp)
             httpClient = mTemp.build()
         }
         registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(httpClient!!))

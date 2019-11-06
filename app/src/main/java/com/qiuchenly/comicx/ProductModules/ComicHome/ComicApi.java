@@ -1,19 +1,26 @@
 package com.qiuchenly.comicx.ProductModules.ComicHome;
 
 import android.text.TextUtils;
-import com.qiuchenly.comicx.Bean.*;
+
+import com.qiuchenly.comicx.Bean.ChapterList;
+import com.qiuchenly.comicx.Bean.ComicComm;
+import com.qiuchenly.comicx.Bean.ComicHomeCategory;
+import com.qiuchenly.comicx.Bean.ComicHomeComicChapterList;
+import com.qiuchenly.comicx.Bean.ComicHome_CategoryComic;
+import com.qiuchenly.comicx.Bean.HotComic;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public interface ComicApi {
 
-    String BaseLine = "?channel=Android&version=2.7.018&_debug=0";
+    String BaseLine = "?channel=Android&_debug=0&version=2.7.021&_debug=0";//?channel=Android&_debug=0&version=2.7.021&timestamp=1573024803
     String BASE_API_USER = "https://user.dmzj.com";
     String BASE_API_V3API = "https://v3api.dmzj.com";
 
@@ -319,6 +326,7 @@ public interface ComicApi {
      * 热门连载:54
      * 猜你喜欢:50
      * 国漫也精彩:52
+     *
      * @param time 时间戳
      * @return 返回漫画数据
      */
@@ -341,6 +349,23 @@ public interface ComicApi {
     @GET("/classify/{categoryType}/{a}/{page}.json" + BaseLine)
     Call<List<ComicHome_CategoryComic>> getCategoryComicAll(@Path("categoryType") String categoryType, @Path("a") String a, @Path("page") int page);
 
+    /**
+     * 搜索热门关键词
+     *
+     * @param 时间戳
+     * @return
+     */
     @GET("/search/hot/0.json" + BaseLine + "&timestamp={time}")
     Call<ResponseBody> getHotSearchKey(@Path("time") long 时间戳);
+
+
+    /**
+     * 搜索关键词
+     *
+     * @param keyWords  utf8编码的中文关键词 %E4%B8%80%E6%8B%B3%E8%B6%85%E4%BA%BA
+     * @param timestamp
+     * @return
+     */
+    @GET("/search/show/0/{keyWords}/{page}.json" + BaseLine)
+    Call<ArrayList<ComicHome_CategoryComic>> getSearchResult(@Path("keyWords") String keyWords, @Path("page") int page, @Query("timestamp") long timestamp);
 }

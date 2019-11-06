@@ -9,15 +9,55 @@ import android.provider.MediaStore.Images.Media;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.regex.Pattern;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request.Builder;
 import okhttp3.Response;
 
-import java.io.*;
-import java.security.MessageDigest;
-import java.util.regex.Pattern;
-
 public class bikaUtils {
+
+    public static void handleSSLHandshake(OkHttpClient.Builder builder) {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+
+                @Override
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }};
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            // trustAllCerts信任所有的证书
+            sc.init(null, trustAllCerts, new SecureRandom());
+            builder.sslSocketFactory(sc.getSocketFactory());
+        } catch (Exception ignored) {
+        }
+    }
+
     private static final String TAG = "bikaUtils";
 
     public static boolean isEmailValid(String email) {

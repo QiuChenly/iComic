@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,7 +46,8 @@ import java.lang.ref.WeakReference
 import kotlin.concurrent.thread
 
 
-class MainActivityViewModel(private var mContentView: MainActivity) : MainActivityCallback.Callbacks,
+class MainActivityViewModel(private var mContentView: MainActivity) :
+    MainActivityCallback.Callbacks,
     BaseViewModel<ResponseBody>() {
 
     override fun loadFailure(t: Throwable) {
@@ -55,7 +58,13 @@ class MainActivityViewModel(private var mContentView: MainActivity) : MainActivi
             mDateStatus.text = errInfo
             mDateTemp.text = "?"
             mDatePM.text = errInfo
-            CustomUtils.loadImage(this, "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp", mWeatherImg, 30, 500)
+            CustomUtils.loadImage(
+                this,
+                "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp",
+                mWeatherImg,
+                30,
+                500
+            )
             mUpdateInfo.isRefreshing = false
         }
     }
@@ -200,17 +209,32 @@ class MainActivityViewModel(private var mContentView: MainActivity) : MainActivi
             mFunMenu.adapter = mFuncAdapter
 
             btn_menu_search.setOnClickListener {
-                startActivity(Intent(this, SearchActivity::class.java))
+                this.runOnUiThread {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                }
             }
 
 
             mToolbar = WeakReference(toolbar)
-            val editText = LayoutInflater.from(this).inflate(R.layout.toolbar_search_bar, null) as AppCompatEditText
+            val linearLayoutSearch =
+                LayoutInflater.from(this).inflate(
+                    R.layout.toolbar_search_bar,
+                    null
+                ) as LinearLayoutCompat
+            val editText =
+                linearLayoutSearch.findViewById<AppCompatEditText>(R.id.et_searchContent)
+            val advanceButton = linearLayoutSearch.findViewById<Button>(R.id.search_advanceSearch)
+
+            advanceButton.setOnClickListener {
+                mToolbar?.get()?.jellyListener?.onCancelIconClicked()
+                startActivity(Intent(this, SearchActivity::class.java))
+            }
+
             editText.isFocusable = false
             editText.isFocusableInTouchMode = false
             editText.setOnEditorActionListener { v, actionId, event ->
                 val mInputString = editText.text.toString()
-                if (actionId == EditorInfo.IME_ACTION_SEARCH && !mInputString.isNullOrEmpty()) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH && mInputString.isNotEmpty()) {
                     startActivity(Intent(this, SearchResult::class.java).apply {
                         val mStr = Gson().toJson(ComicCategoryBean().apply {
                             mCategoryName = "搜索关键词"
@@ -231,7 +255,8 @@ class MainActivityViewModel(private var mContentView: MainActivity) : MainActivi
                     editText.isFocusable = true
                     editText.isFocusableInTouchMode = true
                     editText.requestFocus()
-                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val inputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.showSoftInput(editText, 0)
                     toolbarIsOpen = true
                 }
@@ -240,12 +265,13 @@ class MainActivityViewModel(private var mContentView: MainActivity) : MainActivi
                     mToolbar?.get()?.collapse()
                     control_menu.visibility = View.VISIBLE
                     editText.isFocusable = false
-                    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val inputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
                     toolbarIsOpen = false
                 }
             }
-            mToolbar?.get()?.contentView = editText
+            mToolbar?.get()?.contentView = linearLayoutSearch
         }
     }
 

@@ -95,7 +95,14 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
     fun selectLoad() {
         when (mCategory.mComicType) {
             ComicSource.DongManZhiJia -> {
-                mViewModel?.getCategoryComic_DMZJ(mCategoryID, nextPage)
+                when (mCategory.mCategoryName) {
+                    "搜索关键词" -> {
+                        mViewModel?.searchComic_DongManZhiJia(mCategory.mData, nextPage)
+                    }
+                    else -> {
+                        mViewModel?.getCategoryComic_DMZJ(mCategoryID, nextPage)
+                    }
+                }
             }
             ComicSource.BikaComic -> {
                 when (mCategory.mCategoryName) {
@@ -162,9 +169,12 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
     }
 
     private fun handle_ComicHome(mComicCategoryBean: ComicCategoryBean) {
-        val id = Gson().fromJson(mComicCategoryBean.mData, ComicHomeCategory::class.java)
-        mCategoryID = id.tag_id
         nextPage = 0
+        if (mCategory.mCategoryName != "搜索关键词") {
+            val id =
+                Gson().fromJson(mCategory.mData, ComicHomeCategory::class.java)
+            mCategoryID = id.tag_id
+        }
         selectLoad()
     }
 

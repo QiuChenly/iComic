@@ -18,15 +18,15 @@
                 android:id="@+id/sp_search_source"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:spinnerMode="dialog">
+                android:background="@color/defaultDarkThemeColor"
+                android:spinnerMode="dropdown">
 
         </Spinner>
 
         <EditText
                 android:id="@+id/mInputEdit"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:hint="搜索作品名,作者,以及任意关键词."
                 android:imeOptions="actionSearch"
@@ -59,6 +59,12 @@
                         android:text="搜索历史"
                         android:textColor="@color/defaultListTextColor"/>
 
+                <com.zhy.view.flowlayout.TagFlowLayout
+                        android:id="@+id/flow_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        zhy:max_select="1" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,7 +81,7 @@
                         android:textColor="@color/defaultListTextColor"/>
 
                 <com.zhy.view.flowlayout.TagFlowLayout
-                        android:id="@+id/mFlowLayout"
+                        android:id="@+id/flow_net"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
