@@ -18,6 +18,7 @@
         <item name="colorPrimaryDark">#00000000</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:screenOrientation">userPortrait</item>
     </style>
 
     <style name="AppTheme.NoActionBar.LauncherImg">

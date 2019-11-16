@@ -144,13 +144,15 @@ class ComicDetails :
             }
 
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                var msg = "后台下载服务因为发生错误不可用!"
                 mBinder = service as DownloadService.DownloadBinder
                 if (mBinder == null)
-                    Toast.makeText(this@ComicDetails, "后台下载服务因为发生错误不可用!", Toast.LENGTH_SHORT)
-                        .show()
                 else {
+                    msg = "成功启动后台下载服务"
                     mBinder?.checkThisBookIsDownloadingOrDownload()
                 }
+                Toast.makeText(this@ComicDetails, msg, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
         bindService(Intent(this, DownloadService::class.java), mConn!!, Context.BIND_AUTO_CREATE)
@@ -233,9 +235,15 @@ class ComicDetails :
         back_up.setOnClickListener { finish() }
         mShareButton.setOnClickListener {
             val mClipboardManager = getSystemService(Service.CLIPBOARD_SERVICE) as ClipboardManager
-            //mClipboardManager.primaryClip = ClipData.newPlainText("text", mComicTag)
+            mClipboardManager.setPrimaryClip(ClipData.newPlainText("text", mComicTag))
             ShowErrorMsg("已复制漫画相关信息")
         }
+
+
+        mBookDownload.setOnClickListener {
+            mBinder?.download(baseInfo, this)
+        }
+
 
         mAdapter = SuperPagerAdapter(supportFragmentManager, mFragmentsList)
         mComicInfoViewPager.adapter = mAdapter

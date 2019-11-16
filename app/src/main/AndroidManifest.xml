@@ -39,7 +39,6 @@
                 android:theme="@android:style/Theme.Translucent" />
         <activity
                 android:name=".UI.activity.ComicDetails"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.ComicDetails" />
@@ -49,18 +48,15 @@
 
         <activity
                 android:name=".UI.activity.ReadPage"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
                 android:name=".UI.activity.MainActivity"
                 android:launchMode="standard"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
                 android:name=".UI.activity.SplashActivity"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -80,27 +76,22 @@
 
         <activity
                 android:name=".UI.activity.SearchActivity"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
                 android:name=".UI.activity.SearchResult"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
                 android:name=".UI.activity.AuthBika"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
                 android:name=".UI.activity.PerferenceActivity"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
                 android:name=".UI.activity.BrowserView"
-                android:screenOrientation="portrait"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.GET_DMZJ_URL" />

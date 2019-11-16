@@ -15,7 +15,7 @@ abstract class CarouselAdapter : PagerAdapter(), Handler.Callback {
     override fun handleMessage(msg: Message?): Boolean {
         if (!aWait) {
             if (msg?.what == mWhat) {
-                mHandler?.sendEmptyMessageDelayed(mWhat, 3000)
+                mHandler?.sendEmptyMessageDelayed(mWhat, 4000)
                 if (mCount == mLists?.size) {
                     mCount = 0
                 }
