@@ -26,6 +26,7 @@ android {
         Release {
             storeFile file('/Users/qiuchenly/Desktop/AppKey_wawyl2016')
             storePassword 'wawyl2016'
+            keyAlias "AppKey"
             keyPassword 'wawyl2016'
         }
     }
@@ -58,9 +59,10 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
+            variant.getPackageApplicationProvider().get().outputDirectory = new File("../编译目录")
             def date = new Date()
             def formattedDate = date.format('yyyyMMdd')
-            def fileName = "iComicX_${variant.mergedFlavor.versionName}_${variant.buildType.name}_${formattedDate}.apk"
+            def fileName = "iComicX_${formattedDate}_${variant.mergedFlavor.versionName}_${variant.buildType.name}.apk"
             outputFileName = fileName
         }
     }
