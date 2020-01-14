@@ -45,7 +45,9 @@ import retrofit2.Response
 import java.lang.ref.WeakReference
 import kotlin.concurrent.thread
 
-
+/**
+ * 主界面的ViewModel层
+ */
 class MainActivityViewModel(private var mContentView: MainActivity) :
     MainActivityCallback.Callbacks,
     BaseViewModel<ResponseBody>() {

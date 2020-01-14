@@ -31,6 +31,4 @@ class App : Application() {
             exitProcess(0)
         }
     }
-
-
 }

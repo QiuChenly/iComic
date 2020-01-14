@@ -36,6 +36,7 @@ class SearchActivity : BaseApp(), SearchContract.View {
                 return tv
             }
         }
+
         flow_net.setOnTagClickListener { view, position, parent ->
             mInputEdit.setText(arr[position])
             true
@@ -94,6 +95,7 @@ class SearchActivity : BaseApp(), SearchContract.View {
 
             }
         }
+
 
         mInputEdit.setOnEditorActionListener { v, actionId, event ->
             val mInputString = mInputEdit.text.toString()

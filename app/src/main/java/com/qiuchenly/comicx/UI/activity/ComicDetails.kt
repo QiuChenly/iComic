@@ -109,7 +109,7 @@ class ComicDetails :
     override fun scrollWithPosition(position: Int) {
         if (mAdapter != null) {
             val mFragment = mAdapter?.getInstance("章节") as ComicList
-            mFragment.scrollWithPosition(position)
+//            mFragment.scrollWithPosition(position)
         }
     }
 

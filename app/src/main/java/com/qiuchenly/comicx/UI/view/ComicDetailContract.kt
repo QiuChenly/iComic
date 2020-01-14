@@ -26,7 +26,7 @@ interface ComicDetailContract {
 
     interface Comiclist {
         interface View : BaseView {
-            fun SetBikaPages(docs: ComicEpisodeResponse?, id: String)
+            fun SetBikaPages(docs: ComicEpisodeResponse?)
             fun SetDMZJChapter(docs: ComicHomeComicChapterList)
             fun loadFailure(t: Throwable)
         }

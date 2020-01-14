@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.qiuchenly.comicx.Bean.WelcomeLang
 import com.qiuchenly.comicx.Core.Comic
+import com.qiuchenly.comicx.ProductModules.Bika.BikaApi
 import com.qiuchenly.comicx.ProductModules.Common.NMSL.WelcomeLangClient
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.tencent.bugly.Bugly
@@ -78,6 +79,9 @@ class SplashActivity : BaseApp() {
         mVersionName = vars?.versionName ?: "获取App版本失败"
 
         mAuthorName.text = "QiuChenly Design $mVersionName"
+
+        //设置bica客户端实例
+        BikaApi.setBiCaClient(Comic.getContext()!!)//fix that app can't login & request data for the first time
     }
 
     fun final() {

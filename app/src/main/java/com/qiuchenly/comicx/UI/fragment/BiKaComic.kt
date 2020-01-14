@@ -2,6 +2,8 @@ package com.qiuchenly.comicx.UI.fragment
 
 import android.graphics.Rect
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.qiuchenly.comicx.ProductModules.Bika.CategoryObject
@@ -11,7 +13,7 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseLazyFragment
 import com.qiuchenly.comicx.UI.activity.MainActivity
 import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter
-import com.qiuchenly.comicx.UI.model.BikaModel
+import com.qiuchenly.comicx.UI.model.BicaModel
 import com.qiuchenly.comicx.UI.view.BikaInterface
 import kotlinx.android.synthetic.main.fragment_bika.*
 import java.lang.ref.WeakReference
@@ -22,7 +24,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
     var mRecyclerAdapter: BiKaDataAdapter? = null
 
     companion object {
-        var model: BikaModel? = null
+        lateinit var model: BicaModel
     }
 
     private var mActivity: MainActivity? = null
@@ -39,7 +41,12 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             }
         }
         mRecycler?.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
                 super.getItemOffsets(outRect, view, parent, state)
                 outRect.apply {
                     left = 10
@@ -48,7 +55,32 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             }
         })
         mRecycler?.adapter = mRecyclerAdapter
-        model = BikaModel(this)
+        model = ViewModelProviders.of(this).get(BicaModel::class.java)
+
+        model.mLint.observe(this, Observer {
+            ShowErrorMsg(it)
+        })
+
+        model.mDNS.observe(this, Observer {
+            initSuccess()
+        })
+
+        model.mUserFile.observe(this, Observer {
+            updateUser(it)
+        })
+
+        model.mFavItem.observe(this, Observer {
+            getFavourite(it)
+        })
+
+        model.mCategory.observe(this, Observer {
+            loadCategory(it)
+        })
+
+        model.mRecentSize.observe(this, Observer {
+            setRecentlyRead(it)
+        })
+
 
         swipe_bika_refresh.setOnRefreshListener {
             if (mInitBikaAPISucc) update() else reInitAPI()
@@ -58,7 +90,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
 
     override fun reInitAPI() {
         mActivity?.showProgress("初始化哔咔CDN服务器地址...")
-        model?.initBikaApi()
+        model.initBicaApi()
     }
 
     override fun setRecentlyRead(size: Int) {
@@ -98,7 +130,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
 
     private var isInitImageServer = false
     fun update() {
-        if (model?.needLogin()!!) {
+        if (model.needLogin()) {
             if (swipe_bika_refresh.isRefreshing)
                 swipe_bika_refresh.isRefreshing = false
             mActivity?.hideProgress()
@@ -107,15 +139,17 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
         if (!isInitImageServer) {
             mActivity?.hideProgress()
             mActivity?.showProgress(false, "正在初始化哔咔图片服务器")
-            model?.initImage()
+            model.initImage {
+                initImageServerSuccess()
+            }
             return
         }
         if (swipe_bika_refresh.isRefreshing)
             swipe_bika_refresh.isRefreshing = false
         mActivity?.showProgress(false, "正在加载用户信息...")
-        model?.updateUserInfo()
+        model.updateUserInfo()
         mActivity?.showProgress(false, "正在加载漫画类别...")
-        model?.getCategory()
+        model.getCategory()
     }
 
     override fun getLayoutID(): Int {
@@ -131,14 +165,16 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
         mActivity?.hideProgress()
         if (ret) {
             ShowErrorMsg("签到成功")
-            model?.updateUserInfo()
+            model.updateUserInfo()
         } else
             ShowErrorMsg("签到失败")
     }
 
     override fun punchSign() {
         mActivity?.showProgress(false, "正在签到哔咔...")
-        model?.punchSign()
+        model.punchSign {
+            signResult(it)
+        }
     }
 
     override fun updateUser(ret: UserProfileObject) {
@@ -150,8 +186,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
         super.onDestroyView()
         mRecycler = null
         mRecyclerAdapter = null
-        model?.cancel()
-        model = null
+        model.cancel()
         mActivity?.showProgress(true)
     }
 }

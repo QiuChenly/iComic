@@ -136,42 +136,42 @@ class DownloadService : Service(), ServiceNotification {
 
 
         private var comicMap = HashMap<String, DownloadBookInfo>()
-        override fun SetBikaPages(docs: ComicEpisodeResponse?, id: String) {
-            docs?.eps?.docs?.forEach { data ->
-                comicMap[id]?.PageList?.add(PageInfo().apply {
-                    this.titleName = data.title
-                    order = data.order
-                    chapterID = data.episodeId
-                })
-            }
-            if (docs?.eps?.page != docs?.eps?.pages) {
-                bikaComicListViewModel?.getComicList(id, (docs?.eps?.page ?: 0) + 1)
-                return
-            }
-            //comicMap.remove(id)
-            if (comicMap[id] == null) return
-            val ret = ArrayList<PageInfo>()
-            ret.apply {
-                addAll(comicMap[id]!!.PageList.toList())
-            }.sortBy {
-                it.order
-            }
-            comicMap[id]!!.PageList.apply {
-                clear()
-                addAll(ret)
-            }
-            mThreadPool.execute(object : DownThread(
-                comicMap[id]!!,
-                mServiceNotification
-            ) {
-                override fun onThreadOver() {
-                    mCacheThread.remove(this)
-                }
-
-                override fun onThreadStart() {
-                    mCacheThread.add(this)
-                }
-            })
+        override fun SetBikaPages(docs: ComicEpisodeResponse?) {
+//            docs?.eps?.docs?.forEach { data ->
+//                comicMap[id]?.PageList?.add(PageInfo().apply {
+//                    this.titleName = data.title
+//                    order = data.order
+//                    chapterID = data.episodeId
+//                })
+//            }
+//            if (docs?.eps?.page != docs?.eps?.pages) {
+//                bikaComicListViewModel?.getComicList(id, (docs?.eps?.page ?: 0) + 1)
+//                return
+//            }
+//            //comicMap.remove(id)
+//            if (comicMap[id] == null) return
+//            val ret = ArrayList<PageInfo>()
+//            ret.apply {
+//                addAll(comicMap[id]!!.PageList.toList())
+//            }.sortBy {
+//                it.order
+//            }
+//            comicMap[id]!!.PageList.apply {
+//                clear()
+//                addAll(ret)
+//            }
+//            mThreadPool.execute(object : DownThread(
+//                comicMap[id]!!,
+//                mServiceNotification
+//            ) {
+//                override fun onThreadOver() {
+//                    mCacheThread.remove(this)
+//                }
+//
+//                override fun onThreadStart() {
+//                    mCacheThread.add(this)
+//                }
+//            })
 //            view?.ShowErrorMsg("开始下载...")
         }
 
@@ -230,7 +230,7 @@ class DownloadService : Service(), ServiceNotification {
                         if (BikaApi.getAPI() == null)
                             BikaApi.setBiCaClient(mContext!!)
                         bikaHttpInstance = BikaApi.getAPI()
-                        bikaComicListViewModel = ComicListViewModel(this)
+                        bikaComicListViewModel = ComicListViewModel()
                     }
 
                     val mComicInfo =
