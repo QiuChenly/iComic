@@ -57,9 +57,29 @@ android {
         targetCompatibility = '1.8'
     }
 
+    buildTypes {
+        release {
+            bugly.debug false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.Release //问题出在这里，打包没有应用签名
+        }
+        debug {
+            bugly.debug true
+        }
+    }
+
     applicationVariants.all { variant ->
+        def file = new File("../编译目录")
+        if (file.exists()) {
+            for (files in file.listFiles()) {
+                if (files.toString().endsWith(".apk")) {
+                    files.delete()
+                }
+            }
+        }
         variant.outputs.all { output ->
-            variant.getPackageApplicationProvider().get().outputDirectory = new File("../编译目录")
+            variant.getPackageApplicationProvider().get().outputDirectory = file
             def date = new Date()
             def formattedDate = date.format('yyyyMMdd')
             def fileName = "iComicX_${formattedDate}_${variant.mergedFlavor.versionName}_${variant.buildType.name}.apk"

@@ -39,9 +39,13 @@ class ReadViewModel(private var mView: ReaderContract.View?) : BaseViewModel<Res
     }
 
     fun getBikaImage(bookID: String?, order: Int) {
-        BikaApi.getAPI()?.getPagesWithOrder(PreferenceHelper.getToken(Comic.getContext()), bookID, order, 1)
+        BikaApi.getAPI()
+            ?.getPagesWithOrder(PreferenceHelper.getToken(Comic.getContext()), bookID, order, 1)
             ?.enqueue(object : Callback<GeneralResponse<ComicPagesResponse>> {
-                override fun onFailure(call: Call<GeneralResponse<ComicPagesResponse>>, t: Throwable) {
+                override fun onFailure(
+                    call: Call<GeneralResponse<ComicPagesResponse>>,
+                    t: Throwable
+                ) {
                     mView?.onFailed("加载哔咔漫画章节失败!")
                 }
 
@@ -49,6 +53,7 @@ class ReadViewModel(private var mView: ReaderContract.View?) : BaseViewModel<Res
                     call: Call<GeneralResponse<ComicPagesResponse>>,
                     response: Response<GeneralResponse<ComicPagesResponse>>
                 ) {
+                    response.body()?.data?.pages?.docs ?: return
                     val arr = ArrayList<String>()
                     for (a in response.body()?.data?.pages?.docs!!) {
                         arr.add(Tools.getThumbnailImagePath(a.media))

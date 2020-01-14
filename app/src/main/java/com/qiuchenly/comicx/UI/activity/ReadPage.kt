@@ -180,8 +180,8 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         rv_comicRead_list.setHasFixedSize(true)
         rv_comicRead_list.adapter = mComicImagePageAda
         //rv_comicRead_list.screenWidth = DisplayUtil.getScreenWidth(Comic.getContext())
-        rv_comicRead_list.isEnableScale =
-            true //感谢这个作者的开源项目。https://github.com/PortgasAce/ZoomRecyclerView/blob/master/demo/src/main/java/com/portgas/view/demo/MainActivity.java
+        rv_comicRead_list.isEnableScale = true
+        //感谢这个作者的开源项目。https://github.com/PortgasAce/ZoomRecyclerView/blob/master/demo/src/main/java/com/portgas/view/demo/MainActivity.java
         /*rv_comicRead_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)

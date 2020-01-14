@@ -33,7 +33,10 @@ import kotlinx.android.synthetic.main.item_foosize_newupdate.view.*
 import java.lang.ref.WeakReference
 
 
-class BiKaDataAdapter(private val mViews: BikaInterface, private var mContext: WeakReference<Context>) :
+class BiKaDataAdapter(
+    private val mViews: BikaInterface,
+    private var mContext: WeakReference<Context>
+) :
     RecyclerView.Adapter<BaseViewHolder>() {
     //the first item must be an account information.
 
@@ -123,14 +126,15 @@ class BiKaDataAdapter(private val mViews: BikaInterface, private var mContext: W
     fun userProfileSet(itemView: View) {
         CustomUtils.loadImageCircle(
             itemView.context,
-            "http://183.61.38.245/gh/692376108/692376108/100?mType=QQHeadIcon",
+            "https://himg.bdimg.com/sys/portrait/item/pp.1.d2e65af8.SrGDK3snGzMAnehuVMe6mQ.jpg",
             itemView.iv_userHead
         )
         itemView.tv_userSign.setOnClickListener(null)
         itemView.lt_switchWeb.setOnClickListener { view ->
             var mdialog_view: View? = null
             if (mdialog_view == null) {
-                mdialog_view = LayoutInflater.from(view.context).inflate(R.layout.dialog_switchweb, null, false)
+                mdialog_view = LayoutInflater.from(view.context)
+                    .inflate(R.layout.dialog_switchweb, null, false)
                 mdialog_view!!.rd_web1.setOnClickListener {
                     setWeb(1)
                 }

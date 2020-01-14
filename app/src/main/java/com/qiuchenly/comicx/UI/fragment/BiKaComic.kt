@@ -55,6 +55,8 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             }
         })
         mRecycler?.adapter = mRecyclerAdapter
+
+
         model = ViewModelProviders.of(this).get(BicaModel::class.java)
 
         model.mLint.observe(this, Observer {

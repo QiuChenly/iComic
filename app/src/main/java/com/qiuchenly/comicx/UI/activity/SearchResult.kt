@@ -3,6 +3,8 @@ package com.qiuchenly.comicx.UI.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -92,38 +94,40 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
         }
     }
 
-    fun selectLoad() {
+    private fun selectLoad() {
         when (mCategory.mComicType) {
             ComicSource.DongManZhiJia -> {
                 when (mCategory.mCategoryName) {
                     "搜索关键词" -> {
-                        mViewModel?.searchComic_DongManZhiJia(mCategory.mData, nextPage)
+                        mViewModel.searchComic_DongManZhiJia(mCategory.mData, nextPage)
                     }
                     else -> {
-                        mViewModel?.getCategoryComic_DMZJ(mCategoryID, nextPage)
+                        mViewModel.getCategoryComic_DMZJ(mCategoryID, nextPage)
                     }
                 }
             }
             ComicSource.BikaComic -> {
                 when (mCategory.mCategoryName) {
                     "随机本子" -> {
-                        mViewModel?.getRandomComic()
+                        mViewModel.getRandomComic {
+                            getRandomComicList_Bika(it)
+                        }
                     }
                     "最近更新" -> {
-                        mViewModel?.getCategoryComic(null, nextPage)
+                        mViewModel.getCategoryComic(null, nextPage)
                     }
                     "搜索关键词" -> {
-                        mViewModel?.searchComic(mCategory.mData, nextPage)
+                        mViewModel.searchComic(mCategory.mData, nextPage)
                     }
                     else -> {
-                        mViewModel?.getCategoryComic(mCategory.mCategoryName, nextPage)
+                        mViewModel.getCategoryComic(mCategory.mCategoryName, nextPage)
                     }
                 }
             }
         }
     }
 
-    var mViewModel: SearchResultViewModel? = SearchResultViewModel(this)
+    lateinit var mViewModel: SearchResultViewModel
     var mAdapter: SearchResultAdapter? = null
     var nextPage = 1
     var mCategoryID = ""
@@ -132,6 +136,23 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mViewModel = ViewModelProviders.of(this).get(SearchResultViewModel::class.java)
+
+        with(mViewModel) {
+            mBicaCategory.observe(this@SearchResult, Observer {
+                getComicList_Bika(it)
+            })
+
+            mDMZJCategory.observe(this@SearchResult, Observer {
+                getComicList_DMZJ(it)
+            })
+
+            Msg.observe(this@SearchResult, Observer {
+                ShowErrorMsg(it)
+            })
+        }
+
 
         val str = intent.getStringExtra(ActivityKey.KEY_CATEGORY_JUMP)
         if (str.isNullOrEmpty()) {
@@ -180,11 +201,5 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
 
     private fun handle_bika(mComicCategoryBean: ComicCategoryBean) {
         selectLoad()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mViewModel?.cancel()
-        mViewModel = null
     }
 }

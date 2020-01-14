@@ -52,6 +52,7 @@ class BicaModel : ViewModel() {
     }
 
     fun initBicaApi() {
+        api = BikaApi.getAPI()
         RestWakaClient().apiService.wakaInit.enqueue(
             object : Callback<WakaInitResponse> {
                 override fun onResponse(
@@ -67,7 +68,6 @@ class BicaModel : ViewModel() {
                                 Comic.getContext(),
                                 HashSet(response.body()!!.addresses)
                             )
-                            api = BikaApi.getAPI()
 //                            mViews?.initSuccess()
                         } else {
                             mLintMessage.value = "哔咔服务器的CDN地址没有返回!"

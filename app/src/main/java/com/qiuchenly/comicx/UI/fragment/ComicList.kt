@@ -4,13 +4,10 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.orhanobut.hawk.Hawk
-import com.qiuchenly.comicx.App
 import com.qiuchenly.comicx.Bean.ComicHomeComicChapterList
 import com.qiuchenly.comicx.Bean.ComicInfoBean
 import com.qiuchenly.comicx.Bean.ComicSource
@@ -104,6 +101,7 @@ class ComicList : BaseLazyFragment(), ComicDetailContract.Comiclist.View,
         when (mComicInfo?.mComicType) {
             ComicSource.BikaComic -> {
                 comicPageAdas?.setSourceType(ComicSource.BikaComic)
+                comicPageAdas?.setBaseID(mComicInfo!!.mComicID)
                 mViewModel.getComicList(mComicInfo!!.mComicID, 1)
             }
             ComicSource.DongManZhiJia -> {
