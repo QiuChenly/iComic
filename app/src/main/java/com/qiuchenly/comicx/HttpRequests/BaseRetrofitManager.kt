@@ -4,6 +4,7 @@ import com.qiuchenly.comicx.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 open class BaseRetrofitManager<ApiType> {
@@ -16,10 +17,11 @@ open class BaseRetrofitManager<ApiType> {
 
     fun getAPI() = mAPI
 
-    fun getCusUrl(BaseUrl: String) = buildRetrofit(BaseUrl)
-    private fun buildRetrofit(): Retrofit.Builder {
+    fun getCusUrl(BaseUrl: String, isJsonBody: Boolean = false) = buildRetrofit(BaseUrl, isJsonBody)
+    private fun buildRetrofit(isJsonBody: Boolean = false): Retrofit.Builder {
         val mHttpInterceptor = HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            level =
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         }
         val mHttp = OkHttpClient.Builder().apply {
             readTimeout(10, TimeUnit.SECONDS)
@@ -28,12 +30,15 @@ open class BaseRetrofitManager<ApiType> {
             addInterceptor(mHttpInterceptor)
         }.build()
 
-        return Retrofit.Builder().apply {
+        val a = Retrofit.Builder().apply {
             client(mHttp)
         }
+        if (isJsonBody)
+            a.addConverterFactory(GsonConverterFactory.create())
+        return a
     }
 
-    private fun buildRetrofit(mBaseUrl: String): Retrofit {
-        return buildRetrofit().baseUrl(mBaseUrl).build()
+    private fun buildRetrofit(mBaseUrl: String, isJsonBody: Boolean = false): Retrofit {
+        return buildRetrofit(isJsonBody).baseUrl(mBaseUrl).build()
     }
 }

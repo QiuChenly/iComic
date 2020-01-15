@@ -20,7 +20,7 @@ class RecentlyByWeekFragment : BaseLazyFragment(), WeekContract.View {
     }
 
     private var mMyDetailsLocalBookList: MyRecentlyAdapter? = null
-    private var mPres = RecentlyModel(this)
+    private var mPres = RecentlyModel()
     private var mSource = -1
     override fun onViewFirstSelect(mPagerView: View) {
         val intent = activity?.intent
@@ -29,8 +29,6 @@ class RecentlyByWeekFragment : BaseLazyFragment(), WeekContract.View {
         }
         rv_recently.layoutManager = LinearLayoutManager(this.context)
         mMyDetailsLocalBookList = MyRecentlyAdapter(WeakReference(activity as RecentlyRead))
-
-        RecentlyModel(this)
 
         val arr: ArrayList<RecentlyReadingBean> = when (mSource) {
             -1 -> mPres.getAllRecently()

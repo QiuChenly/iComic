@@ -59,29 +59,33 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
 
         model = ViewModelProviders.of(this).get(BicaModel::class.java)
 
-        model.mLint.observe(this, Observer {
-            ShowErrorMsg(it)
-        })
 
-        model.mDNS.observe(this, Observer {
-            initSuccess()
-        })
+        with(model) {
+            mLint.observe(this@BiKaComic, Observer {
+                ShowErrorMsg(it)
+            })
 
-        model.mUserFile.observe(this, Observer {
-            updateUser(it)
-        })
+            mDNS.observe(this@BiKaComic, Observer {
+                initSuccess()
+            })
 
-        model.mFavItem.observe(this, Observer {
-            getFavourite(it)
-        })
+            mUserFile.observe(this@BiKaComic, Observer {
+                updateUser(it)
+            })
 
-        model.mCategory.observe(this, Observer {
-            loadCategory(it)
-        })
+            mFavItem.observe(this@BiKaComic, Observer {
+                getFavourite(it)
+            })
 
-        model.mRecentSize.observe(this, Observer {
-            setRecentlyRead(it)
-        })
+            mCategory.observe(this@BiKaComic, Observer {
+                loadCategory(it)
+            })
+
+            mRecentSize.observe(this@BiKaComic, Observer {
+                setRecentlyRead(it)
+            })
+        }
+
 
 
         swipe_bika_refresh.setOnRefreshListener {

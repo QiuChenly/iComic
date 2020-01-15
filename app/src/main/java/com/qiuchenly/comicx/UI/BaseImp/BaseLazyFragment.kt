@@ -47,9 +47,12 @@ abstract class BaseLazyFragment : Fragment(), BaseView {
     /**
      * optimization reCreate view issues
      */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (mView == null) mView = inflater.inflate(getLayoutID(), container, false)
-        return mView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return mView ?: inflater.inflate(getLayoutID(), container, false)
     }
 
     override fun onDestroyView() {

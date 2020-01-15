@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
 import com.qiuchenly.comicx.Bean.ComicInfoBean
 import com.qiuchenly.comicx.Bean.ComicSource
@@ -20,7 +22,8 @@ import kotlinx.android.synthetic.main.fragment_commic_basic_info.*
 
 class ComicBasicInfo : BaseLazyFragment(), ComicDetailContract.ComicInfo.View {
 
-    var mViewModel: ComicInfoViewModel? = null
+    lateinit var mViewModel: ComicInfoViewModel
+
     var mComicInfo: ComicInfoBean? = null
     private var defaultUrl = ""
 
@@ -29,12 +32,24 @@ class ComicBasicInfo : BaseLazyFragment(), ComicDetailContract.ComicInfo.View {
     private var lastReadPageUrl = ""
     @SuppressLint("SetTextI18n")
     override fun onViewFirstSelect(mPagerView: View) {
-        mViewModel = ComicInfoViewModel(this)
+        mViewModel = ViewModelProviders.of(this).get(ComicInfoViewModel::class.java)
+
+        with(mViewModel) {
+
+            message.observe(this@ComicBasicInfo, Observer {
+                ShowErrorMsg(it)
+            })
+
+            mBicaComic.observe(this@ComicBasicInfo, Observer {
+                SetBikaInfo(it)
+            })
+        }
 
         when (mComicInfo?.mComicType) {
             ComicSource.BikaComic -> {
-                val mComicInfo = Gson().fromJson(mComicInfo?.mComicString, ComicDetailObject::class.java)
-                mViewModel?.getComicInfo(mComicInfo.comicId)
+                val mComicInfo =
+                    Gson().fromJson(mComicInfo?.mComicString, ComicDetailObject::class.java)
+                mViewModel.getComicInfo(mComicInfo.comicId)
                 this.mComicInfo?.mComicName = mComicInfo.title
             }
             ComicSource.DongManZhiJia -> {
@@ -49,9 +64,9 @@ class ComicBasicInfo : BaseLazyFragment(), ComicDetailContract.ComicInfo.View {
         }
 
         addFavorite.setOnClickListener {
-            val book = mViewModel?.comicExist(mComicInfo)
+            val book = mViewModel.comicExist(mComicInfo)
             if (book == null) {
-                mViewModel?.comicAdd(LocalFavoriteBean().apply {
+                mViewModel.comicAdd(LocalFavoriteBean().apply {
                     this.mComicName = mComicInfo?.mComicName ?: ""
                     this.mComicImageUrl = mComicInfo?.mComicImg ?: ""
                     this.mComicData = mComicInfo?.mComicString ?: ""
@@ -61,7 +76,7 @@ class ComicBasicInfo : BaseLazyFragment(), ComicDetailContract.ComicInfo.View {
                 ShowErrorMsg("已加入本地图书列表！")
                 addFavorite.text = "取消收藏"
             } else {
-                mViewModel?.comicDel(book.mComicName)
+                mViewModel.comicDel(book.mComicName)
                 ShowErrorMsg("移除成功！")
                 addFavorite.text = "加入收藏"
             }
@@ -75,7 +90,7 @@ class ComicBasicInfo : BaseLazyFragment(), ComicDetailContract.ComicInfo.View {
 
 
         //TODO 此处需要修复以供开始阅读按钮使用
-        val book = mViewModel?.comicExist(mComicInfo)
+        val book = mViewModel.comicExist(mComicInfo)
         if (book?.mComicData?.isNotEmpty() == true) {
             addFavorite.text = "取消收藏"
         }
@@ -94,9 +109,8 @@ class ComicBasicInfo : BaseLazyFragment(), ComicDetailContract.ComicInfo.View {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mViewModel?.cancel()
+        mViewModel.cancel()
         mComicInfo = null
-        mViewModel = null
     }
 
     fun setDefaultIndexUrl(default: String) {
@@ -105,8 +119,7 @@ class ComicBasicInfo : BaseLazyFragment(), ComicDetailContract.ComicInfo.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mViewModel?.cancel()
-        mViewModel = null
+        mViewModel.cancel()
         this.mComicInfo = null
     }
 

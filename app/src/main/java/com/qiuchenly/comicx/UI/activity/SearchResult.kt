@@ -21,14 +21,13 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.adapter.SearchResultAdapter
-import com.qiuchenly.comicx.UI.view.SearchResultView
 import com.qiuchenly.comicx.UI.viewModel.SearchResultViewModel
 import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.view_magic_indicator_base.*
 
-class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderListener {
+class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
     @SuppressLint("SetTextI18n")
-    override fun getComicList_DMZJ(list: List<ComicHome_CategoryComic>?) {
+    fun getComicList_DMZJ(list: List<ComicHome_CategoryComic>?) {
         hideProgress()
         if (list != null) {
             if (list.isEmpty()) {
@@ -45,7 +44,7 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
         }
     }
 
-    override fun getRandomComicList_Bika(data: ArrayList<ComicListObject>?) {
+    fun getRandomComicList_Bika(data: ArrayList<ComicListObject>?) {
         hideProgress()
         if (data != null) {
             //修复数据显示问题
@@ -67,7 +66,7 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
     }
 
     @SuppressLint("SetTextI18n")
-    override fun getComicList_Bika(data: ComicListData?) {
+    fun getComicList_Bika(data: ComicListData?) {
         hideProgress()
         if (data != null) {
             //修复数据显示问题
@@ -149,6 +148,7 @@ class SearchResult : BaseApp(), SearchResultView, BaseRecyclerAdapter.LoaderList
             })
 
             Msg.observe(this@SearchResult, Observer {
+                hideProgress()
                 ShowErrorMsg(it)
             })
         }

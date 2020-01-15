@@ -4,6 +4,8 @@ object BaseURL {
     var BASE_URL_BING = "https://cn.bing.com"
     var BASE_IMAGE_DEFAULT = "https://www.baidu.com/img/bd_logo1.png"
     val BASE_WEATHER = "https://www.so.com"
+    val BASE_WEATHER_V2 = "http://weather.api.gitv.tv"
+    val BASE_RAMDOM_IMAGE = "https://infinity-api.infinitynewtab.com"
 
     val WEATHER_YING = "https://p.ssl.qhimg.com/d/f239f0e2/02.png"
     val WEATHER_DUO_YUN = "https://p.ssl.qhimg.com/d/f239f0e2/01.png"

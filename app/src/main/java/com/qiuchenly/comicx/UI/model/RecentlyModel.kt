@@ -2,12 +2,11 @@ package com.qiuchenly.comicx.UI.model
 
 import com.qiuchenly.comicx.Bean.RecentlyReadingBean
 import com.qiuchenly.comicx.Core.Comic
-import com.qiuchenly.comicx.UI.view.WeekContract
 import io.realm.Realm
 import io.realm.Sort
 import java.lang.ref.WeakReference
 
-class RecentlyModel(mView: WeekContract.View?) {
+class RecentlyModel {
     var realm: WeakReference<Realm?>? = null
 
     init {

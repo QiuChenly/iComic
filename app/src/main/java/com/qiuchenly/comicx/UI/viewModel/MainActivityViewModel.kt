@@ -13,18 +13,22 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.qiuchenly.comicx.App
 import com.qiuchenly.comicx.Bean.ComicCategoryBean
+import com.qiuchenly.comicx.Bean.RandomImageBean
 import com.qiuchenly.comicx.Bean.TempInfo
+import com.qiuchenly.comicx.Bean.WeatherBean
 import com.qiuchenly.comicx.Core.ActivityKey
 import com.qiuchenly.comicx.HttpRequests.WeatherRequest
 import com.qiuchenly.comicx.ProductModules.Bika.BikaApi
 import com.qiuchenly.comicx.ProductModules.Common.BaseURL
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseFragmentPagerStatement
-import com.qiuchenly.comicx.UI.BaseImp.BaseViewModel
+import com.qiuchenly.comicx.UI.BaseImp.BaseModel
 import com.qiuchenly.comicx.UI.activity.MainActivity
 import com.qiuchenly.comicx.UI.activity.SearchActivity
 import com.qiuchenly.comicx.UI.activity.SearchResult
@@ -41,6 +45,7 @@ import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import java.lang.ref.WeakReference
 import kotlin.concurrent.thread
@@ -48,132 +53,14 @@ import kotlin.concurrent.thread
 /**
  * 主界面的ViewModel层
  */
-class MainActivityViewModel(private var mContentView: MainActivity) :
+class MainActivityViewModel :
     MainActivityCallback.Callbacks,
-    BaseViewModel<ResponseBody>() {
+    BaseModel() {
 
-    override fun loadFailure(t: Throwable) {
-        mContentView.ShowErrorMsg("天气信息加载失败!")
-        val errInfo = "网络异常."
-        with(mContentView) {
-            mDateInfo.text = "请下拉刷新"
-            mDateStatus.text = errInfo
-            mDateTemp.text = "?"
-            mDatePM.text = errInfo
-            CustomUtils.loadImage(
-                this,
-                "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp",
-                mWeatherImg,
-                30,
-                500
-            )
-            mUpdateInfo.isRefreshing = false
-        }
-    }
+    fun setActivity(mContentView: MainActivity) {
+        this.mContentView = mContentView
 
-    override fun loadSuccess(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-        val retStr = response.body()?.string()
-        if (retStr == null || retStr.indexOf("mh-date-wraper") == -1) loadFailure(Throwable("服务器返回数据异常!"))
-        else thread {
-            val js = Jsoup.parse(retStr)
-            val mNode = js.getElementsByClass("mh-date-wraper")
-            val mTempInfo = ArrayList<TempInfo>()
-            mNode[0].getElementsByClass("t-cont").forEachIndexed { i, element ->
-                var mElement = element.childNode(0)
-                val time = mElement.childNode(0)
-                val mRealTime = (time as Element).text()
-                mElement = (element.childNode(1).childNode(1))
-                //3°
-                val temps = (mElement.childNode(0) as Element).text()
 
-                val status = (mElement.childNode(1).childNode(0) as Element).text()
-                //<p class="mh-desc-3"><span>多云转晴</span><span>持续无风向微风</span><span>-3~7℃</span></p>
-
-                val PM_2_5 = (mElement.childNode(1).childNode(1) as Element).text()
-                //<p class="mh-desc-4"><span>PM2.5值：</span><span class = "mh-pm25 mh-pm25-level-4">172&nbsp;中度 < / span > < / p >
-                mTempInfo.add(TempInfo().apply {
-                    this.mRealTime = mRealTime
-                    this.PM_2_5 = PM_2_5
-                    this.status = status
-                    this.temps = temps
-                })
-            }
-
-            mContentView.runOnUiThread {
-                with(mContentView) {
-                    mDateInfo.text = mTempInfo[0].mRealTime
-                    mDateStatus.text = mTempInfo[0].status
-                    mDateTemp.text = mTempInfo[0].temps
-                    mDatePM.text = mTempInfo[0].PM_2_5
-                    CustomUtils.loadImage(
-                        this,
-                        "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp",
-                        mWeatherImg,
-                        30,
-                        500
-                    )
-                    var imgUrl = BaseURL.WEATHER_DUO_YUN
-                    with(mTempInfo[0].status) {
-                        if (indexOf("多云") != -1) {
-                        }
-                        if (indexOf("多云转小雨") != -1) {
-                            imgUrl = BaseURL.WEATHER_RAIN
-                        }
-                        if (indexOf("小雨转多云") != -1) {
-                            imgUrl = BaseURL.WEATHER_RAIN
-                        }
-                        if (indexOf("中雨") != -1) {
-                            imgUrl = BaseURL.WEATHER_MIDDLE_RAIN
-                        }
-                        if (indexOf("阴") != -1) {
-                            imgUrl = BaseURL.WEATHER_YING
-                        }
-                    }
-                    CustomUtils.loadImage(this, imgUrl, mWeather_img, 0, 200)
-
-                    mUpdateInfo.isRefreshing = false
-                }
-            }
-        }
-    }
-
-    private var TAG = "MainActivityViewModel"
-
-    private var mSwitchList = ArrayList<ImageView>()
-    /**
-     * 上一个点击的pager序号
-     */
-    private var mCurrentPosition = 0
-
-    /**
-     * Main页面的所有碎片化容器聚合
-     */
-    private val mFragments = ArrayList<Fragment>().apply {
-        add(MyDetailsFragment())
-        add(ComicBoardFragment())
-        //TODO will add thirty page
-        //add(Main())
-    }
-
-    private var mCallback: MainActivityCallback = MainActivityCallback(this)
-
-    /**
-     * 侧滑菜单是否开启
-     */
-    private var isOpenDrawable = false
-
-    /**
-     * 用于确定按下按键时间是否小于2秒
-     */
-    private var lastTime = -1L
-
-    private var mCall: Call<ResponseBody>? = null
-
-    private var mFuncAdapter: FunctionAdapter? = null
-
-    private var mToolbar: WeakReference<JellyToolbar>? = null
-
-    init {
         with(mContentView) {
             mSwitchList.add(switch_my_list_img)
             mSwitchList.add(switch_my_website_more_img)
@@ -277,6 +164,128 @@ class MainActivityViewModel(private var mContentView: MainActivity) :
         }
     }
 
+    private lateinit var mContentView: MainActivity
+    private var TAG = "MainActivityViewModel"
+
+    fun loadFailure() {
+        mContentView.ShowErrorMsg("天气信息加载失败!")
+        val errInfo = "网络异常."
+        with(mContentView) {
+            mDateInfo.text = "请下拉刷新"
+            mDateStatus.text = errInfo
+            mDateTemp.text = "?"
+            mDatePM.text = errInfo
+            CustomUtils.loadImage(
+                this,
+                "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp",
+                mWeatherImg,
+                30,
+                500
+            )
+            mUpdateInfo.isRefreshing = false
+        }
+    }
+
+    fun loadSuccess(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        val retStr = response.body()?.string()
+        if (retStr == null || retStr.indexOf("mh-date-wraper") == -1) loadFailure()
+        else thread {
+            val js = Jsoup.parse(retStr)
+            val mNode = js.getElementsByClass("mh-date-wraper")
+            val mTempInfo = ArrayList<TempInfo>()
+            mNode[0].getElementsByClass("t-cont").forEachIndexed { i, element ->
+                var mElement = element.childNode(0)
+                val time = mElement.childNode(0)
+                val mRealTime = (time as Element).text()
+                mElement = (element.childNode(1).childNode(1))
+                //3°
+                val temps = (mElement.childNode(0) as Element).text()
+
+                val status = (mElement.childNode(1).childNode(0) as Element).text()
+                //<p class="mh-desc-3"><span>多云转晴</span><span>持续无风向微风</span><span>-3~7℃</span></p>
+
+                val PM_2_5 = (mElement.childNode(1).childNode(1) as Element).text()
+                //<p class="mh-desc-4"><span>PM2.5值：</span><span class = "mh-pm25 mh-pm25-level-4">172&nbsp;中度 < / span > < / p >
+                mTempInfo.add(TempInfo().apply {
+                    this.mRealTime = mRealTime
+                    this.PM_2_5 = PM_2_5
+                    this.status = status
+                    this.temps = temps
+                })
+            }
+
+            mContentView.runOnUiThread {
+                with(mContentView) {
+                    mDateInfo.text = mTempInfo[0].mRealTime
+                    mDateStatus.text = mTempInfo[0].status
+                    mDateTemp.text = mTempInfo[0].temps
+                    mDatePM.text = mTempInfo[0].PM_2_5
+                    CustomUtils.loadImage(
+                        this,
+                        "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp",
+                        mWeatherImg,
+                        30,
+                        500
+                    )
+                    var imgUrl = BaseURL.WEATHER_DUO_YUN
+                    with(mTempInfo[0].status) {
+                        if (indexOf("多云") != -1) {
+                        }
+                        if (indexOf("多云转小雨") != -1) {
+                            imgUrl = BaseURL.WEATHER_RAIN
+                        }
+                        if (indexOf("小雨转多云") != -1) {
+                            imgUrl = BaseURL.WEATHER_RAIN
+                        }
+                        if (indexOf("中雨") != -1) {
+                            imgUrl = BaseURL.WEATHER_MIDDLE_RAIN
+                        }
+                        if (indexOf("阴") != -1) {
+                            imgUrl = BaseURL.WEATHER_YING
+                        }
+                    }
+                    CustomUtils.loadImage(this, imgUrl, mWeather_img, 0, 200)
+
+                    mUpdateInfo.isRefreshing = false
+                }
+            }
+        }
+    }
+
+    private var mSwitchList = ArrayList<ImageView>()
+    /**
+     * 上一个点击的pager序号
+     */
+    private var mCurrentPosition = 0
+
+    /**
+     * Main页面的所有碎片化容器聚合
+     */
+    private val mFragments = ArrayList<Fragment>().apply {
+        add(MyDetailsFragment())
+        add(ComicBoardFragment())
+        //TODO will add thirty page
+        //add(Main())
+    }
+
+    private var mCallback: MainActivityCallback = MainActivityCallback(this)
+
+    /**
+     * 侧滑菜单是否开启
+     */
+    private var isOpenDrawable = false
+
+    /**
+     * 用于确定按下按键时间是否小于2秒
+     */
+    private var lastTime = -1L
+
+    private var mCall: Call<ResponseBody>? = null
+
+    private var mFuncAdapter: FunctionAdapter? = null
+
+    private var mToolbar: WeakReference<JellyToolbar>? = null
+
     private var toolbarIsOpen = false
 
     private fun getFunctionList(): ArrayList<FunctionType> {
@@ -343,16 +352,62 @@ class MainActivityViewModel(private var mContentView: MainActivity) :
         }
     }
 
-    override fun cancel() {
-        super.cancel()
+    fun cancel() {
         if (mCall != null) mCall?.cancel()
     }
 
     fun getWeathers() {
-        mCall = BikaApi
+        getWeathersV2()
+        /*mCall = BikaApi
             .getCusUrl(BaseUrl = BaseURL.BASE_WEATHER)
             .create(WeatherRequest::class.java)
             .getWeatherInfo()
-        mCall?.enqueue(this)
+        mCall?.enqueue(this)*/
+    }
+
+    private var mWeather = MutableLiveData<WeatherBean.Data>()
+
+    var mWeatherData: LiveData<WeatherBean.Data> = mWeather
+
+    /**
+     * 获取天气接口v2
+     */
+    private fun getWeathersV2() {
+        val mCall = BikaApi
+            .getCusUrl(BaseUrl = BaseURL.BASE_WEATHER_V2, isJsonBody = true)
+            .create(WeatherRequest::class.java)
+            .getWeatherByTV()
+        mCall.enqueue(object : Callback<WeatherBean> {
+            override fun onFailure(call: Call<WeatherBean>, t: Throwable) {
+                setError("获取天气信息失败!")
+            }
+
+            override fun onResponse(call: Call<WeatherBean>, response: Response<WeatherBean>) {
+                mWeather.value = response.body()?.data ?: return
+            }
+        })
+    }
+
+    private var mRandomImage = MutableLiveData<RandomImageBean>()
+
+    var randomImage: LiveData<RandomImageBean> = mRandomImage
+
+    fun getRandomImage() {
+        val mCall = BikaApi
+            .getCusUrl(BaseUrl = BaseURL.BASE_RAMDOM_IMAGE, isJsonBody = true)
+            .create(WeatherRequest::class.java)
+            .getRandomBackgroung()
+        mCall.enqueue(object : Callback<RandomImageBean> {
+            override fun onFailure(call: Call<RandomImageBean>, t: Throwable) {
+                setError("获取随机背景图信息失败!")
+            }
+
+            override fun onResponse(
+                call: Call<RandomImageBean>,
+                response: Response<RandomImageBean>
+            ) {
+                mRandomImage.value = response.body() ?: return
+            }
+        })
     }
 }

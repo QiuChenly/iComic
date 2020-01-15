@@ -15,9 +15,17 @@ import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.activity.ReadPage
 import kotlinx.android.synthetic.main.comic_page_item.view.*
 
-class ComicPageAdapter(private var mContext: Context?, mCallback: LoaderListener) : BaseRecyclerAdapter<String>() {
+class ComicPageAdapter(private var mContext: Context?, mCallback: LoaderListener) :
+    BaseRecyclerAdapter<String>() {
 
-    override fun canLoadMore() = true
+    var canloadMore = true
+
+    override fun setNoMore() {
+        super.setNoMore()
+        canloadMore = false
+    }
+
+    override fun canLoadMore() = canloadMore
 
     override fun getItemLayout(viewType: Int): Int {
         return R.layout.comic_page_item
@@ -44,12 +52,15 @@ class ComicPageAdapter(private var mContext: Context?, mCallback: LoaderListener
                         return@setOnClickListener
                     }
                     mContext?.startActivity(Intent(mContext, ReadPage::class.java).apply {
-                        putExtra(ActivityKey.KEY_CATEGORY_JUMP, Gson().toJson(ComicInfoBean().apply {
-                            mComicType = ComicSource.BikaComic
-                            mComicID = mBaseID //注意 此处必须设置书籍ID
-                            mComicTAG = Gson().toJson(getBaseData())  //设置书籍ID
-                            mComicString = position.toString() //设置数据源对应的章节json字符串
-                        }))
+                        putExtra(
+                            ActivityKey.KEY_CATEGORY_JUMP,
+                            Gson().toJson(ComicInfoBean().apply {
+                                mComicType = ComicSource.BikaComic
+                                mComicID = mBaseID //注意 此处必须设置书籍ID
+                                mComicTAG = Gson().toJson(getBaseData())  //设置书籍ID
+                                mComicString = position.toString() //设置数据源对应的章节json字符串
+                            })
+                        )
                     })
                 }
             }
@@ -60,12 +71,15 @@ class ComicPageAdapter(private var mContext: Context?, mCallback: LoaderListener
                 item.setOnClickListener(null)
                 item.setOnClickListener {
                     mContext?.startActivity(Intent(mContext, ReadPage::class.java).apply {
-                        putExtra(ActivityKey.KEY_CATEGORY_JUMP, Gson().toJson(ComicInfoBean().apply {
-                            mComicType = ComicSource.DongManZhiJia //设置数据源类型
-                            mComicID = mBaseID //设置书籍ID
-                            mComicTAG = Gson().toJson(getBaseData())  //设置书籍ID
-                            mComicString = position.toString() //设置数据源对应的章节json字符串
-                        }))
+                        putExtra(
+                            ActivityKey.KEY_CATEGORY_JUMP,
+                            Gson().toJson(ComicInfoBean().apply {
+                                mComicType = ComicSource.DongManZhiJia //设置数据源类型
+                                mComicID = mBaseID //设置书籍ID
+                                mComicTAG = Gson().toJson(getBaseData())  //设置书籍ID
+                                mComicString = position.toString() //设置数据源对应的章节json字符串
+                            })
+                        )
                     })
                 }
             }
@@ -85,4 +99,6 @@ class ComicPageAdapter(private var mContext: Context?, mCallback: LoaderListener
     fun setBaseID(id: String) {
         mBaseID = id
     }
+
+
 }

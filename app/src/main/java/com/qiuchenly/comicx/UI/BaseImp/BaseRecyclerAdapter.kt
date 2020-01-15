@@ -105,8 +105,9 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
     /**
      * 设置没有更多
      */
-    fun setNoMore() {
+    open fun setNoMore() {
         setState(RecyclerLoadStatus.ON_LOAD_NO_MORE)
+
     }
 
     /**
@@ -240,7 +241,8 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
     private var onReTry = false
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         //TODO 此处使用缓存数据 将会导致数据混乱 但是此时应加载的是load More回调,所以不应造成数据错误
-        val itemData = if (canLoadMore() && position >= map!!.size) map!![map!!.size - 1] else map!![position]
+        val itemData =
+            if (canLoadMore() && position >= map!!.size) map!![map!!.size - 1] else map!![position]
         val type = getItemViewType(position)
         val view = holder.itemView
         with(view) {
