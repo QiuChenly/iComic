@@ -2,6 +2,8 @@ package com.qiuchenly.comicx.UI.fragment
 
 import android.content.Intent
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.qiuchenly.comicx.Bean.ComicComm
 import com.qiuchenly.comicx.Bean.ComicHomeCategory
@@ -25,9 +27,9 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     }
 
     override fun onLoadMore(isRetry: Boolean) {
-        mViewModel?.getDMZJHot(54)
-        mViewModel?.getDMZJHot(52)
-        mViewModel?.getDMZJHot(50)
+        mViewModel.getDMZJHot(54)
+        mViewModel.getDMZJHot(52)
+        mViewModel.getDMZJHot(50)
     }
 
     override fun onGetDMZRecommendSuch(mComicList: ArrayList<ComicComm>) {
@@ -59,16 +61,35 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
         return R.layout.fragment_my_details
     }
 
-    private var mViewModel: ComicHomeViewModel? = null
+    private lateinit var mViewModel: ComicHomeViewModel
     private var mRecommendAdapter: ComicHomeAdapter? = null
     private var mActivity: MainActivity? = null
     override fun onViewFirstSelect(mPagerView: View) {
         mActivity = this.activity as MainActivity
-        mViewModel = ComicHomeViewModel(this)
+        mViewModel = ViewModelProviders.of(this).get(ComicHomeViewModel::class.java)
+
+        with(mViewModel) {
+            message.observe(this@ComicHome, Observer {
+                OnNetFailed(it)
+            })
+
+            mCategoryBean.observe(this@ComicHome, Observer {
+                onGetDMZJCategory(it)
+            })
+
+            mHotComicBean.observe(this@ComicHome, Observer {
+                onGetDMZJHOT(it)
+            })
+
+            mmRecommendBean.observe(this@ComicHome, Observer {
+                onGetDMZRecommendSuch(it)
+            })
+        }
+
         mRecommendAdapter = ComicHomeAdapter(this, WeakReference(this.activity))//fix activity jump error
         MyDetails_Refresh.setOnRefreshListener {
             mActivity?.showProgress("加载推荐数据...")
-            mViewModel?.getDMZJRecommend()
+            mViewModel.getDMZJRecommend()
         }
         mRecommendAdapter?.setLoadMoreCallBack(this)
         mRecView.layoutManager = GridLayoutManager(activity, 6).apply {
@@ -92,12 +113,11 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
             }
         })
         mActivity?.showProgress("加载推荐数据...")
-        mViewModel?.getDMZJRecommend()
+        mViewModel.getDMZJRecommend()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mViewModel?.cancel()
         mRecommendAdapter = null
     }
 }

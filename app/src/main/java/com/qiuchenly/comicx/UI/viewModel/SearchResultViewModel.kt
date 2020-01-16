@@ -59,7 +59,7 @@ class SearchResultViewModel : ViewModel() {
             null
         )?.enqueue(object : Callback<GeneralResponse<ComicListResponse>> {
             override fun onFailure(call: Call<GeneralResponse<ComicListResponse>>, t: Throwable) {
-                errorMsg.value = "加载漫画信息时出错!"
+                errorMsg.value = "加载漫画信息时出错!" + t.localizedMessage
             }
 
             override fun onResponse(

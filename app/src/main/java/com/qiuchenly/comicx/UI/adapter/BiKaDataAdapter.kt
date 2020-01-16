@@ -19,12 +19,11 @@ import com.qiuchenly.comicx.ProductModules.Bika.UserProfileObject
 import com.qiuchenly.comicx.ProductModules.Bika.responses.DataClass.ComicListResponse.ComicListData
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseViewHolder
-import com.qiuchenly.comicx.UI.activity.AuthBika
 import com.qiuchenly.comicx.UI.activity.BrowserView
 import com.qiuchenly.comicx.UI.activity.RecentlyRead
 import com.qiuchenly.comicx.UI.activity.SearchResult
-import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BIKA_ACCOUNT
-import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BIKA_COMIC_TYPE
+import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BICA_ACCOUNT
+import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BICA_COMIC_TYPE
 import com.qiuchenly.comicx.UI.view.BikaInterface
 import com.qiuchenly.comicx.Utils.CustomUtils
 import kotlinx.android.synthetic.main.dialog_switchweb.view.*
@@ -51,14 +50,14 @@ class BiKaDataAdapter(
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            BIKA_ACCOUNT -> userProfileSet(holder.itemView)
-            BIKA_COMIC_TYPE -> categorySet(holder.itemView, mItems[position - 1])
+            BICA_ACCOUNT -> userProfileSet(holder.itemView)
+            BICA_COMIC_TYPE -> categorySet(holder.itemView, mItems[position - 1])
         }
     }
 
     fun getSpanWithPosition(position: Int): Int {
         return when (getItemViewType(position)) {
-            BIKA_ACCOUNT -> 6
+            BICA_ACCOUNT -> 6
             else -> 2
         }
     }
@@ -165,7 +164,7 @@ class BiKaDataAdapter(
         }
         if (mUser == null) {
             itemView.setOnClickListener {
-                itemView.context.startActivity(Intent(itemView.context, AuthBika::class.java))
+                mViews.goLogin()
             }
             itemView.tv_userName.text = "点击登录"
             itemView.tv_userSign.text = "Biss"
@@ -212,16 +211,16 @@ class BiKaDataAdapter(
         return checkItemType(position)
     }
 
-    fun checkItemType(position: Int): Int {
+    private fun checkItemType(position: Int): Int {
         return when (position) {
-            0 -> BIKA_ACCOUNT
-            else -> BIKA_COMIC_TYPE
+            0 -> BICA_ACCOUNT
+            else -> BICA_COMIC_TYPE
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val layout = when (viewType) {
-            BIKA_ACCOUNT -> layout_account
+            BICA_ACCOUNT -> layout_account
             else -> layout_category
         }
         return BaseViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false))
@@ -244,14 +243,14 @@ class BiKaDataAdapter(
         notifyItemChanged(0)
     }
 
-    var mRecentRead = 0
+    private var mRecentRead = 0
     fun setRecentRead(size: Int) {
         mRecentRead = size
         notifyItemChanged(0)
     }
 
     object ItemType {
-        val BIKA_ACCOUNT = 0x1
-        val BIKA_COMIC_TYPE = 0x2
+        const val BICA_ACCOUNT = 0x1
+        const val BICA_COMIC_TYPE = 0x2
     }
 }

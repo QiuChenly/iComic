@@ -1,5 +1,6 @@
 package com.qiuchenly.comicx.UI.fragment
 
+import android.content.Intent
 import android.graphics.Rect
 import android.view.View
 import androidx.lifecycle.Observer
@@ -11,6 +12,7 @@ import com.qiuchenly.comicx.ProductModules.Bika.UserProfileObject
 import com.qiuchenly.comicx.ProductModules.Bika.responses.DataClass.ComicListResponse.ComicListData
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseLazyFragment
+import com.qiuchenly.comicx.UI.activity.AuthBica
 import com.qiuchenly.comicx.UI.activity.MainActivity
 import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter
 import com.qiuchenly.comicx.UI.model.BicaModel
@@ -186,6 +188,29 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
     override fun updateUser(ret: UserProfileObject) {
         mActivity?.hideProgress()
         mRecyclerAdapter?.setUserProfile(ret)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 6324) {
+            when (resultCode) {
+                1000 -> {
+                    ShowErrorMsg("登录成功:$resultCode")
+                    update()
+                }
+                1001 -> {
+                    ShowErrorMsg("我寻思你登录你吗呢?登录未成功:$resultCode")
+                }
+                else -> {
+                    ShowErrorMsg("?")
+                }
+            }
+            ShowErrorMsg("登录方法成功:$resultCode")
+        }
+    }
+
+    override fun goLogin() {
+        startActivityForResult(Intent(this.context, AuthBica::class.java), 6324)
     }
 
     override fun onDestroyView() {

@@ -16,4 +16,5 @@ interface BikaInterface : BaseView {
     fun getFavourite(comics: ComicListData)
     fun reInitAPI()
     fun setRecentlyRead(size: Int)
+    fun goLogin()
 }

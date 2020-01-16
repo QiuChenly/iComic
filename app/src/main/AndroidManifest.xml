@@ -83,7 +83,7 @@
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-                android:name=".UI.activity.AuthBika"
+                android:name=".UI.activity.AuthBica"
                 android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
