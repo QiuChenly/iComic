@@ -79,7 +79,7 @@ android {
             }
         }
         variant.outputs.all { output ->
-            variant.getPackageApplicationProvider().get().outputDirectory = file
+            //variant.getPackageApplicationProvider().get().outputDirectory = file
             def date = new Date()
             def formattedDate = date.format('yyyyMMdd')
             def fileName = "iComicX_${formattedDate}_${variant.mergedFlavor.versionName}_${variant.buildType.name}.apk"

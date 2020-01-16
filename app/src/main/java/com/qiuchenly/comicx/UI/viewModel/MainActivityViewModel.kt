@@ -329,6 +329,7 @@ class MainActivityViewModel :
     }
 
     fun canExit(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode != KeyEvent.KEYCODE_BACK || event?.keyCode == KeyEvent.KEYCODE_ENTER) return false
         return if (isOpenDrawable && keyCode == KeyEvent.KEYCODE_BACK) {
             closeDrawer()
             false
