@@ -406,7 +406,13 @@ class MainActivityViewModel :
                 call: Call<RandomImageBean>,
                 response: Response<RandomImageBean>
             ) {
-                mRandomImage.value = response.body() ?: return
+                val it = response.body() ?: return
+                if (it.data.isEmpty()) {
+                    setError("获取导航栏背景失败!请检查网络或关闭VPN.")
+                    getRandomImage()
+                    return
+                }
+                mRandomImage.value = it
             }
         })
     }

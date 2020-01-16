@@ -54,7 +54,8 @@ class MainActivity : BaseApp(), View.OnClickListener {
                     it.weatherNow.text + " " + it.weatherDaily[0].textDay +
                             " " + it.weatherNow.windDirection + "风 " +
                             it.weatherDaily[0].low + "-" + it.weatherDaily[0].high + "°C"
-                mDatePM.text = "空气质量:" + it.airNow.quality
+                mDatePM.text =
+                    it.location.country + " " + it.location.name + " 空气质量:" + it.airNow.quality
                 CustomUtils.loadImage(
                     this@MainActivity,
                     it.weatherNow.img,
