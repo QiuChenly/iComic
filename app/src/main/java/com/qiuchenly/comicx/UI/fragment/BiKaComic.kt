@@ -145,7 +145,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             return
         }
         if (!isInitImageServer) {
-            mActivity?.hideProgress()
+            //mActivity?.hideProgress()
             mActivity?.showProgress(false, "正在初始化哔咔图片服务器")
             model.initImage {
                 initImageServerSuccess()
@@ -199,13 +199,13 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
                     update()
                 }
                 1001 -> {
-                    ShowErrorMsg("我寻思你登录你吗呢?登录未成功:$resultCode")
+                    ShowErrorMsg("登录未成功:$resultCode")
                 }
                 else -> {
                     ShowErrorMsg("?")
                 }
             }
-            ShowErrorMsg("登录方法成功:$resultCode")
+            //ShowErrorMsg("登录方法成功:$resultCode")
         }
     }
 
@@ -217,6 +217,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
         super.onDestroyView()
         mRecycler = null
         mRecyclerAdapter = null
+
         model.cancel()
         mActivity?.showProgress(true)
     }

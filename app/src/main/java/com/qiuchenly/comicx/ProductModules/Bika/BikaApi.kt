@@ -18,9 +18,9 @@ object BikaApi : BaseRetrofitManager<ApiService>() {
     private val API_KEY = "C69BAF41DA5ABD1FFEDC6D2FEA56B"
     private val BASE_URL_PIKA = "https://picaapi.picacomic.com/"
     private val CERT_URL = "picaapi.picacomic.com"
-    private var buildVersion: String = "44"
+    private var buildVersion: String = "45"
     private var uuid: String = "defaultUuid"
-    private var version: String = "2.2.1.2.3.3"
+    private var version: String = "2.2.1.3.3.4"
     private var channel: Int = 2
 
     fun setBiCaClient(context: Context) {

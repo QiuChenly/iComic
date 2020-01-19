@@ -17,7 +17,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.ref.WeakReference
 import java.util.*
-import kotlin.collections.ArrayList
 
 class BicaModel : ViewModel() {
 
@@ -196,17 +195,27 @@ class BicaModel : ViewModel() {
                     call: Call<GeneralResponse<CategoryResponse>>,
                     response: Response<GeneralResponse<CategoryResponse>>
                 ) {
-                    val mBikaCategoryArr = response.body()?.data?.getCategories()
-                    if (mBikaCategoryArr != null) {
-                        mBikaCategoryArr.add(
-                            0,
-                            CategoryObject("lastUpdate", "最近更新", "", mBikaCategoryArr[0].thumb)
-                        )
-                        mBikaCategoryArr.add(
-                            0,
-                            CategoryObject("random", "随机本子", "", mBikaCategoryArr[0].thumb)
-                        )
-                    }//哔咔搞什么鬼，返回了所有包括广告的类别 晕死
+                    //2020 1 19:fix bica后台服务器错误返回一个null数据导致App崩溃问题.建议bica立即辞退该后台员工
+                    val mBikaCategoryArr: ArrayList<CategoryObject> = response.body()?.data?.getCategories()?.filter {
+                        !it.title.isNullOrEmpty()
+                    } as ArrayList<CategoryObject>
+                    /*mBikaCategoryArr.forEach {
+                        if (it.title.isNullOrEmpty()) mBikaCategoryArr.drop(it)
+                    }
+                    for (a in mBikaCategoryArr) {
+                        if (a.title.isNullOrEmpty()) {
+                            mBikaCategoryArr.remove(a)
+                        }
+                    }*/
+                    mBikaCategoryArr.add(
+                        0,
+                        CategoryObject("lastUpdate", "最近更新", "", mBikaCategoryArr[0].thumb)
+                    )
+                    mBikaCategoryArr.add(
+                        0,
+                        CategoryObject("random", "随机本子", "", mBikaCategoryArr[0].thumb)
+                    )
+                    //哔咔搞什么鬼，返回了所有包括广告的类别 晕死
                     PreferenceHelper.setLocalApiDataCategoryList(
                         Comic.getContext(),
                         Gson().toJson(mBikaCategoryArr)
