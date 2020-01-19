@@ -18,6 +18,7 @@ import com.qiuchenly.comicx.UI.activity.PerferenceActivity
 import com.qiuchenly.comicx.UI.adapter.ComicHomeAdapter
 import com.qiuchenly.comicx.UI.view.ComicHomeContract
 import com.qiuchenly.comicx.UI.viewModel.ComicHomeViewModel
+import com.qiuchenly.comicx.ViewCreator.RefreshView
 import kotlinx.android.synthetic.main.fragment_my_details.*
 import java.lang.ref.WeakReference
 
@@ -47,8 +48,9 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     }
 
     override fun final() {
-        if (MyDetails_Refresh.isRefreshing)
-            MyDetails_Refresh.isRefreshing = false
+        updates.stopRefreshing()
+//        if (MyDetails_Refresh.isRefreshing)
+//            MyDetails_Refresh.isRefreshing = false
     }
 
     override fun OnNetFailed(message: String?) {
@@ -86,11 +88,18 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
             })
         }
 
-        mRecommendAdapter = ComicHomeAdapter(this, WeakReference(this.activity))//fix activity jump error
-        MyDetails_Refresh.setOnRefreshListener {
-            mActivity?.showProgress("加载推荐数据...")
-            mViewModel.getDMZJRecommend()
-        }
+        mRecommendAdapter =
+            ComicHomeAdapter(this, WeakReference(this.activity))//fix activity jump error
+//        MyDetails_Refresh.setOnRefreshListener {
+//            mActivity?.showProgress("加载推荐数据...")
+//            mViewModel.getDMZJRecommend()
+//        }
+        updates.setUpdate(object : RefreshView.callback {
+            override fun onRefresh() {
+                mActivity?.showProgress("加载推荐数据...")
+                mViewModel.getDMZJRecommend()
+            }
+        })
         mRecommendAdapter?.setLoadMoreCallBack(this)
         mRecView.layoutManager = GridLayoutManager(activity, 6).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {

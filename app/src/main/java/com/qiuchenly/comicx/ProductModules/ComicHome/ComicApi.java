@@ -20,7 +20,7 @@ import retrofit2.http.Query;
 
 public interface ComicApi {
 
-    String BaseLine = "?channel=Android&_debug=0&version=2.7.021&_debug=0";//?channel=Android&_debug=0&version=2.7.021&timestamp=1573024803
+    String BaseLine = "?channel=Android&_debug=0&version=2.7.024&_debug=0";//?channel=Android&_debug=0&version=2.7.021&timestamp=1573024803
     String BASE_API_USER = "https://user.dmzj.com";
     String BASE_API_V3API = "https://v3api.dmzj.com";
 

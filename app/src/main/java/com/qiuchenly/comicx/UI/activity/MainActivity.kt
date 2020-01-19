@@ -14,7 +14,13 @@ import kotlinx.android.synthetic.main.activity_switch_main.*
 import kotlinx.android.synthetic.main.navigation_main.*
 
 
-class MainActivity : BaseApp(), View.OnClickListener {
+class MainActivity : BaseApp(), View.OnClickListener, BaseApp.ProgressCancel {
+
+
+    override fun onCancelRequest() {
+
+    }
+
     override fun onClick(v: View?) {
         if (v != null) {
             if (v.id == R.id.switch_my_list
@@ -33,6 +39,8 @@ class MainActivity : BaseApp(), View.OnClickListener {
     private lateinit var mViewModel: MainActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        addProgressCancelListener(this)
         //viewModel处理UI
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
@@ -47,6 +55,10 @@ class MainActivity : BaseApp(), View.OnClickListener {
         )
 
         with(mViewModel) {
+            message.observe(this@MainActivity, Observer {
+                ShowErrorMsg(it)
+            })
+
             mWeatherData.observe(this@MainActivity, Observer {
                 mDateTemp.text = it.weatherNow.temperature + "°C"
                 mDateInfo.text = it.weatherDaily[0].weekDay + "/" + it.weatherDaily[0].date
@@ -90,7 +102,9 @@ class MainActivity : BaseApp(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        mViewModel.message.removeObservers(this)
         mViewModel.cancel()
+        removeCancelListener(this)
         System.gc()
     }
 

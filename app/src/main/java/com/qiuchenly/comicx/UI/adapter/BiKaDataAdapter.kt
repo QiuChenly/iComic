@@ -6,7 +6,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.qiuchenly.comicx.Bean.ComicSource
@@ -26,7 +25,6 @@ import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BICA_ACCOUNT
 import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BICA_COMIC_TYPE
 import com.qiuchenly.comicx.UI.view.BikaInterface
 import com.qiuchenly.comicx.Utils.CustomUtils
-import kotlinx.android.synthetic.main.dialog_switchweb.view.*
 import kotlinx.android.synthetic.main.item_bika_userinfo.view.*
 import kotlinx.android.synthetic.main.item_foosize_newupdate.view.*
 import java.lang.ref.WeakReference
@@ -130,34 +128,18 @@ class BiKaDataAdapter(
         )
         itemView.tv_userSign.setOnClickListener(null)
         itemView.lt_switchWeb.setOnClickListener { view ->
-            var mdialog_view: View? = null
-            if (mdialog_view == null) {
-                mdialog_view = LayoutInflater.from(view.context)
-                    .inflate(R.layout.dialog_switchweb, null, false)
-                mdialog_view!!.rd_web1.setOnClickListener {
-                    setWeb(1)
-                }
-                mdialog_view.rd_web2.setOnClickListener {
-                    setWeb(2)
-                }
-                mdialog_view.rd_web3.setOnClickListener {
-                    setWeb(3)
-                }
-            }
-            when (PreferenceHelper.getChannel(Comic.getContext())) {
-                1 -> {
-                    mdialog_view.rd_web1.isChecked = true
-                }
-                2 -> {
-                    mdialog_view.rd_web2.isChecked = true
-                }
-                3 -> {
-                    mdialog_view.rd_web3.isChecked = true
-                }
-            }
+            val normal = PreferenceHelper.getChannel(Comic.getContext())
+            val servers = arrayOf("分流服务器1", "分流服务器2(大陆推荐)", "分流服务器3")
 
-            val dialog = AlertDialog.Builder(view.context)
-                .setView(mdialog_view)
+            val dialog = android.app.AlertDialog.Builder(view.context, android.app.AlertDialog.THEME_HOLO_DARK)
+                .setTitle("请选择服务器")
+                .setSingleChoiceItems(servers, normal - 1) { dialog, which ->
+                    when (which) {
+                        0 -> setWeb(1)
+                        1 -> setWeb(2)
+                        2 -> setWeb(3)
+                    }
+                }
                 .create()
             dialog.setCancelable(true)
             dialog.show()

@@ -111,7 +111,8 @@ class BicaModel : ViewModel() {
             })
     }
 
-    fun initImage(callback: () -> Unit) {
+    fun initImage(callback: () -> Unit, forceUpdate: Boolean = false) {
+        if (!forceUpdate or !PreferenceHelper.getImageStorage(Comic.getContext()).isNullOrEmpty()) return callback()
         api?.getInit(PreferenceHelper.getToken(Comic.getContext()))
             ?.enqueue(object : Callback<GeneralResponse<InitialResponse>> {
                 override fun onResponse(
@@ -127,8 +128,7 @@ class BicaModel : ViewModel() {
                             callback()
                         }
                         response.code() == 401 -> mLintMessage.value = "授权认证失败!需要登录哔咔!"
-                        else -> mLintMessage.value =
-                            "哔咔服务器返回错误数据:" + response.raw().body()?.string()
+                        else -> mLintMessage.value = "哔咔服务器返回错误数据:" + response.code()
                     }
                 }
 
@@ -195,8 +195,14 @@ class BicaModel : ViewModel() {
                     call: Call<GeneralResponse<CategoryResponse>>,
                     response: Response<GeneralResponse<CategoryResponse>>
                 ) {
+                    val ret = response.body()?.data?.getCategories()
+                    if (ret.isNullOrEmpty()) {
+                        mLintMessage.value = "获取哔咔漫画类别失败!"
+                        return
+                    }
                     //2020 1 19:fix bica后台服务器错误返回一个null数据导致App崩溃问题.建议bica立即辞退该后台员工
-                    val mBikaCategoryArr: ArrayList<CategoryObject> = response.body()?.data?.getCategories()?.filter {
+                    var mBikaCategoryArr: ArrayList<CategoryObject> = ret
+                    mBikaCategoryArr = mBikaCategoryArr.filter {
                         !it.title.isNullOrEmpty()
                     } as ArrayList<CategoryObject>
                     /*mBikaCategoryArr.forEach {

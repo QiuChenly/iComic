@@ -33,7 +33,7 @@ import com.qiuchenly.comicx.UI.activity.MainActivity
 import com.qiuchenly.comicx.UI.activity.SearchActivity
 import com.qiuchenly.comicx.UI.activity.SearchResult
 import com.qiuchenly.comicx.UI.adapter.FunctionAdapter
-import com.qiuchenly.comicx.UI.fragment.ComicBoardFragment
+import com.qiuchenly.comicx.UI.fragment.ComicCloudFragment
 import com.qiuchenly.comicx.UI.fragment.MyDetailsFragment
 import com.qiuchenly.comicx.UI.view.MainActivityCallback
 import com.qiuchenly.comicx.Utils.CustomUtils
@@ -263,7 +263,7 @@ class MainActivityViewModel :
      */
     private val mFragments = ArrayList<Fragment>().apply {
         add(MyDetailsFragment())
-        add(ComicBoardFragment())
+        add(ComicCloudFragment())
         //TODO will add thirty page
         //add(Main())
     }

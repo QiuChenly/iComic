@@ -11,6 +11,7 @@ import com.qiuchenly.comicx.UI.activity.MainActivity
 import com.qiuchenly.comicx.UI.adapter.UserDetailsAdapter
 import com.qiuchenly.comicx.UI.model.DetailsModel
 import com.qiuchenly.comicx.UI.view.MyDetailsContract
+import com.qiuchenly.comicx.ViewCreator.RefreshView
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.fragment_my_details.*
 import java.lang.ref.WeakReference
@@ -38,6 +39,7 @@ class MyDetailsFragment : BaseLazyFragment(), MyDetailsContract.View {
         mViewModel.getBingSrc()
         mViewModel.getRecentlyReadSize()
         mViewModel.getFavoriteArray()
+        updates.stopRefreshing()
     }
 
     private var TAG = "MyDetailsFragment"
@@ -71,10 +73,15 @@ class MyDetailsFragment : BaseLazyFragment(), MyDetailsContract.View {
         mUserDetailsAdapter = UserDetailsAdapter(this, WeakReference(activity as MainActivity))
         mRecView.layoutManager = LinearLayoutManager(this.context)
         mRecView.adapter = mUserDetailsAdapter
-        MyDetails_Refresh.setOnRefreshListener {
-            initializationInfo()
-            MyDetails_Refresh.isRefreshing = false
-        }
+//        MyDetails_Refresh.setOnRefreshListener {
+//            initializationInfo()
+//            MyDetails_Refresh.isRefreshing = false
+//        }
+        updates.setUpdate(object : RefreshView.callback {
+            override fun onRefresh() {
+                initializationInfo()
+            }
+        })
         initializationInfo()
     }
 

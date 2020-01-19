@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:padding="20dp"
-              android:background="@color/cardview_dark_background"
-              android:orientation="vertical">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/default_black_bttomsheet"
+        android:orientation="vertical">
+    <TextView
+            android:layout_width="match_parent"
+            android:textSize="18sp"
+            android:text="选择分流服务器"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:layout_height="?actionBarSize"/>
+
+    <View android:layout_width="match_parent"
+          android:layout_height="0.3dp"
+          android:background="#61FFFFFF"/>
 
     <RadioGroup
             android:layout_width="match_parent"
+            android:layout_margin="10dp"
             android:layout_height="wrap_content">
 
         <RadioButton
@@ -16,7 +28,7 @@
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="分流服务器1"
+                android:text="服务器1"
                 android:textColor="@color/defaultListTextColor"/>
 
         <RadioButton
@@ -24,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_weight="1"
-                android:text="分流服务器2"
+                android:text="服务器2"
                 android:textColor="@color/defaultListTextColor"/>
 
         <RadioButton
@@ -32,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_weight="1"
-                android:text="分流服务器3"
+                android:text="服务器3"
                 android:textColor="@color/defaultListTextColor"/>
     </RadioGroup>
 </LinearLayout>

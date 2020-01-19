@@ -17,7 +17,8 @@ import com.qiuchenly.comicx.UI.activity.MainActivity
 import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter
 import com.qiuchenly.comicx.UI.model.BicaModel
 import com.qiuchenly.comicx.UI.view.BikaInterface
-import kotlinx.android.synthetic.main.fragment_bika.*
+import com.qiuchenly.comicx.ViewCreator.RefreshView
+import kotlinx.android.synthetic.main.fragment_my_details.*
 import java.lang.ref.WeakReference
 
 class BiKaComic : BaseLazyFragment(), BikaInterface {
@@ -33,7 +34,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
 
     override fun onViewFirstSelect(mPagerView: View) {
         mActivity = this.activity as MainActivity
-        mRecycler = view?.findViewById(R.id.rv_bika_content)
+        mRecycler = view?.findViewById(R.id.mRecView)
         mRecyclerAdapter = BiKaDataAdapter(this, WeakReference(activity as MainActivity))
         mRecycler?.layoutManager = GridLayoutManager(this.activity, 6).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
@@ -89,10 +90,11 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
         }
 
 
-
-        swipe_bika_refresh.setOnRefreshListener {
-            if (mInitBikaAPISucc) update() else reInitAPI()
-        }
+        updates.setUpdate(object : RefreshView.callback {
+            override fun onRefresh() {
+                if (mInitBikaAPISucc) update() else reInitAPI()
+            }
+        })
         reInitAPI()
     }
 
@@ -112,8 +114,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             mActivity?.showProgress(true)
             //此处并不需要取消初始化，因为获取图片服务器失败也要重新获取一遍
         }
-        if (swipe_bika_refresh.isRefreshing)
-            swipe_bika_refresh.isRefreshing = false
+        updates.stopRefreshing()
     }
 
     override fun getFavourite(comics: ComicListData) {
@@ -139,21 +140,19 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
     private var isInitImageServer = false
     fun update() {
         if (model.needLogin()) {
-            if (swipe_bika_refresh.isRefreshing)
-                swipe_bika_refresh.isRefreshing = false
+            updates.stopRefreshing()
             mActivity?.hideProgress()
             return
         }
         if (!isInitImageServer) {
             //mActivity?.hideProgress()
             mActivity?.showProgress(false, "正在初始化哔咔图片服务器")
-            model.initImage {
+            model.initImage({
                 initImageServerSuccess()
-            }
+            }, false)
             return
         }
-        if (swipe_bika_refresh.isRefreshing)
-            swipe_bika_refresh.isRefreshing = false
+        updates.stopRefreshing()
         mActivity?.showProgress(false, "正在加载用户信息...")
         model.updateUserInfo()
         mActivity?.showProgress(false, "正在加载漫画类别...")
@@ -161,7 +160,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
     }
 
     override fun getLayoutID(): Int {
-        return R.layout.fragment_bika
+        return R.layout.fragment_my_details
     }
 
     override fun loadCategory(mBikaCategoryArr: ArrayList<CategoryObject>?) {

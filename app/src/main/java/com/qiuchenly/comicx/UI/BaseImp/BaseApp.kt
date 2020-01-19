@@ -73,12 +73,27 @@ abstract class BaseApp : AppCompatActivity(), BaseView {
         showProgress(true)
     }
 
+    private val mCancelList = arrayListOf<ProgressCancel>()
+
+    interface ProgressCancel {
+        fun onCancelRequest()
+    }
+
+    fun removeCancelListener(mListener: ProgressCancel) = mCancelList.remove(mListener)
+
+    fun addProgressCancelListener(mListener: ProgressCancel) = mCancelList.add(mListener)
+
     fun showProgress(hide: Boolean, message: String) {
         if (mProcessBar == null) {
             mProcessBar = ProgressDialog(this, ProgressDialog.THEME_DEVICE_DEFAULT_DARK).apply {
                 setTitle("加载中...")
-                setCancelable(false)
+                setCancelable(true)
                 isIndeterminate = true
+            }
+            mProcessBar?.setOnCancelListener {
+                mCancelList.forEach {
+                    it.onCancelRequest()
+                }
             }
         }
         mProcessBar?.setMessage(message)
