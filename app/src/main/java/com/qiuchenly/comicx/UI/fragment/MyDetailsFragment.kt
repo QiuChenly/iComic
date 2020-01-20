@@ -39,7 +39,7 @@ class MyDetailsFragment : BaseLazyFragment(), MyDetailsContract.View {
         mViewModel.getBingSrc()
         mViewModel.getRecentlyReadSize()
         mViewModel.getFavoriteArray()
-        updates.stopRefreshing()
+        updates.stopRefreshing(false)
     }
 
     private var TAG = "MyDetailsFragment"
@@ -78,6 +78,10 @@ class MyDetailsFragment : BaseLazyFragment(), MyDetailsContract.View {
 //            MyDetails_Refresh.isRefreshing = false
 //        }
         updates.setUpdate(object : RefreshView.callback {
+            override fun onLoadMore() {
+
+            }
+
             override fun onRefresh() {
                 initializationInfo()
             }

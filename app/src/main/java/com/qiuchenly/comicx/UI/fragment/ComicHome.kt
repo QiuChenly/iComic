@@ -1,6 +1,7 @@
 package com.qiuchenly.comicx.UI.fragment
 
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -34,7 +35,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     }
 
     override fun onGetDMZRecommendSuch(mComicList: ArrayList<ComicComm>) {
-        mActivity?.hideProgress()
+        //mActivity?.hideProgress()
         mRecommendAdapter?.addDMZJData(mComicList)
     }
 
@@ -48,7 +49,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     }
 
     override fun final() {
-        updates.stopRefreshing()
+        updates.stopRefreshing(false)
 //        if (MyDetails_Refresh.isRefreshing)
 //            MyDetails_Refresh.isRefreshing = false
     }
@@ -56,7 +57,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     override fun OnNetFailed(message: String?) {
         final()
         ShowErrorMsg(message!!)
-        mActivity?.hideProgress()
+        //mActivity?.hideProgress()
     }
 
     override fun getLayoutID(): Int {
@@ -94,10 +95,16 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
 //            mActivity?.showProgress("加载推荐数据...")
 //            mViewModel.getDMZJRecommend()
 //        }
+        updates.setTintColor(Color.BLACK)
+        updates.setBackgroundImage(R.mipmap.beijing)
         updates.setUpdate(object : RefreshView.callback {
             override fun onRefresh() {
-                mActivity?.showProgress("加载推荐数据...")
+                //mActivity?.showProgress("加载推荐数据...")
                 mViewModel.getDMZJRecommend()
+            }
+
+            override fun onLoadMore() {
+
             }
         })
         mRecommendAdapter?.setLoadMoreCallBack(this)
@@ -121,7 +128,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
                 }
             }
         })
-        mActivity?.showProgress("加载推荐数据...")
+        //mActivity?.showProgress("加载推荐数据...")
         mViewModel.getDMZJRecommend()
     }
 

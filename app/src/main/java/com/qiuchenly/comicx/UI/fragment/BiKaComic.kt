@@ -89,10 +89,13 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             })
         }
 
-
         updates.setUpdate(object : RefreshView.callback {
             override fun onRefresh() {
                 if (mInitBikaAPISucc) update() else reInitAPI()
+            }
+
+            override fun onLoadMore() {
+
             }
         })
         reInitAPI()
@@ -114,7 +117,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             mActivity?.showProgress(true)
             //此处并不需要取消初始化，因为获取图片服务器失败也要重新获取一遍
         }
-        updates.stopRefreshing()
+        updates.stopRefreshing(false)
     }
 
     override fun getFavourite(comics: ComicListData) {
@@ -140,7 +143,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
     private var isInitImageServer = false
     fun update() {
         if (model.needLogin()) {
-            updates.stopRefreshing()
+            updates.stopRefreshing(false)
             mActivity?.hideProgress()
             return
         }
@@ -152,7 +155,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             }, false)
             return
         }
-        updates.stopRefreshing()
+        updates.stopRefreshing(false)
         mActivity?.showProgress(false, "正在加载用户信息...")
         model.updateUserInfo()
         mActivity?.showProgress(false, "正在加载漫画类别...")

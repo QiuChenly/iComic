@@ -6,8 +6,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.qiuchenly.comicx.Core.Comic
 import com.qiuchenly.comicx.R
+import kotlinx.android.synthetic.main.fragment_my_details.view.*
 
 
 class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(context, attributes) {
@@ -36,12 +39,31 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
         mContentView = getChildAt(1)
         mFootView = getChildAt(2)
 
-        mRefreshProgress = mHeadView.findViewById(com.qiuchenly.comicx.R.id.refresh_progress)
-        tvRefreshText = mHeadView.findViewById(com.qiuchenly.comicx.R.id.tv_refresh_state)
+        mRefreshProgress = mHeadView.findViewById(R.id.refresh_progress)
+        tvRefreshText = mHeadView.findViewById(R.id.tv_refresh_state)
 
         mRecyclerView = mContentView as RecyclerView
 
         ivRefreshIcon = mHeadView.findViewById(R.id.iv_refreshing)
+    }
+
+    fun setBackgroundImage(img: Int) {
+        if (img > 0) {
+            with(mHeadView) {
+                //                mBackground.background = resources.getDrawable(img)
+                //mBackground.setImageResource(img)
+                mBackground.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        Comic.getContext() ?: return,
+                        img
+                    )
+                )
+                mHeadView.layoutParams =
+                    LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                requestLayout()
+                //invalidate()
+            }
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -58,6 +80,8 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         mHeadView.layout(0, -mHeadHeight, mHeadWidth, 0)
+        mRealHeight = mHeadHeight
+        mRefreshHeight = mHeadHeight / 3
         mContentView.layout(0, 0, mContentWidth, mContentHeight)
         mFootView.layout(0, mContentHeight, mFootWidth, mContentHeight + mFootHeight)
     }
@@ -70,8 +94,10 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
     var startx = 0f
     var starty = 0f
     var isTop = false
+    var isBottom = false
     var firstDownTag = 0
-    var mRefreshHeight = 300
+    var mRefreshHeight = 0
+    var mRealHeight = mRefreshHeight
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         event ?: return true
         val x = event.x
@@ -121,7 +147,7 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
                 if (-scrollY > mRefreshHeight) {
                     startRefreshing()
                 } else {
-                    stopRefreshing()
+                    stopRefreshing(true)
                 }
             }
 
@@ -143,13 +169,18 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
                 upY = y
             }
             MotionEvent.ACTION_MOVE -> {
+                if (onUpdate) return false
                 isTop = mRecyclerView.computeVerticalScrollOffset() < 1
+                isBottom = isSlideToBottom(mRecyclerView)
                 if (isTop) {
                     if (upY - y < 0) {
                         isIntercept = true
                     } else if (y - upY < 0) {
                         isIntercept = false
                     }
+                } else if (isBottom) {
+                    /* 拦截上拉操作 */
+
                 }
             }
             MotionEvent.ACTION_UP -> {
@@ -170,6 +201,7 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
 
     interface callback {
         fun onRefresh()
+        fun onLoadMore()
     }
 
     private var mCallback: callback? = null
@@ -177,7 +209,14 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
         mCallback = update
     }
 
-    fun stopRefreshing() {
+    fun setTintColor(cls:Int){
+        tvRefreshText.setTextColor(cls)
+    }
+
+    fun stopRefreshing(isUserCall: Boolean = false) {
+        if (!isUserCall)
+            tvRefreshText.text = "刷新完毕~"
+        val len = if (isUserCall) 0L else 1000L
         handler.postDelayed({
             ivRefreshIcon.clearAnimation()
             mScroller.startScroll(scrollX, scrollY, 0, -scrollY)
@@ -186,11 +225,14 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
              */
             mRecyclerView.scrollToPosition(0)
             invalidate()
-        }, 1)
+            onUpdate = !true
+        }, len)
     }
 
+    private var onUpdate = false
     private fun startRefreshing() {
-        mScroller.startScroll(scrollX, scrollY, 0, -mRefreshHeight - scrollY)
+        onUpdate = true
+        mScroller.startScroll(scrollX, scrollY, 0, -mRealHeight - scrollY)
         tvRefreshText.text = "刷新中~"
         mRefreshProgress.visibility = View.VISIBLE
         startIconAnimation()
@@ -220,7 +262,7 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
     private fun startIconAnimation() {
         val animation = TranslateAnimation(
             0f, 0f,
-            scaleY, (-mRefreshHeight).toFloat()
+            scaleY, (-mRealHeight).toFloat()
         )
         animation.fillAfter = false
         animation.duration = 800

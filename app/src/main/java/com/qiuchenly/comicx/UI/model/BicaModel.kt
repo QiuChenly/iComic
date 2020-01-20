@@ -112,7 +112,7 @@ class BicaModel : ViewModel() {
     }
 
     fun initImage(callback: () -> Unit, forceUpdate: Boolean = false) {
-        if (!forceUpdate or !PreferenceHelper.getImageStorage(Comic.getContext()).isNullOrEmpty()) return callback()
+        if (!forceUpdate and !PreferenceHelper.getImageStorage(Comic.getContext()).isNullOrEmpty()) return callback()
         api?.getInit(PreferenceHelper.getToken(Comic.getContext()))
             ?.enqueue(object : Callback<GeneralResponse<InitialResponse>> {
                 override fun onResponse(
