@@ -13,7 +13,7 @@ import com.qiuchenly.comicx.ProductModules.Bika.ComicListObject
 import com.qiuchenly.comicx.ProductModules.Bika.Tools
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
-import com.qiuchenly.comicx.UI.activity.ComicDetails
+import com.qiuchenly.comicx.UI.activity.ComicDetailsV2
 import com.qiuchenly.comicx.Utils.CustomUtils
 import kotlinx.android.synthetic.main.comic_local_list.view.*
 
@@ -59,7 +59,7 @@ class SearchResultAdapter(mCallback: LoaderListener) : BaseRecyclerAdapter<Strin
             bookAuthor.text = mAuthor
             curr_read.text = "分类:$mCategory"
             setOnClickListener {
-                context.startActivity(Intent(context, ComicDetails::class.java).apply {
+                context.startActivity(Intent(context, ComicDetailsV2::class.java).apply {
                     //TODO 需要优化此处
                     putExtra(ActivityKey.KEY_CATEGORY_JUMP, Gson().toJson(ComicInfoBean().apply {
                         this.mComicType = mType

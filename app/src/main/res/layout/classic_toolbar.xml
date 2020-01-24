@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/mToolbarBack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+    <RelativeLayout
+            android:id="@+id/classic_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <FrameLayout
+                android:id="@+id/back_up"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentStart="true"
+                android:clickable="true"
+                android:focusable="true">
+
+            <ImageView
+                    android:id="@+id/backImage"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_arrow_back"
+                    android:scaleType="centerInside" />
+        </FrameLayout>
+
+        <LinearLayout
+                android:id="@+id/mTitleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/tv_bookname_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxEms="8"
+                    android:singleLine="true"
+                    android:text="小说标题"
+                    android:textColor="#ffffff"
+                    android:textSize="17sp" />
+
+            <TextView
+                    android:id="@+id/tv_bookname_title_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="通用副标题"
+                    android:textColor="#ffffff"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end">
+
+            <FrameLayout
+                    android:id="@+id/mBookDownload"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                <ImageView
+                        android:id="@+id/mBookDownload_IV"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_down"
+                        android:contentDescription="download it!"
+                        android:scaleType="centerInside" />
+            </FrameLayout>
+
+            <FrameLayout
+                    android:id="@+id/mShareButton"
+                    android:layout_width="?attr/actionBarSize"
+                    android:layout_height="?attr/actionBarSize"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_share"
+                        android:contentDescription="share more!"
+                        android:scaleType="centerInside" />
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

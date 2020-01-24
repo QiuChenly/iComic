@@ -17,7 +17,7 @@ import com.qiuchenly.comicx.ProductModules.Bika.Tools
 import com.qiuchenly.comicx.ProductModules.Bika.responses.DataClass.ComicEpisodeResponse.ComicEpisodeResponse
 import com.qiuchenly.comicx.UI.view.ComicDetailContract
 import com.qiuchenly.comicx.UI.view.ReaderContract
-import com.qiuchenly.comicx.UI.viewModel.ComicListViewModel
+import com.qiuchenly.comicx.UI.viewModel.ComicDetailsViewModel
 import com.qiuchenly.comicx.UI.viewModel.ReadViewModel
 import com.qiuchenly.comicx.Utils.CustomUtils
 import io.realm.RealmResults
@@ -214,7 +214,7 @@ class DownloadService : Service(), ServiceNotification {
             mList.any { it.BookName == comicInfo.mComicName }
 
         private var bikaHttpInstance: ApiService? = null
-        private var bikaComicListViewModel: ComicListViewModel? = null
+        private var bikaComicListViewModel: ComicDetailsViewModel? = null
 
         /**
          * 新建一个下载任务
@@ -230,7 +230,7 @@ class DownloadService : Service(), ServiceNotification {
                         if (BikaApi.getAPI() == null)
                             BikaApi.setBiCaClient(mContext!!)
                         bikaHttpInstance = BikaApi.getAPI()
-                        bikaComicListViewModel = ComicListViewModel()
+                        bikaComicListViewModel = ComicDetailsViewModel()
                     }
 
                     val mComicInfo =

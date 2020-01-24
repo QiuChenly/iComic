@@ -49,7 +49,6 @@ object DongManZhiJia : BaseRetrofitManager<ComicApi>() {
 
     private var mV3API: ComicApi? = null
     fun getV3API(): ComicApi {
-
         mV3API = getAPI()
         if (mV3API != null) return mV3API!!
         val httpClient = OkHttpClient.Builder()

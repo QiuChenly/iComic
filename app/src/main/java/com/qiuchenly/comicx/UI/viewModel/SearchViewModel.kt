@@ -41,7 +41,7 @@ class SearchViewModel(private var mView: SearchContract.View?) : BaseViewModel<R
                     call: Call<GeneralResponse<KeywordsResponse>>,
                     response: Response<GeneralResponse<KeywordsResponse>>
                 ) {
-                    mView?.onKeysLoadSucc(response.body()?.data!!.keywords)
+                    mView?.onKeysLoadSucc(response.body()?.data?.keywords ?: return)
                 }
             })
     }

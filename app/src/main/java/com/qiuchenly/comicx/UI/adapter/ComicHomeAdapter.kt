@@ -30,7 +30,10 @@ import kotlinx.android.synthetic.main.vpitem_top_ad.view.*
 import java.lang.ref.WeakReference
 
 
-class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mContext: WeakReference<Context?>) :
+class ComicHomeAdapter(
+    var mBaseView: ComicHomeContract.View,
+    private var mContext: WeakReference<Context?>
+) :
     BaseRecyclerAdapter<RecommendItemType>(), ComicHomeContract.DMZJ_Adapter {
     override fun addDMZJCategory(mComicCategory: ArrayList<ComicHomeCategory>) {
         addData(RecommendItemType().apply {
@@ -126,7 +129,12 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
         override fun onViewInitialization(mView: View, itemData: String?, position: Int) {
             with(mView) {
                 tv_bookName.text = mTopTitles[position]
-                CustomUtils.loadImageCircle(mView.context, mTopImages[position], vp_item_topad_cv, 15)
+                CustomUtils.loadImageCircle(
+                    mView.context,
+                    mTopImages[position],
+                    vp_item_topad_cv,
+                    15
+                )
                 this.setOnClickListener {
                     val itemData = mComicList?.get(0)?.data?.get(position)!!
                     val mFilterIntent = when (itemData["type"]) {
@@ -141,13 +149,16 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
                         "1" -> {//漫画
                             //将数据与普通漫画数据格式化一致,修复加载数据问题.
                             val mComicStringRealInfo = com.google.gson.Gson().toJson(itemData)
-                            Intent("android.intent.action.ComicDetails").apply {
+                            Intent("android.intent.action.ComicDetailsV2").apply {
                                 putExtras(Bundle().apply {
                                     //漫画基本信息 做跳转
-                                    putString(KEY_CATEGORY_JUMP, com.google.gson.Gson().toJson(ComicInfoBean().apply {
-                                        this.mComicType = ComicSource.DongManZhiJia
-                                        this.mComicString = mComicStringRealInfo
-                                    }))
+                                    putString(
+                                        KEY_CATEGORY_JUMP,
+                                        com.google.gson.Gson().toJson(ComicInfoBean().apply {
+                                            this.mComicType = ComicSource.DongManZhiJia
+                                            this.mComicString = mComicStringRealInfo
+                                        })
+                                    )
                                 })
                             }
                         }
@@ -227,7 +238,10 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
                 with(view) {
                     when (data.type) {
                         TYPE_DMZJ_LASTUPDATE -> {
-                            val item = Gson().fromJson(data.mItemData, Map::class.java) as Map<String, String>
+                            val item = Gson().fromJson(
+                                data.mItemData,
+                                Map::class.java
+                            ) as Map<String, String>
                             mImage = item["cover"] ?: ""
                             mItemComicType = "1"
                             mComicBookName = item["title"] ?: ""
@@ -267,11 +281,14 @@ class ComicHomeAdapter(var mBaseView: ComicHomeContract.View, private var mConte
                         //TODO 此处需要作进一步优化
                         val mIntent = when (mItemComicType) {
                             "1" -> {
-                                Intent("android.intent.action.ComicDetails").apply {
-                                    putExtra(KEY_CATEGORY_JUMP, Gson().toJson(ComicInfoBean().apply {
-                                        this.mComicType = ComicSource.DongManZhiJia
-                                        this.mComicString = mComicStringRealInfo
-                                    }))
+                                Intent("android.intent.action.ComicDetailsV2").apply {
+                                    putExtra(
+                                        KEY_CATEGORY_JUMP,
+                                        Gson().toJson(ComicInfoBean().apply {
+                                            this.mComicType = ComicSource.DongManZhiJia
+                                            this.mComicString = mComicStringRealInfo
+                                        })
+                                    )
                                 }
                             }
                             "8", "6" -> {

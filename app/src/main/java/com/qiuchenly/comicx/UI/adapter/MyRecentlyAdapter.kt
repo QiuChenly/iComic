@@ -11,7 +11,7 @@ import com.qiuchenly.comicx.Bean.RecentlyReadingBean
 import com.qiuchenly.comicx.Core.ActivityKey
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
-import com.qiuchenly.comicx.UI.activity.ComicDetails
+import com.qiuchenly.comicx.UI.activity.ComicDetailsV2
 import com.qiuchenly.comicx.Utils.CustomUtils
 import kotlinx.android.synthetic.main.comic_local_list.view.*
 import java.lang.ref.WeakReference
@@ -35,7 +35,7 @@ class MyRecentlyAdapter(private var mContext: WeakReference<Context>) : BaseRecy
 //            val mItem = Comic.getRealm().where(RecentlyReadingBean::class.java).equalTo("BookName", data.BookName!!).findFirst()
 //            curr_read.text = if (mItem != null) mItem.BookName_read_point else "无数据"
             setOnClickListener {
-                val i = Intent(mContext.get(), ComicDetails::class.java)
+                val i = Intent(mContext.get(), ComicDetailsV2::class.java)
                 i.putExtras(android.os.Bundle().apply {
                     putString(ActivityKey.KEY_CATEGORY_JUMP, Gson().toJson(ComicInfoBean().apply {
                         mComicString = data.mComicData

@@ -19,7 +19,7 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
         const val ON_NORMAL = -0x06
     }
 
-    private var mCallback: LoaderListener? = null
+    protected var mCallback: LoaderListener? = null
 
     open fun setLoadMoreCallBack(mLoaderListener: LoaderListener) {
         mCallback = mLoaderListener
@@ -107,7 +107,6 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
      */
     open fun setNoMore() {
         setState(RecyclerLoadStatus.ON_LOAD_NO_MORE)
-
     }
 
     /**
@@ -167,10 +166,10 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
 
     private var map: ArrayList<T>? = ArrayList()
 
-    fun addData(map: ArrayList<T>) {
-        val startPoint = this.map?.size
-        this.map?.addAll(map)
-        notifyItemRangeInserted(startPoint!!, map.size)
+    fun addData(list: ArrayList<T>) {
+        this.map?.addAll(list)
+        notifyDataSetChanged()
+//        notifyItemRangeInserted(0, this.map?.size ?: return)
     }
 
     fun addData(map: T) {

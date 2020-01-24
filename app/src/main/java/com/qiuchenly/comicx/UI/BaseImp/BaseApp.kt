@@ -17,7 +17,10 @@ import com.r0adkll.slidr.model.SlidrPosition
 abstract class BaseApp : AppCompatActivity(), BaseView {
     private val REQUEST_EXTERNAL_STORAGE = 1
     private val PERMISSIONS_STORAGE =
-        arrayOf("android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE")
+        arrayOf(
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE"
+        )
 
     fun verifyStoragePermissions(activity: Activity) {
         try {
@@ -28,7 +31,11 @@ abstract class BaseApp : AppCompatActivity(), BaseView {
             )
             if (permission != PackageManager.PERMISSION_GRANTED) {
                 // 没有写的权限，去申请写的权限，会弹出对话框
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE)
+                ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -53,7 +60,13 @@ abstract class BaseApp : AppCompatActivity(), BaseView {
             }.build()
             Slidr.attach(this, config)
         }
+
+        val resource = resources
+        val dip = resource.getIdentifier("status_bar_height", "dimen", "android")
+        mStatusBarHeight = resource.getDimensionPixelSize(dip)
     }
+
+    var mStatusBarHeight: Int = -1
 
     private var mProcessBar: ProgressDialog? = null
 

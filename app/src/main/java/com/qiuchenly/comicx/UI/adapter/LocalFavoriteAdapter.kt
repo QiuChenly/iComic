@@ -17,7 +17,7 @@ import com.qiuchenly.comicx.ProductModules.Bika.ComicListObject
 import com.qiuchenly.comicx.ProductModules.Bika.Tools
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRealmRecyclerAdapter
-import com.qiuchenly.comicx.UI.activity.ComicDetails
+import com.qiuchenly.comicx.UI.activity.ComicDetailsV2
 import com.qiuchenly.comicx.Utils.CustomUtils
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.comic_local_list.view.*
@@ -68,7 +68,7 @@ class LocalFavoriteAdapter
                     Toast.makeText(Comic.getContext(), "请先打开哔咔页面以初始化哔咔服务器!", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                val i = Intent(mContext.get(), ComicDetails::class.java)
+                val i = Intent(mContext.get(), ComicDetailsV2::class.java)
                 i.putExtras(android.os.Bundle().apply {
                     putString(ActivityKey.KEY_CATEGORY_JUMP, Gson().toJson(ComicInfoBean().apply {
                         mComicString = itemData

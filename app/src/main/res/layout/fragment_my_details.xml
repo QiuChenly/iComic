@@ -13,10 +13,10 @@
 
         <ImageView
                 android:id="@+id/mBackground"
-                android:scaleType="matrix"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="bottom" />
+                android:layout_gravity="bottom"
+                android:scaleType="fitXY" />
 
         <ProgressBar
                 android:id="@+id/refresh_progress"
