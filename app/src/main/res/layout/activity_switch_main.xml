@@ -158,7 +158,9 @@
             android:layout_gravity="start"
             app:insetForeground="@android:color/transparent">
 
-        <include layout="@layout/navigation_main"/>
+        <include
+                android:id="@+id/in_dl"
+                layout="@layout/navigation_main" />
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
 

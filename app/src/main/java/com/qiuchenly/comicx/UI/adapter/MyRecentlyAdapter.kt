@@ -13,10 +13,11 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.activity.ComicDetailsV2
 import com.qiuchenly.comicx.Utils.CustomUtils
-import kotlinx.android.synthetic.main.comic_local_list.view.*
+import com.qiuchenly.comicx.databinding.ComicLocalListBinding
 import java.lang.ref.WeakReference
 
-class MyRecentlyAdapter(private var mContext: WeakReference<Context>) : BaseRecyclerAdapter<RecentlyReadingBean>() {
+class MyRecentlyAdapter(private var mContext: WeakReference<Context>) :
+    BaseRecyclerAdapter<RecentlyReadingBean>() {
     override fun canLoadMore(): Boolean {
         return false
     }
@@ -28,10 +29,16 @@ class MyRecentlyAdapter(private var mContext: WeakReference<Context>) : BaseRecy
     @SuppressLint("SetTextI18n")
     override fun onViewShow(item: View, data: RecentlyReadingBean, position: Int, ViewType: Int) {
         with(item) {
-            bookName.text = data.mComicName
-            curr_read.visibility = View.INVISIBLE
-            bookAuthor.text = "来自" + ComicSource.getTypeName(data.mComicType)
-            CustomUtils.loadImageCircle(this.context, data.mComicImageUrl, bookNameImg, 8)
+            val comicLocalList = ComicLocalListBinding.bind(this)
+            comicLocalList.bookName.text = data.mComicName
+            comicLocalList.currRead.visibility = View.INVISIBLE
+            comicLocalList.bookAuthor.text = "来自" + ComicSource.getTypeName(data.mComicType)
+            CustomUtils.loadImageCircle(
+                this.context,
+                data.mComicImageUrl,
+                comicLocalList.bookNameImg,
+                8
+            )
 //            val mItem = Comic.getRealm().where(RecentlyReadingBean::class.java).equalTo("BookName", data.BookName!!).findFirst()
 //            curr_read.text = if (mItem != null) mItem.BookName_read_point else "无数据"
             setOnClickListener {

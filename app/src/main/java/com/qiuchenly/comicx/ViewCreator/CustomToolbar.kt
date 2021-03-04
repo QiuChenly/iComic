@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.qiuchenly.comicx.R
-import kotlinx.android.synthetic.main.classic_toolbar.view.*
+import com.qiuchenly.comicx.databinding.ClassicToolbarBinding
 
 class CustomToolbar : FrameLayout {
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
@@ -17,10 +17,10 @@ class CustomToolbar : FrameLayout {
                 "android"
             )
         )
-
-        LayoutInflater.from(context).inflate(R.layout.classic_toolbar, this)
-        classic_toolbar.layoutParams =
-            LayoutParams(classic_toolbar.layoutParams).apply {
+        val layout = LayoutInflater.from(context).inflate(R.layout.classic_toolbar, this)
+        val bind = ClassicToolbarBinding.bind(layout)
+        bind.classicToolbar.layoutParams =
+            LayoutParams(bind.classicToolbar.layoutParams).apply {
                 setMargins(0, mStatusBarHeight, 0, 0)
             }
 

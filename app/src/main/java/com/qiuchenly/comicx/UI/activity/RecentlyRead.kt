@@ -11,10 +11,9 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseNavigatorCommon
 import com.qiuchenly.comicx.UI.BaseImp.SuperPagerAdapter
 import com.qiuchenly.comicx.UI.fragment.RecentlyByWeekFragment
+import com.qiuchenly.comicx.databinding.ActivityRecentlyReadBinding
+import com.qiuchenly.comicx.databinding.DialogConfirmClearAllRecentlyBinding
 import com.r0adkll.slidr.Slidr
-import kotlinx.android.synthetic.main.activity_recently_read.*
-import kotlinx.android.synthetic.main.dialog_confirm_clear_all_recently.view.*
-import kotlinx.android.synthetic.main.view_magic_indicator_base.*
 import java.lang.ref.WeakReference
 
 class RecentlyRead : AppCompatActivity() {
@@ -37,6 +36,9 @@ class RecentlyRead : AppCompatActivity() {
     private var mDialog: WeakReference<AlertDialog>? = null
     private var mView: View? = null
     private var mPgAdapter: SuperPagerAdapter? = null
+
+    private lateinit var mRecentlyReadBinding: ActivityRecentlyReadBinding
+    private lateinit var mRecentlyReadDialog: DialogConfirmClearAllRecentlyBinding
     fun InitUI(arr: ArrayList<SuperPagerAdapter.Struct>) {
 
         mView = LayoutInflater.from(this)
@@ -48,17 +50,21 @@ class RecentlyRead : AppCompatActivity() {
                 .create()
         )
 
+        mRecentlyReadBinding = ActivityRecentlyReadBinding.inflate(layoutInflater)
+        mRecentlyReadDialog = DialogConfirmClearAllRecentlyBinding.bind(mView!!.rootView)
+
+
         //init ui
-        back_up.setOnClickListener {
+        mRecentlyReadBinding.backUp.setOnClickListener {
             finish()
         }
-        clear_all.setOnClickListener {
+        mRecentlyReadBinding.clearAll.setOnClickListener {
             with(mView) {
-                this?.tv_dialog_title?.text = "重要操作"
-                this?.tv_dialog_content?.text = "这样将会导致整个最近阅读与漫画阅读进度丢失!\n\n真的要这么做吗？\n" +
+                mRecentlyReadDialog.tvDialogTitle.text = "重要操作"
+                mRecentlyReadDialog.tvDialogContent.text = "这样将会导致整个最近阅读与漫画阅读进度丢失!\n\n真的要这么做吗？\n" +
                         "\n(你以为你还有选择吗?)"
 
-                this?.tv_dialog_content?.setOnClickListener {
+                mRecentlyReadDialog.tvDialogContent.setOnClickListener {
                     mDialog?.get()?.dismiss()
                 }
 
@@ -71,17 +77,22 @@ class RecentlyRead : AppCompatActivity() {
                     mDialog?.get()?.dismiss()
                     call()
                 }
-                this?.btn_dialog_confirm?.setOnClickListener(callback)
-                this?.btn_dialog_cancel?.setOnClickListener(callback)
+                mRecentlyReadDialog.btnDialogConfirm.setOnClickListener(callback)
+                mRecentlyReadDialog.btnDialogCancel.setOnClickListener(callback)
             }
             mDialog?.get()?.show()
         }
-        val list = arr
-        mPgAdapter = SuperPagerAdapter(supportFragmentManager, list)
-        tl_recently_tab_setup_vp.adapter = mPgAdapter
+
+        mPgAdapter = SuperPagerAdapter(supportFragmentManager, arr)
+        mRecentlyReadBinding.tlRecentlyTabSetupVp.adapter = mPgAdapter
 
         //create tips bottom
-        BaseNavigatorCommon.setUpWithPager(this.applicationContext, list, magic_indicator, tl_recently_tab_setup_vp)
+        BaseNavigatorCommon.setUpWithPager(
+            this.applicationContext,
+            arr,
+            mRecentlyReadBinding.miMagicIndicator.magicIndicator,
+            mRecentlyReadBinding.tlRecentlyTabSetupVp
+        )
     }
 
     fun call() {

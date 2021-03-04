@@ -25,8 +25,8 @@ import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BICA_ACCOUNT
 import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter.ItemType.BICA_COMIC_TYPE
 import com.qiuchenly.comicx.UI.view.BikaInterface
 import com.qiuchenly.comicx.Utils.CustomUtils
-import kotlinx.android.synthetic.main.item_bika_userinfo.view.*
-import kotlinx.android.synthetic.main.item_foosize_newupdate.view.*
+import com.qiuchenly.comicx.databinding.ItemBikaUserinfoBinding
+import com.qiuchenly.comicx.databinding.ItemFoosizeNewupdateBinding
 import java.lang.ref.WeakReference
 
 
@@ -74,10 +74,12 @@ class BiKaDataAdapter(
             var mCategoryName = ""
             mImageSrc = Tools.getThumbnailImagePath(data.thumb)
             mCategoryName = data.title
-            CustomUtils.loadImage(itemView.context, mImageSrc, foo_bookImg, 0, 500)
-            foo_bookName.text = mCategoryName
+
+            val updateView = ItemFoosizeNewupdateBinding.bind(this)
+            CustomUtils.loadImage(itemView.context, mImageSrc, updateView.fooBookImg, 0, 500)
+            updateView.fooBookName.text = mCategoryName
             //for this type,unuseless
-            foo_bookName_upNews.visibility = View.GONE
+            updateView.fooBookNameUpNews.visibility = View.GONE
             setOnClickListener {
                 if (data.web == true) {
                     val stringBuilder = StringBuilder()
@@ -121,17 +123,23 @@ class BiKaDataAdapter(
 
     @SuppressLint("SetTextI18n")
     fun userProfileSet(itemView: View) {
+
+        val bikaUserView = ItemBikaUserinfoBinding.bind(itemView)
+
         CustomUtils.loadImageCircle(
             itemView.context,
             "https://himg.bdimg.com/sys/portrait/item/pp.1.d2e65af8.SrGDK3snGzMAnehuVMe6mQ.jpg",
-            itemView.iv_userHead
+            bikaUserView.ivUserHead
         )
-        itemView.tv_userSign.setOnClickListener(null)
-        itemView.lt_switchWeb.setOnClickListener { view ->
+        bikaUserView.tvUserSign.setOnClickListener(null)
+        bikaUserView.ltSwitchWeb.setOnClickListener { view ->
             val normal = PreferenceHelper.getChannel(Comic.getContext())
             val servers = arrayOf("分流服务器1", "分流服务器2(大陆推荐)", "分流服务器3")
 
-            val dialog = android.app.AlertDialog.Builder(view.context, android.app.AlertDialog.THEME_HOLO_DARK)
+            val dialog = android.app.AlertDialog.Builder(
+                view.context,
+                android.app.AlertDialog.THEME_HOLO_DARK
+            )
                 .setTitle("请选择服务器")
                 .setSingleChoiceItems(servers, normal - 1) { dialog, which ->
                     when (which) {
@@ -148,44 +156,43 @@ class BiKaDataAdapter(
             itemView.setOnClickListener {
                 mViews.goLogin()
             }
-            itemView.tv_userName.text = "点击登录"
-            itemView.tv_userSign.text = "Biss"
+            bikaUserView.tvUserName.text = "点击登录"
+            bikaUserView.tvUserSign.text = "Biss"
             return
         }
         itemView.setOnClickListener(null)
-        with(itemView) {
-            val avatar = Tools.getThumbnailImagePath(mUser?.avatar)
-            if (avatar != null && avatar != "")
-                CustomUtils.loadImageCircle(itemView.context, avatar, iv_userHead)
-            tv_userName.text = mUser?.name
-            tv_userNick.text = mUser?.slogan
-            tv_userLevel.text = "Lv.${mUser?.level}(${mUser?.exp})"
-            if (mUser?.isPunched == false) {
-                tv_userSign.visibility = View.VISIBLE
-                tv_userSign.text = "签到"
-                tv_userSign.setOnClickListener {
-                    mViews.punchSign()
-                }
-            } else {
-                tv_userSign.text = "已签到"
-                tv_userSign.setOnClickListener(null)
-            }
-            ll_favourite.setOnClickListener(null)
-            if (mFavourite != null) {
-                tv_favourite.text = "" + mFavourite?.total
-                ll_favourite.setOnClickListener {
-                    //todo 跳转到收藏页
-                }
-            }
 
-            //最近阅读:哔咔
-            tv_recently.text = "" + mRecentRead
-            ll_recently_read.setOnClickListener {
-                val i = Intent(mContext.get(), RecentlyRead::class.java).apply {
-                    putExtra(ActivityKey.KEY_RECENTLY_READ_METHOD, ComicSource.BikaComic)
-                }
-                mContext.get()?.startActivity(i)
+        val avatar = Tools.getThumbnailImagePath(mUser?.avatar)
+        if (avatar != null && avatar != "")
+            CustomUtils.loadImageCircle(itemView.context, avatar, bikaUserView.ivUserHead)
+        bikaUserView.tvUserName.text = mUser?.name
+        bikaUserView.tvUserNick.text = mUser?.slogan
+        bikaUserView.tvUserLevel.text = "Lv.${mUser?.level}(${mUser?.exp})"
+        if (mUser?.isPunched == false) {
+            bikaUserView.tvUserSign.visibility = View.VISIBLE
+            bikaUserView.tvUserSign.text = "签到"
+            bikaUserView.tvUserSign.setOnClickListener {
+                mViews.punchSign()
             }
+        } else {
+            bikaUserView.tvUserSign.text = "已签到"
+            bikaUserView.tvUserSign.setOnClickListener(null)
+        }
+        bikaUserView.llFavourite.setOnClickListener(null)
+        if (mFavourite != null) {
+            bikaUserView.tvFavourite.text = "" + mFavourite?.total
+            bikaUserView.llFavourite.setOnClickListener {
+                //todo 跳转到收藏页
+            }
+        }
+
+        //最近阅读:哔咔
+        bikaUserView.tvRecently.text = "" + mRecentRead
+        bikaUserView.llRecentlyRead.setOnClickListener {
+            val i = Intent(mContext.get(), RecentlyRead::class.java).apply {
+                putExtra(ActivityKey.KEY_RECENTLY_READ_METHOD, ComicSource.BikaComic)
+            }
+            mContext.get()?.startActivity(i)
         }
     }
 

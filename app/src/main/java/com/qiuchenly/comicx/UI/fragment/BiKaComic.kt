@@ -18,7 +18,7 @@ import com.qiuchenly.comicx.UI.adapter.BiKaDataAdapter
 import com.qiuchenly.comicx.UI.model.BicaModel
 import com.qiuchenly.comicx.UI.view.BikaInterface
 import com.qiuchenly.comicx.ViewCreator.RefreshView
-import kotlinx.android.synthetic.main.fragment_my_details.*
+import com.qiuchenly.comicx.databinding.FragmentMyDetailsBinding
 import java.lang.ref.WeakReference
 
 class BiKaComic : BaseLazyFragment(), BikaInterface {
@@ -89,7 +89,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             })
         }
 
-        updates.setUpdate(object : RefreshView.callback {
+        mFragmentMyDetailsBinding.updates.setUpdate(object : RefreshView.callback {
             override fun onRefresh() {
                 if (mInitBikaAPISucc) update() else reInitAPI()
             }
@@ -117,7 +117,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             mActivity?.showProgress(true)
             //此处并不需要取消初始化，因为获取图片服务器失败也要重新获取一遍
         }
-        updates.stopRefreshing(false)
+        mFragmentMyDetailsBinding.updates.stopRefreshing(false)
     }
 
     override fun getFavourite(comics: ComicListData) {
@@ -143,7 +143,7 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
     private var isInitImageServer = false
     fun update() {
         if (model.needLogin()) {
-            updates.stopRefreshing(false)
+            mFragmentMyDetailsBinding.updates.stopRefreshing(false)
             mActivity?.hideProgress()
             return
         }
@@ -155,15 +155,18 @@ class BiKaComic : BaseLazyFragment(), BikaInterface {
             }, false)
             return
         }
-        updates.stopRefreshing(false)
+        mFragmentMyDetailsBinding.updates.stopRefreshing(false)
         mActivity?.showProgress(false, "正在加载用户信息...")
         model.updateUserInfo()
         mActivity?.showProgress(false, "正在加载漫画类别...")
         model.getCategory()
     }
 
-    override fun getLayoutID(): Int {
-        return R.layout.fragment_my_details
+    private lateinit var mFragmentMyDetailsBinding: FragmentMyDetailsBinding
+    override fun getLayoutID(): View {
+//        return R.layout.fragment_my_details
+        mFragmentMyDetailsBinding = FragmentMyDetailsBinding.inflate(layoutInflater)
+        return mFragmentMyDetailsBinding.root
     }
 
     override fun loadCategory(mBikaCategoryArr: ArrayList<CategoryObject>?) {

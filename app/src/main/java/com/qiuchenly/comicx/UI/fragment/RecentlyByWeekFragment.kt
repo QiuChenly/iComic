@@ -10,13 +10,16 @@ import com.qiuchenly.comicx.UI.activity.RecentlyRead
 import com.qiuchenly.comicx.UI.adapter.MyRecentlyAdapter
 import com.qiuchenly.comicx.UI.model.RecentlyModel
 import com.qiuchenly.comicx.UI.view.WeekContract
-import kotlinx.android.synthetic.main.recently_week.*
+import com.qiuchenly.comicx.databinding.RecentlyWeekBinding
 import java.lang.ref.WeakReference
 
 class RecentlyByWeekFragment : BaseLazyFragment(), WeekContract.View {
 
-    override fun getLayoutID(): Int {
-        return R.layout.recently_week
+    private lateinit var mRecentlyWeekBinding: RecentlyWeekBinding
+    override fun getLayoutID(): View {
+//        return R.layout.recently_week
+        mRecentlyWeekBinding = RecentlyWeekBinding.inflate(layoutInflater)
+        return mRecentlyWeekBinding.root
     }
 
     private var mMyDetailsLocalBookList: MyRecentlyAdapter? = null
@@ -27,7 +30,7 @@ class RecentlyByWeekFragment : BaseLazyFragment(), WeekContract.View {
         if (intent != null) {
             mSource = intent.extras?.getInt(ActivityKey.KEY_RECENTLY_READ_METHOD) ?: -1
         }
-        rv_recently.layoutManager = LinearLayoutManager(this.context)
+        mRecentlyWeekBinding.rvRecently.layoutManager = LinearLayoutManager(this.context)
         mMyDetailsLocalBookList = MyRecentlyAdapter(WeakReference(activity as RecentlyRead))
 
         val arr: ArrayList<RecentlyReadingBean> = when (mSource) {
@@ -36,7 +39,7 @@ class RecentlyByWeekFragment : BaseLazyFragment(), WeekContract.View {
         }
         mMyDetailsLocalBookList!!.setData(arr)
 //        mMyDetailsLocalBookList!!.sort(1)
-        rv_recently.adapter = mMyDetailsLocalBookList
+        mRecentlyWeekBinding.rvRecently.adapter = mMyDetailsLocalBookList
     }
 
     fun reInitData() {

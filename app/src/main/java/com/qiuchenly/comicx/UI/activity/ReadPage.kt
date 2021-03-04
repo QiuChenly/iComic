@@ -1,6 +1,7 @@
 package com.qiuchenly.comicx.UI.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -14,19 +15,20 @@ import com.qiuchenly.comicx.Bean.ComicSource
 import com.qiuchenly.comicx.Core.ActivityKey
 import com.qiuchenly.comicx.Core.Comic
 import com.qiuchenly.comicx.ProductModules.Bika.ComicEpisodeObject
-import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.adapter.ComicReadingAdapter
 import com.qiuchenly.comicx.UI.view.ReaderContract
 import com.qiuchenly.comicx.UI.viewModel.ReadViewModel
 import com.qiuchenly.comicx.Utils.BuilderManager
-import kotlinx.android.synthetic.main.activity_reader_page.*
+import com.qiuchenly.comicx.databinding.ActivityReaderPageBinding
 import java.lang.ref.WeakReference
 
 
 class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListener,
     OnBMClickListener {
+
+    private lateinit var mView: ActivityReaderPageBinding
 
     private var lastPoint = 0
 
@@ -94,24 +96,24 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
                 "数据源加载错误!"
             }
         }
-        currInfos.text = chapter
+        mView.currInfos.text = chapter
 
         lastPoint = mComicImagePageAda?.itemCount!!
         mComicImagePageAda?.addData("{'nextPages':[$chapter]}")
         mComicImagePageAda?.addData(lst)
-        mAppBarComicReader.setExpanded(true, true)
+        mView.mAppBarComicReader.setExpanded(true, true)
         val disable = true
         if (!disable) {
             if (mTempSnackBar == null) {
                 mTempSnackBar =
-                    Snackbar.make(read_page_coordinator_layout, "", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(mView.readPageCoordinatorLayout, "", Snackbar.LENGTH_SHORT)
             }
             mTempSnackBar?.setText("注意:当前已阅读到 $chapter .")
             mTempSnackBar?.show()
         }
         //currInfos.text = currInfo
         if (lastPoint < 0) {
-            rv_comicRead_list.smoothScrollToPosition(lastPoint)
+            mView.rvComicReadList.smoothScrollToPosition(lastPoint)
         }
     }
 
@@ -119,8 +121,10 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
 
     private var nextUrl = ""
 
-    override fun getLayoutID(): Int {
-        return R.layout.activity_reader_page
+    override fun getLayoutID(): View {
+//        return R.layout.activity_reader_page
+        mView = ActivityReaderPageBinding.inflate(layoutInflater)
+        return mView.root
     }
 
     private var currUrl = ""
@@ -147,7 +151,7 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
     }
 
     override fun onBoomButtonClick(index: Int) {
-        Snackbar.make(read_page_coordinator_layout, "你点你吗呢？", Snackbar.LENGTH_SHORT)
+        Snackbar.make(mView.readPageCoordinatorLayout, "你点你吗呢？", Snackbar.LENGTH_SHORT)
             .show()
     }
 
@@ -173,14 +177,14 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
         bookID = mTempComicInfo?.mComicID ?: ""
         mPoint = mTempComicInfo?.mComicString?.toInt() ?: 0
         mComicImagePageAda = ComicReadingAdapter(this, WeakReference(this))
-        rv_comicRead_list.layoutManager = LinearLayoutManager(this).apply {
+        mView.rvComicReadList.layoutManager = LinearLayoutManager(this).apply {
             //isAutoMeasureEnabled = true
             //isSmoothScrollbarEnabled = true
         }
-        rv_comicRead_list.setHasFixedSize(true)
-        rv_comicRead_list.adapter = mComicImagePageAda
+        mView.rvComicReadList.setHasFixedSize(true)
+        mView.rvComicReadList.adapter = mComicImagePageAda
         //rv_comicRead_list.screenWidth = DisplayUtil.getScreenWidth(Comic.getContext())
-        rv_comicRead_list.isEnableScale = true
+        mView.rvComicReadList.isEnableScale = true
         //感谢这个作者的开源项目。https://github.com/PortgasAce/ZoomRecyclerView/blob/master/demo/src/main/java/com/portgas/view/demo/MainActivity.java
         /*rv_comicRead_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -197,11 +201,10 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
             }
         })*/
 
-        assert(bmb != null)
-        bmb.buttonEnum = ButtonEnum.Ham
-        bmb.piecePlaceEnum = PiecePlaceEnum.HAM_5
-        bmb.buttonPlaceEnum = ButtonPlaceEnum.HAM_5
-        BuilderManager.getHamButtonBuilder(bmb, this)
+        mView.bmb.buttonEnum = ButtonEnum.Ham
+        mView.bmb.piecePlaceEnum = PiecePlaceEnum.HAM_5
+        mView.bmb.buttonPlaceEnum = ButtonPlaceEnum.HAM_5
+        BuilderManager.getHamButtonBuilder(mView.bmb, this)
 
         //=============  初始化界面数据  ===============
         when (mTempComicInfo!!.mComicType) {
@@ -215,7 +218,7 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
                 mDMZJChapter?.reverse()
                 mPoint = (mDMZJChapter?.size ?: 0) - mPoint - 1
                 val mBase = mDMZJChapter?.get(mPoint)
-                currInfos.text = mBase?.chapter_title
+                mView.currInfos.text = mBase?.chapter_title
                 mViewModel?.getDMZJImage(bookID, mBase!!.chapter_id)
             }
             ComicSource.BikaComic -> {
@@ -228,7 +231,7 @@ class ReadPage : BaseApp(), ReaderContract.View, BaseRecyclerAdapter.LoaderListe
                 mBikaChapter?.reverse()
                 mPoint = (mBikaChapter?.size ?: 0) - mPoint - 1
                 val mBase = mBikaChapter?.get(mPoint)
-                currInfos.text = mBase?.title
+                mView.currInfos.text = mBase?.title
                 mViewModel?.getBikaImage(bookID, mBase!!.order)
             }
         }

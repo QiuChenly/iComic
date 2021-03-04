@@ -16,13 +16,16 @@ import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.activity.RecentlyRead
 import com.qiuchenly.comicx.UI.view.MyDetailsContract
 import com.qiuchenly.comicx.Utils.CustomUtils
+import com.qiuchenly.comicx.databinding.MyMainSpecBinding
+import com.qiuchenly.comicx.databinding.MyMainTopviewBinding
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.my_main_spec.view.*
-import kotlinx.android.synthetic.main.my_main_topview.view.*
 import java.lang.ref.WeakReference
 
 @Suppress("ClassName", "FunctionName")
-class UserDetailsAdapter(val mview: MyDetailsContract.View, private var mContext: WeakReference<Context>) :
+class UserDetailsAdapter(
+    val mview: MyDetailsContract.View,
+    private var mContext: WeakReference<Context>
+) :
     BaseRecyclerAdapter<String>() {
     override fun canLoadMore(): Boolean {
         return false
@@ -33,11 +36,14 @@ class UserDetailsAdapter(val mview: MyDetailsContract.View, private var mContext
         with(item) {
             when (getItemViewType(position)) {
                 TYPE_TOPVIEW -> {
-                    top_userName.text = "临时用户"
-                    openVIP.text = "你知道吗?有时候登录账号体验更好"
+
+                    val topUserView = MyMainTopviewBinding.bind(this)
+
+                    topUserView.topUserName.text = "临时用户"
+                    topUserView.openVIP.text = "你知道吗?有时候登录账号体验更好"
                     if (bingSrc == "") bingSrc = CustomUtils.getCachedBingUrl()
-                    CustomUtils.loadImageCircle(this.context, bingSrc, top_userImg)
-                    CustomUtils.loadImage(this.context, bingSrc, topview_back, 20, 50)
+                    CustomUtils.loadImageCircle(this.context, bingSrc, topUserView.topUserImg)
+                    CustomUtils.loadImage(this.context, bingSrc, topUserView.topviewBack, 20, 50)
                 }
                 TYPE_EXPAND_LIST -> {
                     init_SpecItem(item)
@@ -134,17 +140,20 @@ class UserDetailsAdapter(val mview: MyDetailsContract.View, private var mContext
 
 
     private var mFavoriteComicArr: RealmResults<LocalFavoriteBean>? = null
+
     @SuppressLint("SetTextI18n")
     private fun init_SpecItem(view: View) {
         with(view) {
+            val mSpecViewBinding = MyMainSpecBinding.bind(this)
             setOnClickListener {
                 var form = 0f
                 var to = 90f
-                if (my_main_spec_list.visibility == View.GONE) my_main_spec_list.visibility = View.VISIBLE
+                if (mSpecViewBinding.myMainSpecList.visibility == View.GONE) mSpecViewBinding.myMainSpecList.visibility =
+                    View.VISIBLE
                 else {
-                    my_main_spec_list.visibility = View.GONE;form = 90f;to = 0f
+                    mSpecViewBinding.myMainSpecList.visibility = View.GONE;form = 90f;to = 0f
                 }
-                rotateViews.startAnimation(
+                mSpecViewBinding.rotateViews.startAnimation(
                     RotateAnimation(
                         form,
                         to,
@@ -160,10 +169,10 @@ class UserDetailsAdapter(val mview: MyDetailsContract.View, private var mContext
             }
 
             if (mFavoriteComicArr != null && mFavoriteComicArr!!.size > 0) {
-                if (my_main_spec_list.visibility == View.GONE) {
-                    my_main_spec_list.visibility = View.VISIBLE
+                if (mSpecViewBinding.myMainSpecList.visibility == View.GONE) {
+                    mSpecViewBinding.myMainSpecList.visibility = View.VISIBLE
                 }
-                rotateViews.startAnimation(
+                mSpecViewBinding.rotateViews.startAnimation(
                     RotateAnimation(
                         0f,
                         90f,
@@ -177,13 +186,14 @@ class UserDetailsAdapter(val mview: MyDetailsContract.View, private var mContext
                         interpolator = AccelerateInterpolator()
                     })//设置旋转显示数据
             } else {
-                my_main_spec_list.visibility = View.GONE
+                mSpecViewBinding.myMainSpecList.visibility = View.GONE
             }
-            my_main_spec_list.layoutManager = LinearLayoutManager(view.context)
+            mSpecViewBinding.myMainSpecList.layoutManager = LinearLayoutManager(view.context)
             if (mFavoriteComicArr != null)
-                my_main_spec_list.adapter = LocalFavoriteAdapter(mFavoriteComicArr!!, mContext)
-            my_main_spec_list.isFocusableInTouchMode = false//干掉焦点冲突
-            item_name.text = "我的收藏（本地有${mFavoriteComicArr?.size}本）"
+                mSpecViewBinding.myMainSpecList.adapter =
+                    LocalFavoriteAdapter(mFavoriteComicArr!!, mContext)
+            mSpecViewBinding.myMainSpecList.isFocusableInTouchMode = false//干掉焦点冲突
+            mSpecViewBinding.itemName.text = "我的收藏（本地有${mFavoriteComicArr?.size}本）"
         }
     }
 

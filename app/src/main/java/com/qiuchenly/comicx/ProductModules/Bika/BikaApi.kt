@@ -30,8 +30,8 @@ object BikaApi : BaseRetrofitManager<ApiService>() {
         if (PreferenceHelper.isGirl(context)) {
             httpClient.dns(HttpDns())
         }
-        httpClient.connectTimeout(5, TimeUnit.SECONDS)
-        httpClient.readTimeout(5, TimeUnit.SECONDS)
+//        httpClient.connectTimeout(15, TimeUnit.SECONDS)
+//        httpClient.readTimeout(15, TimeUnit.SECONDS)
         httpClient.addInterceptor { chain ->
             val original = chain.request()
             val uid = UUID.randomUUID().toString().replace("-", "")
@@ -87,12 +87,12 @@ object BikaApi : BaseRetrofitManager<ApiService>() {
             response
         }
         try {
-            //val tlsSocketFactory = TLSSocketFactory()
-            //httpClient.sslSocketFactory(tlsSocketFactory, tlsSocketFactory.systemDefaultTrustManager())
+            val tlsSocketFactory = TLSSocketFactory()
+            httpClient.sslSocketFactory(tlsSocketFactory, tlsSocketFactory.systemDefaultTrustManager())
             val api =
                 Retrofit.Builder().baseUrl(BASE_URL_PIKA).addConverterFactory(GsonConverterFactory.create()).client(
                     httpClient.build()
-                ).build().create<ApiService>(ApiService::class.java) as ApiService
+                ).build().create(ApiService::class.java) as ApiService
             setAPI(api)
         } catch (e: java.lang.Exception) {
             Log.d(TAG, "setBiCaClient:API SSL 异常你来辣!")

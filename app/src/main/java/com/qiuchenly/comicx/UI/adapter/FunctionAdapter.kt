@@ -6,7 +6,7 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.activity.PerferenceActivity
 import com.qiuchenly.comicx.UI.viewModel.MainActivityViewModel
-import kotlinx.android.synthetic.main.item_function.view.*
+import com.qiuchenly.comicx.databinding.ItemFunctionBinding
 
 class FunctionAdapter : BaseRecyclerAdapter<MainActivityViewModel.FunctionType>() {
     override fun canLoadMore(): Boolean {
@@ -23,8 +23,9 @@ class FunctionAdapter : BaseRecyclerAdapter<MainActivityViewModel.FunctionType>(
 
     override fun onViewShow(item: View, data: MainActivityViewModel.FunctionType, position: Int, ViewType: Int) {
         with(item) {
-            functionName.text = data.title
-            if (position == itemCount - 1) mSplitLine.visibility = View.INVISIBLE
+            val itemFunction = ItemFunctionBinding.bind(this)
+            itemFunction.functionName.text = data.title
+            if (position == itemCount - 1) itemFunction.mSplitLine.visibility = View.INVISIBLE
 
             when (data.functionType) {
                 MainActivityViewModel.FunctionType.Types.SETTING -> {

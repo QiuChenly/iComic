@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter.RecyclerLoadStatus.ON_LOAD_SUCCESS
+import com.qiuchenly.comicx.databinding.LoadmoreViewBinding
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.loadmore_view.view.*
 
 abstract class BaseRealmRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
 
@@ -142,16 +142,20 @@ abstract class BaseRealmRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder
      */
     abstract fun getItemLayout(viewType: Int): Int
 
+    private lateinit var mDefaultLayoutInflateBinding: LoadmoreViewBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val mLayout = when (viewType) {
+        val root: View = when (viewType) {
             RecyclerLoadStatus.ON_LOAD_MORE -> {
-                R.layout.loadmore_view//默认加载更多布局
+//                R.layout.loadmore_view//默认加载更多布局
+                LoadmoreViewBinding.inflate(LayoutInflater.from(parent.context)).root
             }
             else -> {
-                getItemLayout(viewType)
+                val layout = getItemLayout(viewType)
+                LayoutInflater.from(parent.context).inflate(layout, parent, false)
             }
         }
-        return BaseViewHolder(LayoutInflater.from(parent.context).inflate(mLayout, parent, false))
+        return BaseViewHolder(root)
     }
 
     fun getItemData(position: Int): T? {
@@ -205,9 +209,11 @@ abstract class BaseRealmRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder
         }
     }
 
+
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         //TODO 此处使用缓存数据 将会导致数据混乱 但是此时应加载的是load More回调,所以不应造成数据错误
-        val itemData = if (canLoadMore() && position >= map!!.size) map!![map!!.size - 1] else map!![position]
+        val itemData =
+            if (canLoadMore() && position >= map!!.size) map!![map!!.size - 1] else map!![position]
         val type = getItemViewType(position)
         val view = holder.itemView
         with(view) {
@@ -216,24 +222,24 @@ abstract class BaseRealmRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder
                 RecyclerLoadStatus.ON_LOAD_MORE -> {
                     when (getState()) {
                         RecyclerLoadStatus.ON_LOAD_NO_MORE -> {
-                            noMore_tip.text = "没有更多的结果了 铁汁!"
-                            noMore_tip.visibility = View.VISIBLE
-                            loadingView.visibility = View.INVISIBLE
-                            clickRetry.visibility = View.INVISIBLE
+                            mDefaultLayoutInflateBinding.noMoreTip.text = "没有更多的结果了 铁汁!"
+                            mDefaultLayoutInflateBinding.noMoreTip.visibility = View.VISIBLE
+                            mDefaultLayoutInflateBinding.loadingView.visibility = View.INVISIBLE
+                            mDefaultLayoutInflateBinding.clickRetry.visibility = View.INVISIBLE
                             setOnClickListener(null)
                         }
                         RecyclerLoadStatus.ON_LOAD_FAILED -> {
-                            noMore_tip.visibility = View.INVISIBLE
-                            loadingView.visibility = View.INVISIBLE
-                            clickRetry.visibility = View.VISIBLE
+                            mDefaultLayoutInflateBinding.noMoreTip.visibility = View.INVISIBLE
+                            mDefaultLayoutInflateBinding.loadingView.visibility = View.INVISIBLE
+                            mDefaultLayoutInflateBinding.clickRetry.visibility = View.VISIBLE
                             setOnClickListener {
                                 onLoading(true)
                             }
                         }
                         else -> {
-                            noMore_tip.visibility = View.INVISIBLE
-                            loadingView.visibility = View.VISIBLE
-                            clickRetry.visibility = View.INVISIBLE
+                            mDefaultLayoutInflateBinding.noMoreTip.visibility = View.INVISIBLE
+                            mDefaultLayoutInflateBinding.loadingView.visibility = View.VISIBLE
+                            mDefaultLayoutInflateBinding.clickRetry.visibility = View.INVISIBLE
                             onLoading(false)
                             setOnClickListener(null)
                         }

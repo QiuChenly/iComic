@@ -23,10 +23,10 @@ import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.activity.SearchResult
 import com.qiuchenly.comicx.UI.view.ComicHomeContract
 import com.qiuchenly.comicx.Utils.CustomUtils
-import kotlinx.android.synthetic.main.item_foosize_newupdate.view.*
-import kotlinx.android.synthetic.main.item_rankview.view.*
-import kotlinx.android.synthetic.main.item_recommend_normal.view.*
-import kotlinx.android.synthetic.main.vpitem_top_ad.view.*
+import com.qiuchenly.comicx.databinding.ItemFoosizeNewupdateBinding
+import com.qiuchenly.comicx.databinding.ItemRankviewBinding
+import com.qiuchenly.comicx.databinding.ItemRecommendNormalBinding
+import com.qiuchenly.comicx.databinding.VpitemTopAdBinding
 import java.lang.ref.WeakReference
 
 
@@ -128,11 +128,12 @@ class ComicHomeAdapter(
     private var mCarouselAdapter = object : CarouselAdapter() {
         override fun onViewInitialization(mView: View, itemData: String?, position: Int) {
             with(mView) {
-                tv_bookName.text = mTopTitles[position]
+                val viewBind = VpitemTopAdBinding.bind(this)
+                viewBind.tvBookName.text = mTopTitles[position]
                 CustomUtils.loadImageCircle(
                     mView.context,
                     mTopImages[position],
-                    vp_item_topad_cv,
+                    viewBind.vpItemTopadCv,
                     15
                 )
                 this.setOnClickListener {
@@ -173,6 +174,7 @@ class ComicHomeAdapter(
     }
 
     private var sIsSetData = false
+
     @SuppressLint("SetTextI18n")
     private fun mInitUI(view: View, data: RecommendItemType?, position: Int) {
         when (data?.type) {
@@ -194,14 +196,21 @@ class ComicHomeAdapter(
             TYPE_RANK -> {
                 //RANK 点击
                 with(view) {
-                    tv_times.text = (java.util.Calendar.getInstance()
+                    val rankView = ItemRankviewBinding.bind(this)
+                    rankView.tvTimes.text = (java.util.Calendar.getInstance()
                         .get(java.util.Calendar.DAY_OF_MONTH)
                             ).toString()
-                    CustomUtils.loadImage(view.context, "随机图片1", iv_privatefm_img_back, 55, 500)
-                    CustomUtils.loadImage(view.context, "随机图片1", iv_day_img_back, 55, 500)
-                    CustomUtils.loadImage(view.context, "随机图片1", iv_mix_img_back, 55, 500)
-                    CustomUtils.loadImage(view.context, "随机图片1", iv_charts_img_back, 55, 500)
-                    iv_day_img_click.setOnClickListener {
+                    CustomUtils.loadImage(
+                        view.context,
+                        "随机图片1",
+                        rankView.ivPrivatefmImgBack,
+                        55,
+                        500
+                    )
+                    CustomUtils.loadImage(view.context, "随机图片1", rankView.ivDayImgBack, 55, 500)
+                    CustomUtils.loadImage(view.context, "随机图片1", rankView.ivMixImgBack, 55, 500)
+                    CustomUtils.loadImage(view.context, "随机图片1", rankView.ivChartsImgBack, 55, 500)
+                    rankView.ivDayImgClick.setOnClickListener {
                         /*  startActivity(view.context,
                                   Intent(view.context, EveryDayRecommend::class.java),
                                   null)*/
@@ -214,7 +223,8 @@ class ComicHomeAdapter(
             TYPE_TITLE -> {
                 //RANK 点击
                 with(view) {
-                    tv_listName.text = data.title
+                    val view = ItemRecommendNormalBinding.bind(this)
+                    view.tvListName.text = data.title
                     setOnClickListener(null)
                 }
             }
@@ -236,6 +246,9 @@ class ComicHomeAdapter(
                 var mItemComicType: String //漫画
                 var mComicStringRealInfo: String
                 with(view) {
+
+                    val mNewUpdateBinding = ItemFoosizeNewupdateBinding.bind(this)
+
                     when (data.type) {
                         TYPE_DMZJ_LASTUPDATE -> {
                             val item = Gson().fromJson(
@@ -265,7 +278,7 @@ class ComicHomeAdapter(
                                 if (mItemData.sub_title == "") mItemData.status
                                 else mItemData.sub_title
 
-                            foo_bookName_upNews.visibility =
+                            mNewUpdateBinding.fooBookNameUpNews.visibility =
                                 when (mItemData.type) {
                                     //隐藏下半部分的栏
                                     "8", "6", "5" -> View.INVISIBLE
@@ -273,9 +286,15 @@ class ComicHomeAdapter(
                                 }
                         }
                     }
-                    CustomUtils.loadImage(view.context, mImage, foo_bookImg, 0, 500)
-                    foo_bookName.text = mComicBookName
-                    foo_bookName_upNews.text = mComicStatusOrAuthor
+                    CustomUtils.loadImage(
+                        view.context,
+                        mImage,
+                        mNewUpdateBinding.fooBookImg,
+                        0,
+                        500
+                    )
+                    mNewUpdateBinding.fooBookName.text = mComicBookName
+                    mNewUpdateBinding.fooBookNameUpNews.text = mComicStatusOrAuthor
 
                     setOnClickListener {
                         //TODO 此处需要作进一步优化
@@ -308,6 +327,7 @@ class ComicHomeAdapter(
             }
             TYPE_DONGMANZHIJIA_CATEGORY -> {
                 with(view) {
+                    val viewUpdateBinding = ItemFoosizeNewupdateBinding.bind(this)
                     val mCate = Gson().fromJson(data.mItemData, ComicHomeCategory::class.java)
                     var mImageSrc = ""
                     var mCategoryName = ""
@@ -316,10 +336,16 @@ class ComicHomeAdapter(
                     mImageSrc = mCate.cover
 
 
-                    CustomUtils.loadImage(view.context, mImageSrc, foo_bookImg, 0, 500)
-                    foo_bookName.text = mCategoryName
+                    CustomUtils.loadImage(
+                        view.context,
+                        mImageSrc,
+                        viewUpdateBinding.fooBookImg,
+                        0,
+                        500
+                    )
+                    viewUpdateBinding.fooBookName.text = mCategoryName
                     //for this type,unuseless
-                    foo_bookName_upNews.visibility = View.GONE
+                    viewUpdateBinding.fooBookNameUpNews.visibility = View.GONE
                     setOnClickListener {
 
                         context.startActivity(Intent(context, SearchResult::class.java).apply {

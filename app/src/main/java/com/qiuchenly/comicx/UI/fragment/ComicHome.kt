@@ -4,7 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.qiuchenly.comicx.Bean.ComicComm
 import com.qiuchenly.comicx.Bean.ComicHomeCategory
@@ -20,7 +20,7 @@ import com.qiuchenly.comicx.UI.adapter.ComicHomeAdapter
 import com.qiuchenly.comicx.UI.view.ComicHomeContract
 import com.qiuchenly.comicx.UI.viewModel.ComicHomeViewModel
 import com.qiuchenly.comicx.ViewCreator.RefreshView
-import kotlinx.android.synthetic.main.fragment_my_details.*
+import com.qiuchenly.comicx.databinding.FragmentMyDetailsBinding
 import java.lang.ref.WeakReference
 
 class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapter.LoaderListener {
@@ -49,7 +49,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     }
 
     override fun final() {
-        updates.stopRefreshing(false)
+        mFragmentMyDetailsBinding.updates.stopRefreshing(false)
 //        if (MyDetails_Refresh.isRefreshing)
 //            MyDetails_Refresh.isRefreshing = false
     }
@@ -60,8 +60,11 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
         //mActivity?.hideProgress()
     }
 
-    override fun getLayoutID(): Int {
-        return R.layout.fragment_my_details
+    private lateinit var mFragmentMyDetailsBinding: FragmentMyDetailsBinding
+    override fun getLayoutID(): View {
+//        return R.layout.fragment_my_details
+        mFragmentMyDetailsBinding = FragmentMyDetailsBinding.inflate(layoutInflater)
+        return mFragmentMyDetailsBinding.root
     }
 
     private lateinit var mViewModel: ComicHomeViewModel
@@ -69,7 +72,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
     private var mActivity: MainActivity? = null
     override fun onViewFirstSelect(mPagerView: View) {
         mActivity = this.activity as MainActivity
-        mViewModel = ViewModelProviders.of(this).get(ComicHomeViewModel::class.java)
+        mViewModel = ViewModelProvider(this).get(ComicHomeViewModel::class.java)
 
         with(mViewModel) {
             message.observe(this@ComicHome, Observer {
@@ -95,9 +98,9 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
 //            mActivity?.showProgress("加载推荐数据...")
 //            mViewModel.getDMZJRecommend()
 //        }
-        updates.setTintColor(Color.BLACK)
-        updates.setBackgroundImage(R.mipmap.beijing)
-        updates.setUpdate(object : RefreshView.callback {
+        mFragmentMyDetailsBinding.updates.setTintColor(Color.BLACK)
+        mFragmentMyDetailsBinding.updates.setBackgroundImage(R.mipmap.beijing)
+        mFragmentMyDetailsBinding.updates.setUpdate(object : RefreshView.callback {
             override fun onRefresh() {
                 //mActivity?.showProgress("加载推荐数据...")
                 mViewModel.getDMZJRecommend()
@@ -108,7 +111,7 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
             }
         })
         mRecommendAdapter?.setLoadMoreCallBack(this)
-        mRecView.layoutManager = GridLayoutManager(activity, 6).apply {
+        mFragmentMyDetailsBinding.mRecView.layoutManager = GridLayoutManager(activity, 6).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return mRecommendAdapter?.getSizeByItem(position) ?: 6
@@ -116,8 +119,8 @@ class ComicHome : BaseLazyFragment(), ComicHomeContract.View, BaseRecyclerAdapte
             }
         }
 
-        mRecView.adapter = mRecommendAdapter
-        mRecView.addItemDecoration(object : GridSpacingItemDecoration() {
+        mFragmentMyDetailsBinding.mRecView.adapter = mRecommendAdapter
+        mFragmentMyDetailsBinding.mRecView.addItemDecoration(object : GridSpacingItemDecoration() {
             override fun needFixed(position: Int): Boolean {
                 return when (mRecommendAdapter?.getItemViewType(position)) {
                     RecommendItemType.TYPE.TYPE_TITLE,

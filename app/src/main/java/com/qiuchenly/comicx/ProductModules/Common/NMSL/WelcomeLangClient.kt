@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.qiuchenly.comicx.ProductModules.Bika.TLSSocketFactory
 
 object WelcomeLangClient : BaseRetrofitManager<WelcomeLangApi>() {
     private const val BASE_URL_HAOCI = "https://v1.hitokoto.cn/"
@@ -20,8 +21,8 @@ object WelcomeLangClient : BaseRetrofitManager<WelcomeLangApi>() {
                     .build()
             )
         }
-        //val tlsSocketFactory = TLSSocketFactory()
-        //httpClient.sslSocketFactory(tlsSocketFactory, tlsSocketFactory.systemDefaultTrustManager())
+        val tlsSocketFactory = TLSSocketFactory()
+        httpClient.sslSocketFactory(tlsSocketFactory, tlsSocketFactory.systemDefaultTrustManager())
         val api =
             Retrofit.Builder().baseUrl(base).addConverterFactory(GsonConverterFactory.create()).client(httpClient.build()).build().create<WelcomeLangApi>(
                 WelcomeLangApi::class.java

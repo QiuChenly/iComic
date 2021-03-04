@@ -19,26 +19,29 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.view.SearchContract
 import com.qiuchenly.comicx.UI.viewModel.SearchViewModel
+import com.qiuchenly.comicx.databinding.ActivitySearchBinding
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
-import kotlinx.android.synthetic.main.activity_search.*
 
 
 class SearchActivity : BaseApp(), SearchContract.View {
+
+    private lateinit var mView: ActivitySearchBinding
+
     override fun onKeysLoadSucc(arr: ArrayList<String>) {
-        flow_net.adapter = object : TagAdapter<String>(arr) {
+        mView.flowNet.adapter = object : TagAdapter<String>(arr) {
             override fun getView(parent: FlowLayout, position: Int, s: String): View {
                 val tv = LayoutInflater.from(parent.context).inflate(
                     R.layout.flow_item_simple_a,
-                    flow_net, false
+                    mView.flowNet, false
                 ) as TextView
                 tv.text = s
                 return tv
             }
         }
 
-        flow_net.setOnTagClickListener { view, position, parent ->
-            mInputEdit.setText(arr[position])
+        mView.flowNet.setOnTagClickListener { view, position, parent ->
+            mView.mInputEdit.setText(arr[position])
             true
         }
     }
@@ -47,7 +50,11 @@ class SearchActivity : BaseApp(), SearchContract.View {
 
     }
 
-    override fun getLayoutID() = R.layout.activity_search
+    override fun getLayoutID(): View {
+        // R.layout.activity_search
+        mView = ActivitySearchBinding.inflate(layoutInflater)
+        return mView.root
+    }
 
     override fun getUISet(mSet: UISet): UISet {
         return mSet.apply {
@@ -79,9 +86,9 @@ class SearchActivity : BaseApp(), SearchContract.View {
         }
         mSearchViewModel?.getBikaKeyWords()
 
-        sp_search_source.adapter = adapter
+        mView.spSearchSource.adapter = adapter
 
-        sp_search_source.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        mView.spSearchSource.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -96,15 +103,14 @@ class SearchActivity : BaseApp(), SearchContract.View {
             }
         }
 
-
-        mInputEdit.setOnEditorActionListener { v, actionId, event ->
-            val mInputString = mInputEdit.text.toString()
+        mView.mInputEdit.setOnEditorActionListener { v, actionId, event ->
+            val mInputString = mView.mInputEdit.text.toString()
             if (actionId == EditorInfo.IME_ACTION_SEARCH && mInputString.isNotEmpty()) {
                 startActivity(Intent(this, SearchResult::class.java).apply {
                     val mStr = Gson().toJson(ComicCategoryBean().apply {
                         mCategoryName = "搜索关键词"
                         mData = mInputString
-                        mComicType = when (sp_search_source.selectedItemPosition) {
+                        mComicType = when (mView.spSearchSource.selectedItemPosition) {
                             0 -> ComicSource.BikaComic
                             1 -> ComicSource.DongManZhiJia
                             2 -> ComicSource.BilibiliComic
@@ -114,7 +120,7 @@ class SearchActivity : BaseApp(), SearchContract.View {
                     })
                     putExtra(ActivityKey.KEY_CATEGORY_JUMP, mStr)
                 })
-                mInputEdit.setText("")
+                mView.mInputEdit.setText("")
             }
             false
         }

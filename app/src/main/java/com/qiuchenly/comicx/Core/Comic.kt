@@ -14,6 +14,7 @@ import java.util.*
 @SuppressLint("StaticFieldLeak")
 object Comic {
     private var mContext: Context? = null
+
     /**
      * 64 bits
      * @return
@@ -95,6 +96,9 @@ object Comic {
             .encryptionKey(getKey())  // 加密
             .schemaVersion(1)  // 版本号
             .deleteRealmIfMigrationNeeded()
+            .allowWritesOnUiThread(true)
+            //Running transactions on the UI thread has been disabled. It can be enabled by setting
+            // 'RealmConfiguration.Builder.allowWritesOnUiThread(true)'.
             .build()
         Realm.setDefaultConfiguration(config)
         realm = Realm.getDefaultInstance()
@@ -105,7 +109,8 @@ object Comic {
             //获取崩溃时的UNIX时间戳
             val timeMillis = System.currentTimeMillis()
             //将时间戳转换成人类能看懂的格式，建立一个String拼接器
-            val stringBuilder = StringBuilder(SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Date(timeMillis)))
+            val stringBuilder =
+                StringBuilder(SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Date(timeMillis)))
             stringBuilder.append(":\n")
             //获取错误信息
             stringBuilder.append(throwable.message)

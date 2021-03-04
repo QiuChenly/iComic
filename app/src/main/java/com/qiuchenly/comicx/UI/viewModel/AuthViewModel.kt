@@ -23,6 +23,7 @@ class AuthViewModel : BaseModel() {
             ?.enqueue(object : Callback<GeneralResponse<SignInResponse>> {
                 override fun onFailure(call: Call<GeneralResponse<SignInResponse>>, t: Throwable) {
                     setError("访问哔咔服务器失败。")
+                    t.printStackTrace()
                 }
 
                 override fun onResponse(

@@ -37,10 +37,10 @@ import com.qiuchenly.comicx.UI.fragment.ComicCloudFragment
 import com.qiuchenly.comicx.UI.fragment.MyDetailsFragment
 import com.qiuchenly.comicx.UI.view.MainActivityCallback
 import com.qiuchenly.comicx.Utils.CustomUtils
+import com.qiuchenly.comicx.databinding.ActivitySwitchMainBinding
+import com.qiuchenly.comicx.databinding.NavigationMainBinding
 import com.yalantis.jellytoolbar.listener.JellyListener
 import com.yalantis.jellytoolbar.widget.JellyToolbar
-import kotlinx.android.synthetic.main.activity_switch_main.*
-import kotlinx.android.synthetic.main.navigation_main.*
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -57,54 +57,60 @@ class MainActivityViewModel :
     MainActivityCallback.Callbacks,
     BaseModel() {
 
+    private lateinit var mActivitySwitchMainBinding: ActivitySwitchMainBinding
+    private lateinit var mNavigationMainBinding: NavigationMainBinding
+
     fun setActivity(mContentView: MainActivity) {
         this.mContentView = mContentView
 
+        mActivitySwitchMainBinding = mContentView.getThisViewBing()
+
+        mNavigationMainBinding = NavigationMainBinding.bind(mActivitySwitchMainBinding.inDl.root)
 
         with(mContentView) {
-            mSwitchList.add(switch_my_list_img)
-            mSwitchList.add(switch_my_website_more_img)
-            mSwitchList.add(switch_my_website_addition_img)
+            mSwitchList.add(mActivitySwitchMainBinding.switchMyListImg)
+            mSwitchList.add(mActivitySwitchMainBinding.switchMyWebsiteMoreImg)
+            mSwitchList.add(mActivitySwitchMainBinding.switchMyWebsiteAdditionImg)
 
-            switch_my_list_img.imageAlpha = 255
-            switch_my_website_more_img.imageAlpha = 100
-            switch_my_website_addition_img.imageAlpha = 100
-            dl_navigation_main.addDrawerListener(mCallback)
+            mActivitySwitchMainBinding.switchMyListImg.imageAlpha = 255
+            mActivitySwitchMainBinding.switchMyWebsiteMoreImg.imageAlpha = 100
+            mActivitySwitchMainBinding.switchMyWebsiteAdditionImg.imageAlpha = 100
+            mActivitySwitchMainBinding.dlNavigationMain.addDrawerListener(mCallback)
             val statement = BaseFragmentPagerStatement(
                 supportFragmentManager,
                 mFragments
             )
-            vp_main_pages.adapter = statement
-            vp_main_pages.offscreenPageLimit = 1
-            vp_main_pages.addOnPageChangeListener(mCallback)
+            mActivitySwitchMainBinding.vpMainPages.adapter = statement
+            mActivitySwitchMainBinding.vpMainPages.offscreenPageLimit = 1
+            mActivitySwitchMainBinding.vpMainPages.addOnPageChangeListener(mCallback)
 
-            closedApp.setOnClickListener {
+            mNavigationMainBinding.closedApp.setOnClickListener {
                 App.closedApp()
             }
-            btn_menu_main.setOnClickListener {
-                dl_navigation_main.openDrawer(GravityCompat.START)
+            mActivitySwitchMainBinding.btnMenuMain.setOnClickListener {
+                mActivitySwitchMainBinding.dlNavigationMain.openDrawer(GravityCompat.START)
                 isOpenDrawable = true
             }
-            switch_my_list.tag = 0
-            switch_my_list.setOnClickListener(this)
-            switch_my_website_more.tag = 1
-            switch_my_website_more.setOnClickListener(this)
-            switch_my_website_addition.tag = 2
-            switch_my_website_addition.setOnClickListener(this)
+            mActivitySwitchMainBinding.switchMyList.tag = 0
+            mActivitySwitchMainBinding.switchMyList.setOnClickListener(this)
+            mActivitySwitchMainBinding.switchMyWebsiteMore.tag = 1
+            mActivitySwitchMainBinding.switchMyWebsiteMore.setOnClickListener(this)
+            mActivitySwitchMainBinding.switchMyWebsiteAddition.tag = 2
+            mActivitySwitchMainBinding.switchMyWebsiteAddition.setOnClickListener(this)
 
             mFuncAdapter = FunctionAdapter()
             mFuncAdapter?.setData(getFunctionList())
-            mFunMenu.layoutManager = LinearLayoutManager(this)
-            mFunMenu.adapter = mFuncAdapter
+            mNavigationMainBinding.mFunMenu.layoutManager = LinearLayoutManager(this)
+            mNavigationMainBinding.mFunMenu.adapter = mFuncAdapter
 
-            btn_menu_search.setOnClickListener {
+            mActivitySwitchMainBinding.btnMenuSearch.setOnClickListener {
                 this.runOnUiThread {
                     startActivity(Intent(this, SearchActivity::class.java))
                 }
             }
 
 
-            mToolbar = WeakReference(toolbar)
+            mToolbar = WeakReference(mActivitySwitchMainBinding.toolbar)
             val linearLayoutSearch =
                 LayoutInflater.from(this).inflate(
                     R.layout.toolbar_search_bar,
@@ -140,7 +146,7 @@ class MainActivityViewModel :
             mToolbar?.get()?.jellyListener = object : JellyListener() {
                 override fun onToolbarExpandingStarted() {
                     super.onToolbarExpandingStarted()
-                    control_menu.visibility = View.INVISIBLE
+                    mActivitySwitchMainBinding.controlMenu.visibility = View.INVISIBLE
                     editText.isFocusable = true
                     editText.isFocusableInTouchMode = true
                     editText.requestFocus()
@@ -152,7 +158,7 @@ class MainActivityViewModel :
 
                 override fun onCancelIconClicked() {
                     mToolbar?.get()?.collapse()
-                    control_menu.visibility = View.VISIBLE
+                    mActivitySwitchMainBinding.controlMenu.visibility = View.VISIBLE
                     editText.isFocusable = false
                     val inputMethodManager =
                         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -171,18 +177,18 @@ class MainActivityViewModel :
         mContentView.ShowErrorMsg("天气信息加载失败!")
         val errInfo = "网络异常."
         with(mContentView) {
-            mDateInfo.text = "请下拉刷新"
-            mDateStatus.text = errInfo
-            mDateTemp.text = "?"
-            mDatePM.text = errInfo
+            mNavigationMainBinding.mDateInfo.text = "请下拉刷新"
+            mNavigationMainBinding.mDateStatus.text = errInfo
+            mNavigationMainBinding.mDateTemp.text = "?"
+            mNavigationMainBinding.mDatePM.text = errInfo
             CustomUtils.loadImage(
                 this,
                 "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp",
-                mWeatherImg,
+                mNavigationMainBinding.mWeatherImg,
                 30,
                 500
             )
-            mUpdateInfo.isRefreshing = false
+            mNavigationMainBinding.mUpdateInfo.isRefreshing = false
         }
     }
 
@@ -216,14 +222,14 @@ class MainActivityViewModel :
 
             mContentView.runOnUiThread {
                 with(mContentView) {
-                    mDateInfo.text = mTempInfo[0].mRealTime
-                    mDateStatus.text = mTempInfo[0].status
-                    mDateTemp.text = mTempInfo[0].temps
-                    mDatePM.text = mTempInfo[0].PM_2_5
+                    mNavigationMainBinding.mDateInfo.text = mTempInfo[0].mRealTime
+                    mNavigationMainBinding.mDateStatus.text = mTempInfo[0].status
+                    mNavigationMainBinding.mDateTemp.text = mTempInfo[0].temps
+                    mNavigationMainBinding.mDatePM.text = mTempInfo[0].PM_2_5
                     CustomUtils.loadImage(
                         this,
                         "https://p.ssl.qhimg.com/d/inn/b4c1bd75/mini/02.png.webp",
-                        mWeatherImg,
+                        mNavigationMainBinding.mWeatherImg,
                         30,
                         500
                     )
@@ -244,9 +250,9 @@ class MainActivityViewModel :
                             imgUrl = BaseURL.WEATHER_YING
                         }
                     }
-                    CustomUtils.loadImage(this, imgUrl, mWeather_img, 0, 200)
+                    CustomUtils.loadImage(this, imgUrl, mNavigationMainBinding.mWeatherImgRight, 0, 200)
 
-                    mUpdateInfo.isRefreshing = false
+                    mNavigationMainBinding.mUpdateInfo.isRefreshing = false
                 }
             }
         }
@@ -323,9 +329,7 @@ class MainActivityViewModel :
     }
 
     private fun closeDrawer() {
-        with(mContentView) {
-            dl_navigation_main.closeDrawer(GravityCompat.START)
-        }
+        mActivitySwitchMainBinding.dlNavigationMain.closeDrawer(GravityCompat.START)
     }
 
     fun canExit(keyCode: Int, event: KeyEvent?): Boolean {

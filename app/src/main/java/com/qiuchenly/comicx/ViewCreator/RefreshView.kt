@@ -10,8 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.qiuchenly.comicx.Core.Comic
 import com.qiuchenly.comicx.R
-import kotlinx.android.synthetic.main.fragment_my_details.view.*
-
 
 class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(context, attributes) {
 
@@ -33,11 +31,14 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
     lateinit var tvRefreshText: TextView
     lateinit var mRecyclerView: RecyclerView
     lateinit var ivRefreshIcon: ImageView
+    lateinit var mBackgroundImage: ImageView
     override fun onFinishInflate() {
         super.onFinishInflate()
         mHeadView = getChildAt(0)
         mContentView = getChildAt(1)
         mFootView = getChildAt(2)
+
+        mBackgroundImage = mHeadView.findViewById(R.id.mBackground)
 
         mRefreshProgress = mHeadView.findViewById(R.id.refresh_progress)
         tvRefreshText = mHeadView.findViewById(R.id.tv_refresh_state)
@@ -52,11 +53,13 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
             with(mHeadView) {
                 //                mBackground.background = resources.getDrawable(img)
                 //mBackground.setImageResource(img)
-                mBackground.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        Comic.getContext() ?: return,
-                        img
-                    )
+                mBackgroundImage.setImageDrawable(
+                    Comic.getContext()?.let {
+                        ContextCompat.getDrawable(
+                            it,
+                            img
+                        )
+                    }
                 )
                 mHeadView.layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
@@ -209,7 +212,7 @@ class RefreshView(context: Context, attributes: AttributeSet) : FrameLayout(cont
         mCallback = update
     }
 
-    fun setTintColor(cls:Int){
+    fun setTintColor(cls: Int) {
         tvRefreshText.setTextColor(cls)
     }
 

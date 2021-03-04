@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiuchenly/comicx/UI/activity/ComicDetails.kt" />
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/custom_preview.xml" value="1.0" />
+        <entry key="app/src/main/res/drawable/ic_down.xml" value="0.459375" />
+        <entry key="app/src/main/res/layout/activity_comicdetails.xml" value="0.416213768115942" />
+        <entry key="app/src/main/res/layout/activity_comicdetails_v2.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_recently_read.xml" value="0.3229166666666667" />
+        <entry key="app/src/main/res/layout/activity_search_result.xml" value="0.2942708333333333" />
+        <entry key="app/src/main/res/layout/activity_switch_main.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/classic_toolbar.xml" value="0.416213768115942" />
+        <entry key="app/src/main/res/layout/fragment_comic_board_view.xml" value="0.2942708333333333" />
+        <entry key="app/src/main/res/layout/fragment_my_details.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/layout/loadmore_view.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/my_main_spec.xml" value="0.2942708333333333" />
+        <entry key="app/src/main/res/layout/navigation_main.xml" value="0.2953125" />
+        <entry key="app/src/main/res/layout/view_magic_indicator_base.xml" value="0.3229166666666667" />
+      </map>
+    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

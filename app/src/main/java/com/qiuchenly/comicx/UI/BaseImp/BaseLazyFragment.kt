@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 abstract class BaseLazyFragment : Fragment(), BaseView {
-    abstract fun getLayoutID(): Int
+    abstract fun getLayoutID(): View
 
     override fun ShowErrorMsg(msg: String) {
         Toast.makeText(this.context, msg, Toast.LENGTH_SHORT).show()
@@ -52,7 +52,7 @@ abstract class BaseLazyFragment : Fragment(), BaseView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return mView ?: inflater.inflate(getLayoutID(), container, false)
+        return mView ?: getLayoutID()
     }
 
     override fun onDestroyView() {

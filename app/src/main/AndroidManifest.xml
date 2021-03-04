@@ -20,8 +20,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning"
             tools:targetApi="n">
+            <!--    usesCleartextTraffic  兼容哔咔ACG的HTTP请求      -->
 
         <provider
                 android:name="androidx.core.content.FileProvider"

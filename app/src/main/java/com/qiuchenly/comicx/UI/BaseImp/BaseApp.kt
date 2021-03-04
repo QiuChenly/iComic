@@ -22,7 +22,7 @@ abstract class BaseApp : AppCompatActivity(), BaseView {
             "android.permission.WRITE_EXTERNAL_STORAGE"
         )
 
-    fun verifyStoragePermissions(activity: Activity) {
+    private fun verifyStoragePermissions(activity: Activity) {
         try {
             //检测是否有写的权限
             val permission = ActivityCompat.checkSelfPermission(
@@ -42,13 +42,17 @@ abstract class BaseApp : AppCompatActivity(), BaseView {
         }
     }
 
+    // viewbinding
+    private var mView: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         verifyStoragePermissions(this)
         AppManager.appm.addActivity(this)
         val windowSet = getUISet()
-        if (windowSet.layout != null)
-            setContentView(windowSet.layout!!)
+        mView = windowSet.layout
+        if (mView !== null)
+            setContentView(windowSet.layout)
         if (windowSet.isFullScreen) window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         if (windowSet.isSlidr) {
@@ -117,7 +121,7 @@ abstract class BaseApp : AppCompatActivity(), BaseView {
         }
     }
 
-    abstract fun getLayoutID(): Int?
+    abstract fun getLayoutID(): View
     open fun getUISet(
         mSet: UISet = UISet().apply {
             isFullScreen = true
@@ -136,6 +140,7 @@ abstract class BaseApp : AppCompatActivity(), BaseView {
         super.onDestroy()
         mProcessBar?.dismiss()
         mProcessBar = null
+        mView = null
         AppManager.appm.removeActivity(this)
     }
 

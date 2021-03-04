@@ -6,15 +6,14 @@ import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.qiuchenly.comicx.ProductModules.Bika.PreferenceHelper
-import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.viewModel.AuthViewModel
-import kotlinx.android.synthetic.main.activity_bika_auth.*
+import com.qiuchenly.comicx.databinding.ActivityBikaAuthBinding
 
 class AuthBica : BaseApp() {
     private fun loginFailed() {
-        loading.visibility = View.INVISIBLE
-        info.visibility = View.VISIBLE
+        mView.loading.visibility = View.INVISIBLE
+        mView.info.visibility = View.VISIBLE
     }
 
     private fun loginSuccess() {
@@ -22,7 +21,12 @@ class AuthBica : BaseApp() {
         finish()
     }
 
-    override fun getLayoutID() = R.layout.activity_bika_auth
+    private lateinit var mView: ActivityBikaAuthBinding
+    override fun getLayoutID(): View {
+        //R.layout.activity_bika_auth
+        mView = ActivityBikaAuthBinding.inflate(this.layoutInflater)
+        return mView.root
+    }
 
     lateinit var mViewModel: AuthViewModel
 
@@ -50,13 +54,13 @@ class AuthBica : BaseApp() {
             })
         }
 
-        mLoginBika.setOnClickListener {
-            loading.visibility = View.VISIBLE
-            info.visibility = View.INVISIBLE
-            mViewModel.loginBika(mBikaUser.getStr(), mBikaPass.getStr())
+        mView.mLoginBika.setOnClickListener {
+            mView.loading.visibility = View.VISIBLE
+            mView.info.visibility = View.INVISIBLE
+            mViewModel.loginBika(mView.mBikaUser.getStr(), mView.mBikaPass.getStr())
         }
 
-        back_up.setOnClickListener { finish() }
+        mView.backUp.setOnClickListener { finish() }
     }
 
 

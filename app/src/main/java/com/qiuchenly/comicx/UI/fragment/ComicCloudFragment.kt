@@ -5,13 +5,15 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseLazyFragment
 import com.qiuchenly.comicx.UI.BaseImp.BaseNavigatorCommon
 import com.qiuchenly.comicx.UI.BaseImp.SuperPagerAdapter
-import kotlinx.android.synthetic.main.fragment_comic_board_view.*
-import kotlinx.android.synthetic.main.view_magic_indicator_base.*
+import com.qiuchenly.comicx.databinding.FragmentComicBoardViewBinding
 
 class ComicCloudFragment : BaseLazyFragment() {
 
-    override fun getLayoutID(): Int {
-        return R.layout.fragment_comic_board_view
+    private lateinit var mFragmentComicBoardView: FragmentComicBoardViewBinding
+    override fun getLayoutID(): View {
+//        return R.layout.fragment_comic_board_view
+        mFragmentComicBoardView = FragmentComicBoardViewBinding.inflate(layoutInflater)
+        return mFragmentComicBoardView.root
     }
 
     private var mAdapter: SuperPagerAdapter? = null
@@ -23,10 +25,15 @@ class ComicCloudFragment : BaseLazyFragment() {
             //SuperPagerAdapter.Struct("以后增加", AndMore())
         )
         mAdapter = SuperPagerAdapter(this.childFragmentManager, list)
-        magic_indicator_viewpager.adapter = mAdapter
-        magic_indicator_viewpager.offscreenPageLimit = 1
+        mFragmentComicBoardView.magicIndicatorViewpager.adapter = mAdapter
+        mFragmentComicBoardView.magicIndicatorViewpager.offscreenPageLimit = 1
 
         //create tips bottom
-        BaseNavigatorCommon.setUpWithPager(this.context!!, list, magic_indicator, magic_indicator_viewpager)
+        BaseNavigatorCommon.setUpWithPager(
+            this.requireContext(),
+            list,
+            mFragmentComicBoardView.miMagicIndicator.magicIndicator,
+            mFragmentComicBoardView.magicIndicatorViewpager
+        )
     }
 }

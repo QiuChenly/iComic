@@ -19,8 +19,8 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRealmRecyclerAdapter
 import com.qiuchenly.comicx.UI.activity.ComicDetailsV2
 import com.qiuchenly.comicx.Utils.CustomUtils
+import com.qiuchenly.comicx.databinding.ComicLocalListBinding
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.comic_local_list.view.*
 import java.lang.ref.WeakReference
 
 class LocalFavoriteAdapter
@@ -45,6 +45,7 @@ class LocalFavoriteAdapter
         var mBookAuthor = ""
         var mBookImage = ""
         with(item) {
+            val comicLocalListViewBinding = ComicLocalListBinding.bind(this)
             when (data.mComicType) {
                 ComicSource.BikaComic -> {
                     val mComicInfo = Gson().fromJson(itemData, ComicListObject::class.java)
@@ -59,10 +60,10 @@ class LocalFavoriteAdapter
                     mBookImage = mComicInfo.cover
                 }
             }
-            bookName.text = mBookName
-            bookAuthor.text = mBookAuthor
-            curr_read.text = ComicSource.getTypeName(data.mComicType)
-            CustomUtils.loadImageCircle(item.context, mBookImage, item.bookNameImg, 8)
+            comicLocalListViewBinding.bookName.text = mBookName
+            comicLocalListViewBinding.bookAuthor.text = mBookAuthor
+            comicLocalListViewBinding.currRead.text = ComicSource.getTypeName(data.mComicType)
+            CustomUtils.loadImageCircle(item.context, mBookImage, comicLocalListViewBinding.bookNameImg, 8)
             setOnClickListener {
                 if (BikaApi.getAPI() == null && data.mComicType == ComicSource.BikaComic) {
                     Toast.makeText(Comic.getContext(), "请先打开哔咔页面以初始化哔咔服务器!", Toast.LENGTH_SHORT).show()

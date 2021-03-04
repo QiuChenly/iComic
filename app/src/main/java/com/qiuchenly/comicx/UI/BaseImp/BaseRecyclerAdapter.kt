@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter.RecyclerLoadStatus.ON_LOAD_SUCCESS
-import kotlinx.android.synthetic.main.loadmore_view.view.*
+import com.qiuchenly.comicx.databinding.LoadmoreViewBinding
 
 abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
 
@@ -148,16 +148,22 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
      */
     abstract fun getItemLayout(viewType: Int): Int
 
+    private lateinit var mDefaultViewBinding: LoadmoreViewBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val mLayout = when (viewType) {
+        val root: View = when (viewType) {
             RecyclerLoadStatus.ON_LOAD_MORE -> {
-                R.layout.loadmore_view//默认加载更多布局
+//                R.layout.loadmore_view//默认加载更多布局
+                mDefaultViewBinding =
+                    LoadmoreViewBinding.inflate(LayoutInflater.from(parent.context))
+                mDefaultViewBinding.root
             }
             else -> {
-                getItemLayout(viewType)
+                val layout = getItemLayout(viewType)
+                LayoutInflater.from(parent.context).inflate(layout, parent, false)
             }
         }
-        return BaseViewHolder(LayoutInflater.from(parent.context).inflate(mLayout, parent, false))
+        return BaseViewHolder(root)
     }
 
     fun getItemData(position: Int): T {
@@ -250,16 +256,16 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
                 RecyclerLoadStatus.ON_LOAD_MORE -> {
                     when (getState()) {
                         RecyclerLoadStatus.ON_LOAD_NO_MORE -> {
-                            noMore_tip.text = "没有更多的结果了 铁汁!"
-                            noMore_tip.visibility = View.VISIBLE
-                            loadingView.visibility = View.INVISIBLE
-                            clickRetry.visibility = View.INVISIBLE
+                            mDefaultViewBinding.noMoreTip.text = "没有更多的结果了 铁汁!"
+                            mDefaultViewBinding.noMoreTip.visibility = View.VISIBLE
+                            mDefaultViewBinding.loadingView.visibility = View.INVISIBLE
+                            mDefaultViewBinding.clickRetry.visibility = View.INVISIBLE
                             setOnClickListener(null)
                         }
                         RecyclerLoadStatus.ON_LOAD_FAILED -> {
-                            noMore_tip.visibility = View.INVISIBLE
-                            loadingView.visibility = View.INVISIBLE
-                            clickRetry.visibility = View.VISIBLE
+                            mDefaultViewBinding.noMoreTip.visibility = View.INVISIBLE
+                            mDefaultViewBinding.loadingView.visibility = View.INVISIBLE
+                            mDefaultViewBinding.clickRetry.visibility = View.VISIBLE
                             setOnClickListener {
                                 if (!onReTry) {
                                     onLoading(true)
@@ -268,9 +274,9 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<BaseViewHolder>() {
                             }
                         }
                         else -> {
-                            noMore_tip.visibility = View.INVISIBLE
-                            loadingView.visibility = View.VISIBLE
-                            clickRetry.visibility = View.INVISIBLE
+                            mDefaultViewBinding.noMoreTip.visibility = View.INVISIBLE
+                            mDefaultViewBinding.loadingView.visibility = View.VISIBLE
+                            mDefaultViewBinding.clickRetry.visibility = View.INVISIBLE
                             if (!onReTry)
                                 onLoading(false)
                             setOnClickListener(null)

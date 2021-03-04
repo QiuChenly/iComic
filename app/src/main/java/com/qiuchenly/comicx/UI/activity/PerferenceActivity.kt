@@ -1,12 +1,14 @@
 package com.qiuchenly.comicx.UI.activity
 
 import android.os.Bundle
-import com.qiuchenly.comicx.R
+import android.view.View
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.viewModel.PreferenceViewModel
-import kotlinx.android.synthetic.main.activity_prefer.*
+import com.qiuchenly.comicx.databinding.ActivityPreferBinding
 
 class PerferenceActivity : BaseApp() {
+
+    private lateinit var mView: ActivityPreferBinding
     var mViewModel: PreferenceViewModel? = null
     override fun onDestroy() {
         super.onDestroy()
@@ -20,18 +22,23 @@ class PerferenceActivity : BaseApp() {
         }
     }
 
-    override fun getLayoutID() = R.layout.activity_prefer
+    override fun getLayoutID(): View {
+//        R.layout.activity_prefer
+        mView = ActivityPreferBinding.inflate(layoutInflater)
+        return mView.root
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = PreferenceViewModel()
-        useBikaSource.setOnClickListener {
-            mViewModel?.setBikaMode(useBikaSource.isChecked)
+        mView.useBikaSource.setOnClickListener {
+            mViewModel?.setBikaMode(mView.useBikaSource.isChecked)
         }
-        back_up.setOnClickListener { finish() }
+        mView.backUp.setOnClickListener { finish() }
         initAllSetting()
     }
 
     fun initAllSetting() {
-        useBikaSource.isChecked = !mViewModel?.getBikaMode()!!
+        mView.useBikaSource.isChecked = !mViewModel?.getBikaMode()!!
     }
 }

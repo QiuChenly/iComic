@@ -12,8 +12,8 @@ import com.qiuchenly.comicx.UI.adapter.UserDetailsAdapter
 import com.qiuchenly.comicx.UI.model.DetailsModel
 import com.qiuchenly.comicx.UI.view.MyDetailsContract
 import com.qiuchenly.comicx.ViewCreator.RefreshView
+import com.qiuchenly.comicx.databinding.FragmentMyDetailsBinding
 import io.realm.RealmResults
-import kotlinx.android.synthetic.main.fragment_my_details.*
 import java.lang.ref.WeakReference
 
 class MyDetailsFragment : BaseLazyFragment(), MyDetailsContract.View {
@@ -31,15 +31,18 @@ class MyDetailsFragment : BaseLazyFragment(), MyDetailsContract.View {
 
     private lateinit var mViewModel: DetailsModel //= DetailsModel(this)
 
-    override fun getLayoutID(): Int {
-        return R.layout.fragment_my_details
+    private lateinit var mFragmentMyDetailsBinding: FragmentMyDetailsBinding
+    override fun getLayoutID(): View {
+//        return R.layout.fragment_my_details
+        mFragmentMyDetailsBinding = FragmentMyDetailsBinding.inflate(layoutInflater)
+        return mFragmentMyDetailsBinding.root
     }
 
     private fun initializationInfo() {
         mViewModel.getBingSrc()
         mViewModel.getRecentlyReadSize()
         mViewModel.getFavoriteArray()
-        updates.stopRefreshing(false)
+        mFragmentMyDetailsBinding.updates.stopRefreshing(false)
     }
 
     private var TAG = "MyDetailsFragment"
@@ -71,13 +74,13 @@ class MyDetailsFragment : BaseLazyFragment(), MyDetailsContract.View {
         }
 
         mUserDetailsAdapter = UserDetailsAdapter(this, WeakReference(activity as MainActivity))
-        mRecView.layoutManager = LinearLayoutManager(this.context)
-        mRecView.adapter = mUserDetailsAdapter
+        mFragmentMyDetailsBinding.mRecView.layoutManager = LinearLayoutManager(this.context)
+        mFragmentMyDetailsBinding.mRecView.adapter = mUserDetailsAdapter
 //        MyDetails_Refresh.setOnRefreshListener {
 //            initializationInfo()
 //            MyDetails_Refresh.isRefreshing = false
 //        }
-        updates.setUpdate(object : RefreshView.callback {
+        mFragmentMyDetailsBinding.updates.setUpdate(object : RefreshView.callback {
             override fun onLoadMore() {
 
             }

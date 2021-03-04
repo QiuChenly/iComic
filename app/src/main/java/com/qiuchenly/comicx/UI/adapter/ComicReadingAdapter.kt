@@ -17,12 +17,15 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.Utils.CustomUtils
 import com.qiuchenly.comicx.Utils.DisplayUtil
-import kotlinx.android.synthetic.main.item_comicpage.view.*
-import kotlinx.android.synthetic.main.item_next_page_load.view.*
+import com.qiuchenly.comicx.databinding.ItemComicpageBinding
+import com.qiuchenly.comicx.databinding.ItemNextPageLoadBinding
 import java.lang.ref.WeakReference
 
 
-class ComicReadingAdapter(loadListener: LoaderListener, private val mContext: WeakReference<Context>) :
+class ComicReadingAdapter(
+    loadListener: LoaderListener,
+    private val mContext: WeakReference<Context>
+) :
     BaseRecyclerAdapter<String>() {
 
     init {
@@ -54,18 +57,20 @@ class ComicReadingAdapter(loadListener: LoaderListener, private val mContext: We
             return
         if (ViewType == TYPE_NEXT_PAGE) {
             //我就随便这么写写,觉得不行的可以爬
-            item.tv_nextPage.text = "下面的章节是:" + CustomUtils.subStr(data, "[", "]")
+            val pageLoad = ItemNextPageLoadBinding.bind(item)
+            pageLoad.tvNextPage.text = "下面的章节是:" + CustomUtils.subStr(data, "[", "]")
             return
         }
         with(item) {
-            mRetryLoad.setOnClickListener {
-                mRetryLoad.text = "加载中..."
-                mRetryLoad.isClickable = false
-                mRetryLoad.visibility = View.INVISIBLE
+            val mItemComicPage = ItemComicpageBinding.bind(this)
+            mItemComicPage.mRetryLoad.setOnClickListener {
+                mItemComicPage.mRetryLoad.text = "加载中..."
+                mItemComicPage.mRetryLoad.isClickable = false
+                mItemComicPage.mRetryLoad.visibility = View.INVISIBLE
                 onViewShow(item, data, position, ViewType)
             }
-            tv_imageIndex.visibility = View.VISIBLE
-            tv_imageIndex.text = "图${position + 1}...加载中"
+            mItemComicPage.tvImageIndex.visibility = View.VISIBLE
+            mItemComicPage.tvImageIndex.text = "图${position + 1}...加载中"
             //解决图片莫名加载模糊的bug
             //1.使用override(1080,Integer.MAX_VALUE)复写图片预加载大小
             //2.使用asBitmap将Drawable变成位图
@@ -87,10 +92,10 @@ class ComicReadingAdapter(loadListener: LoaderListener, private val mContext: We
                         target: Target<Drawable>?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        mRetryLoad.visibility = View.VISIBLE
-                        mRetryLoad.isClickable = true
-                        mRetryLoad.text = "点击重试!"
-                        tv_imageIndex.visibility = View.INVISIBLE
+                        mItemComicPage.mRetryLoad.visibility = View.VISIBLE
+                        mItemComicPage.mRetryLoad.isClickable = true
+                        mItemComicPage.mRetryLoad.text = "点击重试!"
+                        mItemComicPage.tvImageIndex.visibility = View.INVISIBLE
                         return false
                     }
 
@@ -102,22 +107,22 @@ class ComicReadingAdapter(loadListener: LoaderListener, private val mContext: We
                         isFirstResource: Boolean
                     ): Boolean {
                         if (resource == null) {
-                            mRetryLoad.visibility = View.VISIBLE
-                            mRetryLoad.isClickable = true
-                            mRetryLoad.text = "点击重试!"
+                            mItemComicPage.mRetryLoad.visibility = View.VISIBLE
+                            mItemComicPage.mRetryLoad.isClickable = true
+                            mItemComicPage.mRetryLoad.text = "点击重试!"
                             return false
                         }
-                        tv_imageIndex.visibility = View.INVISIBLE
-                        mRetryLoad.visibility = View.INVISIBLE
-                        val lp = iv_img_page.layoutParams
+                        mItemComicPage.tvImageIndex.visibility = View.INVISIBLE
+                        mItemComicPage.mRetryLoad.visibility = View.INVISIBLE
+                        val lp = mItemComicPage.ivImgPage.layoutParams
                         lp.width = DisplayUtil.getScreenWidth(Comic.getContext())
                         lp.height =
                             DisplayUtil.getScreenWidth(Comic.getContext()) * resource.intrinsicHeight / resource.intrinsicWidth
-                        iv_img_page.layoutParams = lp
+                        mItemComicPage.ivImgPage.layoutParams = lp
                         return false
                     }
                 })
-                .into(iv_img_page)
+                .into(mItemComicPage.ivImgPage)
             if (position + 1 < getRealSize()) {
                 return@with//这里preload有闪退问题,先屏蔽了再说
                 Log.d(TAG, "onViewShow: Size = " + getRealSize() + ", position = " + (position + 1))

@@ -1,7 +1,7 @@
 package com.qiuchenly.comicx.ProductModules.ComicHome
 
 import com.qiuchenly.comicx.HttpRequests.BaseRetrofitManager
-import com.qiuchenly.comicx.Utils.bikaUtils
+import com.qiuchenly.comicx.ProductModules.Bika.TLSSocketFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -52,9 +52,9 @@ object DongManZhiJia : BaseRetrofitManager<ComicApi>() {
         mV3API = getAPI()
         if (mV3API != null) return mV3API!!
         val httpClient = OkHttpClient.Builder()
-            .hostnameVerifier { hostname, session -> true }
         HttpLoggingInterceptor().level = HttpLoggingInterceptor.Level.BODY
-        bikaUtils.handleSSLHandshake(httpClient)
+        val tlsSocketFactory = TLSSocketFactory()
+        httpClient.sslSocketFactory(tlsSocketFactory, tlsSocketFactory.systemDefaultTrustManager())
         val api = Retrofit
             .Builder()
             .baseUrl(ComicApi.BASE_API_V3API)

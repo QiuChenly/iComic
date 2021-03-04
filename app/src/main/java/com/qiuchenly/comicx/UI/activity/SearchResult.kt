@@ -17,13 +17,11 @@ import com.qiuchenly.comicx.Core.ActivityKey
 import com.qiuchenly.comicx.ProductModules.Bika.CategoryObject
 import com.qiuchenly.comicx.ProductModules.Bika.ComicListObject
 import com.qiuchenly.comicx.ProductModules.Bika.responses.DataClass.ComicListResponse.ComicListData
-import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseApp
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.adapter.SearchResultAdapter
 import com.qiuchenly.comicx.UI.viewModel.SearchResultViewModel
-import kotlinx.android.synthetic.main.activity_search_result.*
-import kotlinx.android.synthetic.main.view_magic_indicator_base.*
+import com.qiuchenly.comicx.databinding.ActivitySearchResultBinding
 
 class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
     @SuppressLint("SetTextI18n")
@@ -36,8 +34,8 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
             }
             //修复数据显示问题
             nextPage++
-            activityName_secondTitle.visibility = View.VISIBLE
-            activityName_secondTitle.text = "加载结束 (当前第 $nextPage 页)"
+            mActivitySearchResultBinding.activityNameSecondTitle.visibility = View.VISIBLE
+            mActivitySearchResultBinding.activityNameSecondTitle.text = "加载结束 (当前第 $nextPage 页)"
             mAdapter?.addDMZJComic(list)
         } else {
             mAdapter?.setLoadFailed()
@@ -48,8 +46,8 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
         hideProgress()
         if (data != null) {
             //修复数据显示问题
-            activityName_secondTitle.visibility = View.VISIBLE
-            activityName_secondTitle.text = "搜索结果 (随机本子,每次加载二十个,无限加载.)"
+            mActivitySearchResultBinding.activityNameSecondTitle.visibility = View.VISIBLE
+            mActivitySearchResultBinding.activityNameSecondTitle.text = "搜索结果 (随机本子,每次加载二十个,无限加载.)"
             mAdapter?.addBikaComic(data)
         } else {
             mAdapter?.setLoadFailed()
@@ -57,7 +55,7 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
     }
 
     override fun onLoadMore(isRetry: Boolean) {
-        activityName_secondTitle.text = "搜索结果 (正在加载下一页...)"
+        mActivitySearchResultBinding.activityNameSecondTitle.text = "搜索结果 (正在加载下一页...)"
         selectLoad()
     }
 
@@ -71,10 +69,11 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
         if (data != null) {
             //修复数据显示问题
             val page = if (data.page > data.pages) data.pages else data.page
-            activityName.text =
+            mActivitySearchResultBinding.activityName.text =
                 mCategory.mCategoryName + if (mCategory.mCategoryName == "搜索关键词") " - " + mCategory.mData else ""
-            activityName_secondTitle.visibility = View.VISIBLE
-            activityName_secondTitle.text = "搜索结果 (共找到${data.total}部,当前第$page/${data.pages}页)"
+            mActivitySearchResultBinding.activityNameSecondTitle.visibility = View.VISIBLE
+            mActivitySearchResultBinding.activityNameSecondTitle.text =
+                "搜索结果 (共找到${data.total}部,当前第$page/${data.pages}页)"
             if (nextPage > data.pages) {
                 mAdapter?.setNoMore()
             } else {
@@ -86,7 +85,14 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
         }
     }
 
-    override fun getLayoutID() = R.layout.activity_search_result
+    private lateinit var mActivitySearchResultBinding: ActivitySearchResultBinding
+
+    override fun getLayoutID(): View {
+        // R.layout.activity_search_result
+        mActivitySearchResultBinding = ActivitySearchResultBinding.inflate(layoutInflater)
+        return mActivitySearchResultBinding.root
+    }
+
     override fun getUISet(mSet: UISet): UISet {
         return mSet.apply {
             this.isSlidr = true
@@ -132,6 +138,7 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
     var mCategoryID = ""
     lateinit var mCategoryObj: CategoryObject
     lateinit var mCategory: ComicCategoryBean
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,35 +168,36 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
             return
         }
 
-        back_up.setOnClickListener {
+        mActivitySearchResultBinding.backUp.setOnClickListener {
             finish()
         }
 
-        mResultList.layoutManager = LinearLayoutManager(this)
-        mResultList.itemAnimator = DefaultItemAnimator()
-        mResultList.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        mActivitySearchResultBinding.mResultList.layoutManager = LinearLayoutManager(this)
+        mActivitySearchResultBinding.mResultList.itemAnimator = DefaultItemAnimator()
+        mActivitySearchResultBinding.mResultList.addItemDecoration(object :
+            RecyclerView.ItemDecoration() {
         })
         mAdapter = SearchResultAdapter(this)
-        mResultList.adapter = mAdapter
+        mActivitySearchResultBinding.mResultList.adapter = mAdapter
 
         mCategory = Gson().fromJson(str, ComicCategoryBean::class.java)
         if (mCategory.mCategoryName != "搜索关键词")
             mCategoryObj = Gson().fromJson(mCategory.mData, CategoryObject::class.java)
-        magic_indicator.visibility = View.GONE
+        mActivitySearchResultBinding.miMagicIndcator.magicIndicator.visibility = View.GONE
 
         showProgress("加载漫画结果中...")
         when (mCategory.mComicType) {
             ComicSource.BikaComic -> {
-                handle_bika(mCategory)
+                handleBiKa(mCategory)
             }
             ComicSource.DongManZhiJia -> {
-                handle_ComicHome(mCategory)
+                handleComicHome(mCategory)
             }
         }
-        activityName.text = mCategory.mCategoryName
+        mActivitySearchResultBinding.activityName.text = mCategory.mCategoryName
     }
 
-    private fun handle_ComicHome(mComicCategoryBean: ComicCategoryBean) {
+    private fun handleComicHome(mComicCategoryBean: ComicCategoryBean) {
         nextPage = 0
         if (mCategory.mCategoryName != "搜索关键词") {
             val id =
@@ -199,7 +207,7 @@ class SearchResult : BaseApp(), BaseRecyclerAdapter.LoaderListener {
         selectLoad()
     }
 
-    private fun handle_bika(mComicCategoryBean: ComicCategoryBean) {
+    private fun handleBiKa(mComicCategoryBean: ComicCategoryBean) {
         selectLoad()
     }
 }

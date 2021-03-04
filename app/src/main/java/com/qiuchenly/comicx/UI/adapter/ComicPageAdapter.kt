@@ -10,7 +10,7 @@ import com.qiuchenly.comicx.Core.ActivityKey
 import com.qiuchenly.comicx.ProductModules.Bika.ComicEpisodeObject
 import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
-import kotlinx.android.synthetic.main.comic_page_item.view.*
+import com.qiuchenly.comicx.databinding.ComicPageItemBinding
 
 class ComicPageAdapter(mCallback: LoaderListenerEx) :
     BaseRecyclerAdapter<String>() {
@@ -68,8 +68,10 @@ class ComicPageAdapter(mCallback: LoaderListenerEx) :
                 Result("", "数据有误")
             }
         }
-        item.tv_comicPageName.text = title
-        item.last_read.visibility = View.GONE
+
+        val comicPageItemBinding = ComicPageItemBinding.bind(item)
+        comicPageItemBinding.tvComicPageName.text = title
+        comicPageItemBinding.lastRead.visibility = View.GONE
         item.setOnClickListener { view ->
             if (getState() != RecyclerLoadStatus.ON_LOAD_NO_MORE) {
                 mCallback?.showMsg("请等待所有章节加载完毕后再试!")

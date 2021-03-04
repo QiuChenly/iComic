@@ -1,5 +1,6 @@
 package com.qiuchenly.comicx.UI.model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.ref.WeakReference
 import java.util.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import kotlin.concurrent.thread
+
 
 class BicaModel : ViewModel() {
 
@@ -76,8 +81,10 @@ class BicaModel : ViewModel() {
                     }
                 }
 
+                private val TAG = "BicaModel"
                 override fun onFailure(call: Call<WakaInitResponse>, t: Throwable) {
                     mLintMessage.value = "访问哔咔CDN服务器失败：" + t.message
+                    t.printStackTrace()
                 }
             })
     }
@@ -112,7 +119,9 @@ class BicaModel : ViewModel() {
     }
 
     fun initImage(callback: () -> Unit, forceUpdate: Boolean = false) {
-        if (!forceUpdate and !PreferenceHelper.getImageStorage(Comic.getContext()).isNullOrEmpty()) return callback()
+        if (!forceUpdate and !PreferenceHelper.getImageStorage(Comic.getContext())
+                .isNullOrEmpty()
+        ) return callback()
         api?.getInit(PreferenceHelper.getToken(Comic.getContext()))
             ?.enqueue(object : Callback<GeneralResponse<InitialResponse>> {
                 override fun onResponse(

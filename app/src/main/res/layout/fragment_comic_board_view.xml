@@ -4,7 +4,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <include layout="@layout/view_magic_indicator_base"/>
+    <include
+            android:id="@+id/mi_magic_indicator"
+            layout="@layout/view_magic_indicator_base" />
 
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/magic_indicator_viewpager"

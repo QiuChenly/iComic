@@ -8,9 +8,9 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -29,9 +29,8 @@ import com.qiuchenly.comicx.UI.adapter.ComicPageAdapter
 import com.qiuchenly.comicx.UI.view.ComicDetailContract
 import com.qiuchenly.comicx.UI.viewModel.ComicDetailsViewModel
 import com.qiuchenly.comicx.Utils.CustomUtils
-import kotlinx.android.synthetic.main.activity_comicdetails_v2.*
-import kotlinx.android.synthetic.main.classic_toolbar.*
-import kotlinx.android.synthetic.main.classic_toolbar.view.*
+import com.qiuchenly.comicx.databinding.ActivityComicdetailsV2Binding
+import com.qiuchenly.comicx.databinding.ClassicToolbarBinding
 import java.lang.ref.WeakReference
 
 class ComicDetailsV2 :
@@ -53,8 +52,12 @@ class ComicDetailsV2 :
         }
     }
 
-    override fun getLayoutID(): Int? {
-        return R.layout.activity_comicdetails_v2
+
+    private lateinit var mView: ActivityComicdetailsV2Binding
+    override fun getLayoutID(): View {
+//        return R.layout.activity_comicdetails_v2
+        mView = ActivityComicdetailsV2Binding.inflate(layoutInflater)
+        return mView.root
     }
 
     //==============================   变量声明   ===================================================
@@ -106,7 +109,7 @@ class ComicDetailsV2 :
     //==============================   常规系统初始化方法  ============================================
 
 
-    fun setParams(
+    private fun setParams(
         description: String,
         title: String,
         status: String,
@@ -115,14 +118,14 @@ class ComicDetailsV2 :
         mType: String,
         author: String
     ) {
-        tv_book_details.text = description
-        tv_bookname_title.text = title
-        tv_bookname.text = title
-        mComicUpdateStatus.text = status
-        mNowUpdateSize.text = "已更新${chapterSize}话"
-        mHotNum.text = "${hotSize}人气"
-        mBookCategoryView.text = mType
-        mBookAuthor.text = author
+        mView.tvBookDetails.text = description
+        mView.tvBookname.text = title
+        mView.tvBookname.text = title
+        mView.mComicUpdateStatus.text = status
+        mView.mNowUpdateSize.text = "已更新${chapterSize}话"
+        mView.mHotNum.text = "${hotSize}人气"
+        mView.mBookCategoryView.text = mType
+        mView.mBookAuthor.text = author
     }
 
     @SuppressLint("SetTextI18n")
@@ -137,8 +140,7 @@ class ComicDetailsV2 :
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 var msg = "后台下载服务因为发生错误不可用!"
                 mBinder = service as DownloadService.DownloadBinder
-                if (mBinder == null)
-                else {
+                if (mBinder != null) {
                     msg = "成功启动后台下载服务"
                     mBinder?.checkThisBookIsDownloadingOrDownload()
                 }
@@ -147,12 +149,12 @@ class ComicDetailsV2 :
         }
         bindService(Intent(this, DownloadService::class.java), mConn!!, Context.BIND_AUTO_CREATE)
 
-        mAppBarLayout = WeakReference(appBarLayout)
+        mAppBarLayout = WeakReference(mView.appBarLayout)
 
-        mViewModel = ViewModelProviders.of(this).get(ComicDetailsViewModel::class.java)
+        mViewModel = ViewModelProvider(this).get(ComicDetailsViewModel::class.java)
 
         with(mViewModel) {
-            message.observe(this@ComicDetailsV2, Observer {
+            message.observe(this@ComicDetailsV2, {
                 ShowErrorMsg(it)
                 setParams(
                     "拉取漫画数据时服务器出现错误,具体错误为:$it", "漫画数据错误", "未知状态",
@@ -160,7 +162,7 @@ class ComicDetailsV2 :
                 )
             })
 
-            mBicaComic.observe(this@ComicDetailsV2, Observer {
+            mBicaComic.observe(this@ComicDetailsV2, {
                 var mType = ""
                 it.categories.forEachIndexed { index, s ->
                     mType += "#${s}#" + if (index + 1 == it.categories.size) "" else " "
@@ -179,8 +181,8 @@ class ComicDetailsV2 :
                 )
             })
 
-            mComicHomeChapter.observe(this@ComicDetailsV2, Observer {
-                SetDMZJChapter(it)
+            mComicHomeChapter.observe(this@ComicDetailsV2, {
+                setDMZJChapter(it)
 
                 var mType = ""
                 it.types.forEachIndexed { index, item ->
@@ -206,13 +208,13 @@ class ComicDetailsV2 :
                 )
             })
 
-            mComicBicaChapterList.observe(this@ComicDetailsV2, Observer {
-                SetBikaPages(it)
+            mComicBicaChapterList.observe(this@ComicDetailsV2, {
+                setBikaPages(it)
             })
         }
 
         comicPageAdas = ComicPageAdapter(this)
-        val mListRecyclerView = mChapterList
+        val mListRecyclerView = mView.mChapterList
         mListRecyclerView.layoutManager = LinearLayoutManager(this).apply {
             orientation = RecyclerView.HORIZONTAL
         }
@@ -241,9 +243,8 @@ class ComicDetailsV2 :
         var mComicSrc = ""
         var mComicTitle = ""
         var mComicAuthor = ""
-        var mBookCategory = "暂无分类"
 
-        mBookCategory = tmpComicInfo.mComicTAG
+        val mBookCategory = tmpComicInfo.mComicTAG // 漫画类别
 
         mComicTag = "" + tmpComicInfo.mComicType + "|"
         when (tmpComicInfo.mComicType) {
@@ -283,7 +284,7 @@ class ComicDetailsV2 :
         }
 
 
-        mAddFavorite.setOnClickListener {
+        mView.mAddFavorite.setOnClickListener {
             val book = mViewModel.comicExist(mComicTitle)
             if (book == null) {
                 mViewModel.comicAdd(LocalFavoriteBean().apply {
@@ -294,15 +295,15 @@ class ComicDetailsV2 :
                     this.mComicLastReadTime = System.currentTimeMillis()
                 })
                 ShowErrorMsg("已加入本地图书列表！")
-                mAddFavorite.text = "取消收藏"
+                mView.mAddFavorite.text = "取消收藏"
             } else {
                 mViewModel.comicDel(book.mComicName)
                 ShowErrorMsg("移除成功！")
-                mAddFavorite.text = "收藏"
+                mView.mAddFavorite.text = "收藏"
             }
         }
 
-        mStartRead_ContinueReading.setOnClickListener {
+        mView.mStartReadContinueReading.setOnClickListener {
             val bin = Intent(this, ReadPage::class.java)
 //            var link = lastReadPageUrl
             ContextCompat.startActivity(this, bin, null)
@@ -312,58 +313,63 @@ class ComicDetailsV2 :
         //TODO 此处需要修复以供开始阅读按钮使用
         val book = mViewModel.comicExist(mComicTitle)
         if (book?.mComicData?.isNotEmpty() == true) {
-            mAddFavorite.text = "取消收藏"
+            mView.mAddFavorite.text = "取消收藏"
         }
 
         val point =
             null//realm.where(ComicBookInfo_Recently::class.java).equalTo("ComicName", mComicInfo?.ComicName).findFirst()
         if (point != null) {
-            mStartRead_ContinueReading.text = "继续阅读"
+            mView.mStartReadContinueReading.text = "继续阅读"
         }
 
         //=================  初始化界面数据  ===================
-        CustomUtils.loadImage(this, mComicSrc, mRealImageNoBlur, 0, 20)
-        CustomUtils.loadImage(this, mComicSrc, comicDetails_img, 10, 20)
-        CustomUtils.loadImage(this, mComicSrc, mCardView, 30, 20)
+        CustomUtils.loadImage(this, mComicSrc, mView.mRealImageNoBlur, 0, 20)
+        CustomUtils.loadImage(this, mComicSrc, mView.comicDetailsImg, 10, 20)
+        CustomUtils.loadImage(this, mComicSrc, mView.mCardView, 30, 20)
         //CustomUtils.loadImage(this, mComicSrc, mToolbarBack, 50, 20)
 
+        val mToolBarBing = ClassicToolbarBinding.bind(mView.toolbarUp)
+        mView.mBookAuthor.text = mComicAuthor
 
-        mBookAuthor.text = mComicAuthor
-        tv_bookname_title_small.text = mComicSourceName
-        mBookCategoryView.text = "#$mBookCategory#"
-        tv_book_details.text = ""
 
-        toolbar_up.mTitleLayout.tv_bookname_title.text = mComicTitle
-        toolbar_up.classic_toolbar.setBackgroundColor(Color.BLACK)
-        toolbar_up.back.setBackgroundColor(Color.BLACK)
+//        val tvBooknameTitleSmall =
+//            mToolBarBing.mTitleLayout.findViewById<TextView>(R.id.tv_bookname_title_small)
+//        tvBooknameTitleSmall.text = mComicSourceName
+        mView.mBookCategoryView.text = "#$mBookCategory#"
+        mView.tvBookDetails.text = ""
 
-        toolbar.mTitleLayout.alpha = 0f
+
+        mToolBarBing.tvBooknameTitle.text = mComicTitle
+
+        mToolBarBing.classicToolbar.setBackgroundColor(Color.BLACK)
+        mToolBarBing.back.setBackgroundColor(Color.BLACK)
+
+        mToolBarBing.mTitleLayout.alpha = 0f
         //此处实现淡入淡出效果
-        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        mView.appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val mCurrentPercents = (-verticalOffset * 1f) / appBarLayout.totalScrollRange / 0.2f
 
-            toolbar_up.alpha = mCurrentPercents
-            mRealImageNoBlur.alpha = 1f - mCurrentPercents
+            mView.toolbarUp.alpha = mCurrentPercents
+            mView.mRealImageNoBlur.alpha = 1f - mCurrentPercents
             println(verticalOffset)
             if (
                 verticalOffset < 0
             ) {
-                toolbar.visibility = View.INVISIBLE
+                mView.toolbar.visibility = View.INVISIBLE
             } else {
-                toolbar.visibility = View.VISIBLE
+                mView.toolbar.visibility = View.VISIBLE
             }
-            mPullView.setCanPull(verticalOffset > -10)
+            mView.mPullView.setCanPull(verticalOffset > -10)
             //mTitleLayout.alpha = mCurrentPercents
         })
-        back_up.setOnClickListener { finish() }
-        mShareButton.setOnClickListener {
+        mToolBarBing.backUp.setOnClickListener { finish() }
+        mToolBarBing.mShareButton.setOnClickListener {
             val mClipboardManager = getSystemService(Service.CLIPBOARD_SERVICE) as ClipboardManager
             mClipboardManager.setPrimaryClip(ClipData.newPlainText("text", mComicTag))
             ShowErrorMsg("已复制漫画相关信息")
         }
 
-
-        mBookDownload.setOnClickListener {
+        mToolBarBing.mBookDownload.setOnClickListener {
             mBinder?.download(tmpComicInfo, this)
         }
 
@@ -378,7 +384,6 @@ class ComicDetailsV2 :
 //        )
 //
 //        mComicInfoViewPager.addOnPageChangeListener(mPageChange!!)
-
 
         //数据插入
         val mRecentlyReadingBean = RecentlyReadingBean().apply {
@@ -402,14 +407,10 @@ class ComicDetailsV2 :
         mViewModel.getComicList(mComicID, pageSize)
     }
 
-    fun loadFailure(t: Throwable) {
-        comicPageAdas?.setLoadFailed()
-    }
-
     var pageSize = 1
     private var comicPageAdas: ComicPageAdapter? = null
 
-    fun SetDMZJChapter(docs: ComicHomeComicChapterList) {
+    private fun setDMZJChapter(docs: ComicHomeComicChapterList) {
         if (docs.chapters.isNotEmpty()) {
             docs.chapters.forEach {
                 comicPageAdas?.addData(getArr2Str(ArrayList(it.data)))
@@ -419,7 +420,7 @@ class ComicDetailsV2 :
         }
     }
 
-    fun SetBikaPages(docs: ComicEpisodeResponse) {
+    private fun setBikaPages(docs: ComicEpisodeResponse) {
         docs.eps.docs ?: return
         comicPageAdas?.addData(getArr2Str(docs.eps.docs))
         if (docs.eps.page == docs.eps.pages) {

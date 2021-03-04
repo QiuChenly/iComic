@@ -15,7 +15,7 @@ import com.qiuchenly.comicx.R
 import com.qiuchenly.comicx.UI.BaseImp.BaseRecyclerAdapter
 import com.qiuchenly.comicx.UI.activity.ComicDetailsV2
 import com.qiuchenly.comicx.Utils.CustomUtils
-import kotlinx.android.synthetic.main.comic_local_list.view.*
+import com.qiuchenly.comicx.databinding.ComicLocalListBinding
 
 class SearchResultAdapter(mCallback: LoaderListener) : BaseRecyclerAdapter<String>() {
 
@@ -30,6 +30,7 @@ class SearchResultAdapter(mCallback: LoaderListener) : BaseRecyclerAdapter<Strin
     @SuppressLint("SetTextI18n")
     override fun onViewShow(item: View, data: String, position: Int, ViewType: Int) {
         with(item) {
+            val comicLocalListBinding = ComicLocalListBinding.bind(this)
             var mImage = ""
             var mAuthor = ""
             var mTitle = ""
@@ -54,10 +55,10 @@ class SearchResultAdapter(mCallback: LoaderListener) : BaseRecyclerAdapter<Strin
                     mCategory = mComicListObject.types
                 }
             }
-            CustomUtils.loadImageCircle(context, mImage, bookNameImg, 8)
-            bookName.text = mTitle
-            bookAuthor.text = mAuthor
-            curr_read.text = "分类:$mCategory"
+            CustomUtils.loadImageCircle(context, mImage, comicLocalListBinding.bookNameImg, 8)
+            comicLocalListBinding.bookName.text = mTitle
+            comicLocalListBinding.bookAuthor.text = mAuthor
+            comicLocalListBinding.currRead.text = "分类:$mCategory"
             setOnClickListener {
                 context.startActivity(Intent(context, ComicDetailsV2::class.java).apply {
                     //TODO 需要优化此处

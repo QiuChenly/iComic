@@ -75,7 +75,9 @@
             </androidx.appcompat.widget.Toolbar>
         </FrameLayout>
 
-        <include layout="@layout/view_magic_indicator_base"/>
+        <include
+                android:id="@+id/mi_magic_indcator"
+                layout="@layout/view_magic_indicator_base" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
